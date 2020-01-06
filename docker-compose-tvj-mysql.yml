@@ -1,0 +1,14 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    container_name: tvj_internal_db_container
+    environment:
+      MYSQL_DATABASE: 'tvj_internal_db'
+      MYSQL_ROOT_PASSWORD: '123456!a'
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3306:3306'
+    volumes:
+      - F:\TVJ\db_data:/var/lib/mysql
