@@ -111,7 +111,7 @@ CREATE TABLE `tbl_permission`
     `deleted_date`       datetime                         DEFAULT NULL,
     PRIMARY KEY (`permission_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='List of permissions for sercurity';
+  DEFAULT CHARSET = utf8 COMMENT ='List of permissions for security';
 
 CREATE TABLE `tbl_role`
 (
@@ -243,7 +243,7 @@ CREATE TABLE `tbl_schedule`
     CONSTRAINT `tbl_schedule_tbl_schedule_type_schedule_type_code_fk` FOREIGN KEY (`schedule_type`) REFERENCES `tbl_schedule_type` (`schedule_type_code`),
     CONSTRAINT `tbl_schedule_tbl_user_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`user_id`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Shcedule information';
+  DEFAULT CHARSET = utf8 COMMENT ='Schedule information';
 
 CREATE TABLE `tbl_team`
 (
@@ -262,7 +262,7 @@ CREATE TABLE `tbl_team`
     KEY `tbl_team_department_code_fk` (`department_code`),
     CONSTRAINT `tbl_team_department_code_fk` FOREIGN KEY (`department_code`) REFERENCES `tbl_department` (`department_code`)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Team base on deparment information';
+  DEFAULT CHARSET = utf8 COMMENT ='Team base on department information';
 
 CREATE TABLE `tbl_todo`
 (
