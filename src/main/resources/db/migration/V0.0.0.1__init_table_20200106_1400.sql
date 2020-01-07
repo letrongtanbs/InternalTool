@@ -1,334 +1,327 @@
-CREATE TABLE `tbl_todo_priority_type`
-(
-    `priority_type` int(1) NOT NULL,
-    `priority_code` varchar(20) DEFAULT NULL,
-    PRIMARY KEY (`priority_type`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+CREATE SCHEMA IF NOT EXISTS `tvj_internal_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `tvj_internal_db`;
 
-CREATE TABLE `tbl_todo_status`
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_chatting`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting`
 (
-    `todo_status_code` int(1) NOT NULL,
-    `todo_status_name` varchar(20) DEFAULT NULL,
-    PRIMARY KEY (`todo_status_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Type of todo status';
-
-CREATE TABLE `tbl_user`
-(
-    `user_id`      varchar(36) CHARACTER SET latin1 NOT NULL,
-    `account`      varchar(25)                      DEFAULT NULL,
-    `password`     varchar(100)                     DEFAULT NULL,
-    `first_name`   varchar(100)                     DEFAULT NULL,
-    `last_name`    varchar(100)                     DEFAULT NULL,
-    `email`        varchar(75) CHARACTER SET latin1 NOT NULL,
-    `created_by`   varchar(36) CHARACTER SET latin1 NOT NULL,
-    `created_date` datetime                         NOT NULL,
-    `updated_by`   varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `updated_date` datetime                         DEFAULT NULL,
-    `deleted_by`   varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `deleted_date` datetime                         DEFAULT NULL,
-    PRIMARY KEY (`user_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='User information';
-
-CREATE TABLE `tbl_chatting`
-(
-    `chatting_id` varchar(36) NOT NULL,
-    `user_id`     varchar(36) NOT NULL,
-    `group_name`  varchar(100) DEFAULT NULL,
+    `chatting_id` VARCHAR(36)  NOT NULL,
+    `user_id`     VARCHAR(36)  NOT NULL,
+    `group_name`  VARCHAR(100) NULL DEFAULT NULL,
     PRIMARY KEY (`chatting_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Chat information';
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Chat information';
 
-CREATE TABLE `tbl_country`
-(
-    `country_code` varchar(2) CHARACTER SET latin1 NOT NULL,
-    `country_name` varchar(100) DEFAULT NULL,
-    PRIMARY KEY (`country_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='List of countries of users';
 
-CREATE TABLE `tbl_schedule_repeat_type`
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_department`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_department`
 (
-    `schedule_repeat_code` int(1) NOT NULL,
-    `schedule_repeat_name` varchar(100) DEFAULT NULL,
-    PRIMARY KEY (`schedule_repeat_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Type repeat of schedule';
-
-CREATE TABLE `tbl_schedule_status`
-(
-    `schedule_status_code` int(1) NOT NULL,
-    `schedule_status_name` varchar(20) DEFAULT NULL,
-    PRIMARY KEY (`schedule_status_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Type of event status';
-
-CREATE TABLE `tbl_schedule_type`
-(
-    `schedule_type_code` int(1) NOT NULL,
-    `schedule_type_name` varchar(20) DEFAULT NULL,
-    PRIMARY KEY (`schedule_type_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Schedule type';
-
-CREATE TABLE `tbl_department`
-(
-    `department_id`   int(11)                          NOT NULL,
-    `department_code` varchar(15)                      DEFAULT NULL,
-    `department_name` varchar(200)                     DEFAULT NULL,
-    `created_by`      varchar(36) CHARACTER SET latin1 NOT NULL,
-    `created_date`    datetime                         NOT NULL,
-    `updated_by`      varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `updated_date`    datetime                         DEFAULT NULL,
-    `deleted_by`      varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `deleted_date`    datetime                         DEFAULT NULL,
+    `department_id`   INT(11)      NOT NULL,
+    `department_code` VARCHAR(15)  NULL DEFAULT NULL,
+    `department_name` VARCHAR(200) NULL DEFAULT NULL,
+    `created_by`      VARCHAR(36)  NOT NULL,
+    `created_date`    DATETIME     NOT NULL,
+    `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`    DATETIME     NULL DEFAULT NULL,
+    `deleted_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`    DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`department_id`),
-    UNIQUE KEY `TBL_DEPARTMENT_department_code_uindex` (`department_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Department of company';
+    UNIQUE INDEX `TBL_DEPARTMENT_department_code_uindex` (`department_code` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Department of company';
 
 
-CREATE TABLE `tbl_message_status`
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_event`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_event`
 (
-    `message_status_code` varchar(15) CHARACTER SET latin1 NOT NULL,
-    `message_status_name` varchar(100) DEFAULT NULL,
-    PRIMARY KEY (`message_status_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Status of message when display on chatting frame';
+    `event_id`              VARCHAR(36)  NOT NULL,
+    `event_name`            VARCHAR(200) NULL DEFAULT NULL,
+    `event_status`          INT(1)       NOT NULL,
+    `event_type`            INT(1)       NOT NULL,
+    `author`                INT(11)      NOT NULL,
+    `start_datetime`        INT(11)      NOT NULL,
+    `end_datetime`          INT(11)      NOT NULL,
+    `description`           TEXT         NULL DEFAULT NULL,
+    `event_decision_status` INT(1)       NOT NULL,
+    `num_of_participant`    INT(5)       NOT NULL,
+    `cancel_reason`         VARCHAR(400) NULL DEFAULT NULL,
+    `created_by`            VARCHAR(36)  NOT NULL,
+    `created_date`          DATETIME     NOT NULL,
+    `updated_by`            VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`          DATETIME     NULL DEFAULT NULL,
+    `deleted_by`            VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`          DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`event_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Event information';
 
-CREATE TABLE `tbl_permission`
-(
-    `permission_id`      varchar(36) CHARACTER SET latin1 NOT NULL,
-    `permission_name`    varchar(100)                     DEFAULT NULL,
-    `permission_details` varchar(400)                     DEFAULT NULL,
-    `created_by`         varchar(36) CHARACTER SET latin1 NOT NULL,
-    `created_date`       datetime                         NOT NULL,
-    `updated_by`         varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `updated_date`       datetime                         DEFAULT NULL,
-    `deleted_by`         varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `deleted_date`       datetime                         DEFAULT NULL,
-    PRIMARY KEY (`permission_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='List of permissions for security';
 
-CREATE TABLE `tbl_role`
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_message`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_message`
 (
-    `role_code` varchar(36) CHARACTER SET latin1 NOT NULL,
-    `role_name` varchar(100) DEFAULT NULL,
-    PRIMARY KEY (`role_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Define roles of system';
-
-CREATE TABLE `tbl_event_decision_status`
-(
-    `event_decision_status_code` int(1) NOT NULL,
-    `event_decision_status_name` varchar(20) DEFAULT NULL,
-    PRIMARY KEY (`event_decision_status_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Decision status of event';
-
-CREATE TABLE `tbl_event_status`
-(
-    `event_status_code` int(1) NOT NULL,
-    `event_status_name` varchar(20) DEFAULT NULL,
-    PRIMARY KEY (`event_status_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Type of event status';
-
-CREATE TABLE `tbl_event_type`
-(
-    `event_type_code` int(1) NOT NULL,
-    `event_type_name` varchar(20) DEFAULT NULL,
-    PRIMARY KEY (`event_type_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Type of event';
-
-CREATE TABLE `tbl_language`
-(
-    `language_code` varchar(2) CHARACTER SET latin1 NOT NULL,
-    `language_name` varchar(100) DEFAULT NULL,
-    PRIMARY KEY (`language_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='List of languages support for system';
-
-CREATE TABLE `tbl_event`
-(
-    `event_id`              varchar(36) CHARACTER SET latin1 NOT NULL,
-    `event_name`            varchar(200)                     DEFAULT NULL,
-    `event_status`          int(1)                           NOT NULL,
-    `event_type`            int(1)                           NOT NULL,
-    `author`                int(11)                          NOT NULL,
-    `start_datetime`        int(11)                          NOT NULL,
-    `end_datetime`          int(11)                          NOT NULL,
-    `description`           text,
-    `event_decision_status` int(1)                           NOT NULL,
-    `num_of_participant`    int(5)                           NOT NULL,
-    `cancel_reason`         varchar(400)                     DEFAULT NULL,
-    `created_by`            varchar(36) CHARACTER SET latin1 NOT NULL,
-    `created_date`          datetime                         NOT NULL,
-    `updated_by`            varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `updated_date`          datetime                         DEFAULT NULL,
-    `deleted_by`            varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `deleted_date`          datetime                         DEFAULT NULL,
-    PRIMARY KEY (`event_id`),
-    KEY `tbl_event_tbl_event_status_event_status_code_fk` (`event_status`),
-    KEY `tbl_event_tbl_event_type_event_type_code_fk` (`event_type`),
-    KEY `tbl_event_decision_status_code_fk` (`event_decision_status`),
-    CONSTRAINT `tbl_event_decision_status_code_fk` FOREIGN KEY (`event_decision_status`) REFERENCES `tbl_event_decision_status` (`event_decision_status_code`),
-    CONSTRAINT `tbl_event_tbl_event_status_event_status_code_fk` FOREIGN KEY (`event_status`) REFERENCES `tbl_event_status` (`event_status_code`),
-    CONSTRAINT `tbl_event_tbl_event_type_event_type_code_fk` FOREIGN KEY (`event_type`) REFERENCES `tbl_event_type` (`event_type_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Event information';
-
-CREATE TABLE `tbl_message`
-(
-    `message_id`     varchar(36) CHARACTER SET latin1 NOT NULL,
-    `chatting_id`    varchar(36) DEFAULT NULL,
-    `user_id`        varchar(36) CHARACTER SET latin1 NOT NULL,
-    `message`        text,
-    `message_status` varchar(15) CHARACTER SET latin1 NOT NULL,
-    `created_date`   datetime                         NOT NULL,
+    `message_id`     VARCHAR(36) NOT NULL,
+    `chatting_id`    VARCHAR(36) NULL DEFAULT NULL,
+    `user_id`        VARCHAR(36) NOT NULL,
+    `message`        TEXT        NULL DEFAULT NULL,
+    `message_status` VARCHAR(15) NOT NULL,
+    `created_date`   DATETIME    NOT NULL,
     PRIMARY KEY (`message_id`),
-    KEY `tbl_message_message_status__fk` (`message_status`),
-    KEY `tbl_message_tbl_chatting_chatting_id_fk` (`chatting_id`),
-    CONSTRAINT `tbl_message_message_status__fk` FOREIGN KEY (`message_status`) REFERENCES `tbl_message_status` (`message_status_code`),
-    CONSTRAINT `tbl_message_tbl_chatting_chatting_id_fk` FOREIGN KEY (`chatting_id`) REFERENCES `tbl_chatting` (`chatting_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Chat message';
+    INDEX `tbl_message_tbl_chatting_chatting_id_fk` (`chatting_id` ASC) VISIBLE,
+    CONSTRAINT `tbl_message_tbl_chatting_chatting_id_fk`
+        FOREIGN KEY (`chatting_id`)
+            REFERENCES `tvj_internal_db`.`tbl_chatting` (`chatting_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Chat message';
 
-CREATE TABLE `tbl_role_permission`
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_permission`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_permission`
 (
-    `id`            int(11)                          NOT NULL AUTO_INCREMENT,
-    `role_code`     varchar(36) CHARACTER SET latin1 NOT NULL,
-    `permission_id` varchar(36) CHARACTER SET latin1 NOT NULL,
+    `permission_id`      VARCHAR(36)  NOT NULL,
+    `permission_name`    VARCHAR(100) NULL DEFAULT NULL,
+    `permission_details` VARCHAR(400) NULL DEFAULT NULL,
+    `created_by`         VARCHAR(36)  NOT NULL,
+    `created_date`       DATETIME     NOT NULL,
+    `updated_by`         VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`       DATETIME     NULL DEFAULT NULL,
+    `deleted_by`         VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`       DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`permission_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'List of permissions for security';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role`
+(
+    `role_code` VARCHAR(36)  NOT NULL,
+    `role_name` VARCHAR(100) NULL DEFAULT NULL,
+    PRIMARY KEY (`role_code`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Define roles of system';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_role_permission`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role_permission`
+(
+    `id`            INT(11)     NOT NULL AUTO_INCREMENT,
+    `role_code`     VARCHAR(36) NOT NULL,
+    `permission_id` VARCHAR(36) NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `TBL_ROLE_PERMISSION_permission_id_uindex` (`permission_id`),
-    UNIQUE KEY `TBL_ROLE_PERMISSION_role_code_uindex` (`role_code`),
-    CONSTRAINT `tbl_role_permission_permission_id_fk` FOREIGN KEY (`permission_id`) REFERENCES `tbl_permission` (`permission_id`),
-    CONSTRAINT `tbl_role_permission_role_code_fk` FOREIGN KEY (`role_code`) REFERENCES `tbl_role` (`role_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Defining permissions base on the role';
+    UNIQUE INDEX `TBL_ROLE_PERMISSION_permission_id_uindex` (`permission_id` ASC) VISIBLE,
+    UNIQUE INDEX `TBL_ROLE_PERMISSION_role_code_uindex` (`role_code` ASC) VISIBLE,
+    CONSTRAINT `tbl_role_permission_permission_id_fk`
+        FOREIGN KEY (`permission_id`)
+            REFERENCES `tvj_internal_db`.`tbl_permission` (`permission_id`),
+    CONSTRAINT `tbl_role_permission_role_code_fk`
+        FOREIGN KEY (`role_code`)
+            REFERENCES `tvj_internal_db`.`tbl_role` (`role_code`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Defining permissions base on the role';
 
-CREATE TABLE `tbl_schedule`
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
 (
-    `schedule_id`     varchar(36) CHARACTER SET latin1 NOT NULL,
-    `user_id`         varchar(36) CHARACTER SET latin1 NOT NULL,
-    `event_id`        varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `schedule_name`   varchar(200)                     DEFAULT NULL,
-    `schedule_repeat` int(1)                           NOT NULL,
-    `schedule_status` int(1)                           NOT NULL,
-    `description`     text CHARACTER SET latin1,
-    `display_type`    tinyint(1)                       NOT NULL,
-    `start_datetime`  datetime                         DEFAULT NULL,
-    `end_datetime`    datetime                         DEFAULT NULL,
-    `created_by`      varchar(36) CHARACTER SET latin1 NOT NULL,
-    `created_date`    datetime                         NOT NULL,
-    `updated_by`      varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `updated_date`    datetime                         DEFAULT NULL,
-    `deleted_by`      varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `deleted_date`    datetime                         DEFAULT NULL,
-    `schedule_type`   int(1)                           DEFAULT NULL,
-    `assignee`        text,
+    `user_id`      VARCHAR(36)  NOT NULL,
+    `account`      VARCHAR(25)  NULL DEFAULT NULL,
+    `password`     VARCHAR(100) NULL DEFAULT NULL,
+    `first_name`   VARCHAR(100) NULL DEFAULT NULL,
+    `last_name`    VARCHAR(100) NULL DEFAULT NULL,
+    `email`        VARCHAR(75)  NOT NULL,
+    `created_by`   VARCHAR(36)  NOT NULL,
+    `created_date` DATETIME     NOT NULL,
+    `updated_by`   VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date` DATETIME     NULL DEFAULT NULL,
+    `deleted_by`   VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date` DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'User information';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_schedule`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_schedule`
+(
+    `schedule_id`     VARCHAR(36)  NOT NULL,
+    `user_id`         VARCHAR(36)  NOT NULL,
+    `event_id`        VARCHAR(36)  NULL DEFAULT NULL,
+    `schedule_name`   VARCHAR(200) NULL DEFAULT NULL,
+    `schedule_repeat` INT(1)       NOT NULL,
+    `schedule_status` INT(1)       NOT NULL,
+    `description`     TEXT         NULL DEFAULT NULL,
+    `display_type`    TINYINT(1)   NOT NULL,
+    `start_datetime`  DATETIME     NULL DEFAULT NULL,
+    `end_datetime`    DATETIME     NULL DEFAULT NULL,
+    `created_by`      VARCHAR(36)  NOT NULL,
+    `created_date`    DATETIME     NOT NULL,
+    `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`    DATETIME     NULL DEFAULT NULL,
+    `deleted_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`    DATETIME     NULL DEFAULT NULL,
+    `schedule_type`   INT(1)       NULL DEFAULT NULL,
+    `assignee`        TEXT         NULL DEFAULT NULL,
     PRIMARY KEY (`schedule_id`),
-    KEY `tbl_schedule_tbl_schedule_repeat_type_schedule_repeat_code_fk` (`schedule_repeat`),
-    KEY `tbl_schedule_tbl_user_user_id_fk` (`user_id`),
-    KEY `tbl_schedule_tbl_event_event_id_fk` (`event_id`),
-    KEY `tbl_schedule_tbl_schedule_status_schedule_status_code_fk` (`schedule_status`),
-    KEY `tbl_schedule_tbl_schedule_type_schedule_type_code_fk` (`schedule_type`),
-    CONSTRAINT `tbl_schedule_tbl_event_event_id_fk` FOREIGN KEY (`event_id`) REFERENCES `tbl_event` (`event_id`) ON DELETE SET NULL ON UPDATE SET NULL,
-    CONSTRAINT `tbl_schedule_tbl_schedule_repeat_type_schedule_repeat_code_fk` FOREIGN KEY (`schedule_repeat`) REFERENCES `tbl_schedule_repeat_type` (`schedule_repeat_code`),
-    CONSTRAINT `tbl_schedule_tbl_schedule_status_schedule_status_code_fk` FOREIGN KEY (`schedule_status`) REFERENCES `tbl_schedule_status` (`schedule_status_code`),
-    CONSTRAINT `tbl_schedule_tbl_schedule_type_schedule_type_code_fk` FOREIGN KEY (`schedule_type`) REFERENCES `tbl_schedule_type` (`schedule_type_code`),
-    CONSTRAINT `tbl_schedule_tbl_user_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`user_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Schedule information';
+    INDEX `tbl_schedule_tbl_user_user_id_fk` (`user_id` ASC) VISIBLE,
+    INDEX `tbl_schedule_tbl_event_event_id_fk` (`event_id` ASC) VISIBLE,
+    CONSTRAINT `tbl_schedule_tbl_event_event_id_fk`
+        FOREIGN KEY (`event_id`)
+            REFERENCES `tvj_internal_db`.`tbl_event` (`event_id`)
+            ON DELETE SET NULL
+            ON UPDATE SET NULL,
+    CONSTRAINT `tbl_schedule_tbl_user_user_id_fk`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Schedule information';
 
-CREATE TABLE `tbl_team`
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_team`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_team`
 (
-    `team_id`         varchar(36) CHARACTER SET latin1 NOT NULL,
-    `team_code`       varchar(15) CHARACTER SET latin1 NOT NULL,
-    `team_name`       varchar(200)                     DEFAULT NULL,
-    `department_code` varchar(15)                      DEFAULT NULL,
-    `created_by`      varchar(36) CHARACTER SET latin1 NOT NULL,
-    `created_date`    datetime                         NOT NULL,
-    `updated_by`      varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `updated_date`    datetime                         DEFAULT NULL,
-    `deleted_by`      varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `deleted_date`    datetime                         DEFAULT NULL,
+    `team_id`         VARCHAR(36)  NOT NULL,
+    `team_code`       VARCHAR(15)  NOT NULL,
+    `team_name`       VARCHAR(200) NULL DEFAULT NULL,
+    `department_code` VARCHAR(15)  NULL DEFAULT NULL,
+    `created_by`      VARCHAR(36)  NOT NULL,
+    `created_date`    DATETIME     NOT NULL,
+    `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`    DATETIME     NULL DEFAULT NULL,
+    `deleted_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`    DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`team_id`),
-    UNIQUE KEY `tbl_team_team_code_uindex` (`team_code`),
-    KEY `tbl_team_department_code_fk` (`department_code`),
-    CONSTRAINT `tbl_team_department_code_fk` FOREIGN KEY (`department_code`) REFERENCES `tbl_department` (`department_code`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Team base on department information';
+    UNIQUE INDEX `tbl_team_team_code_uindex` (`team_code` ASC) VISIBLE,
+    INDEX `tbl_team_department_code_fk` (`department_code` ASC) VISIBLE,
+    CONSTRAINT `tbl_team_department_code_fk`
+        FOREIGN KEY (`department_code`)
+            REFERENCES `tvj_internal_db`.`tbl_department` (`department_code`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Team base on department information';
 
-CREATE TABLE `tbl_todo`
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_todo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_todo`
 (
-    `todo_id`        varchar(36) CHARACTER SET latin1 NOT NULL,
-    `user_id`        varchar(36) CHARACTER SET latin1 NOT NULL,
-    `todo_name`      varchar(200)                     DEFAULT NULL,
-    `todo_status`    int(1)                           NOT NULL,
-    `assignee`       varchar(200)                     DEFAULT NULL,
-    `start_datetime` datetime                         NOT NULL,
-    `due_datetime`   datetime                         NOT NULL,
-    `description`    text,
-    `created_date`   datetime                         NOT NULL,
-    `updated_by`     varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `updated_date`   datetime                         DEFAULT NULL,
-    `created_by`     varchar(36) CHARACTER SET latin1 NOT NULL,
-    `deleted_by`     varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `deleted_date`   datetime                         DEFAULT NULL,
-    `priority_type`  int(1)                           DEFAULT NULL,
+    `todo_id`        VARCHAR(36)  NOT NULL,
+    `user_id`        VARCHAR(36)  NOT NULL,
+    `todo_name`      VARCHAR(200) NULL DEFAULT NULL,
+    `todo_status`    INT(1)       NOT NULL,
+    `assignee`       VARCHAR(200) NULL DEFAULT NULL,
+    `start_datetime` DATETIME     NOT NULL,
+    `due_datetime`   DATETIME     NOT NULL,
+    `description`    TEXT         NULL DEFAULT NULL,
+    `created_date`   DATETIME     NOT NULL,
+    `updated_by`     VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`   DATETIME     NULL DEFAULT NULL,
+    `created_by`     VARCHAR(36)  NOT NULL,
+    `deleted_by`     VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`   DATETIME     NULL DEFAULT NULL,
+    `priority_type`  INT(1)       NULL DEFAULT NULL,
     PRIMARY KEY (`todo_id`),
-    KEY `tbl_todo_user_id_fk` (`user_id`),
-    KEY `tbl_todo_tbl_todo_status_todo_status_code_fk` (`todo_status`),
-    KEY `tbl_todo_tbl_todo_priority_type_priority_type_fk` (`priority_type`),
-    CONSTRAINT `tbl_todo_tbl_todo_priority_type_priority_type_fk` FOREIGN KEY (`priority_type`) REFERENCES `tbl_todo_priority_type` (`priority_type`),
-    CONSTRAINT `tbl_todo_tbl_todo_status_todo_status_code_fk` FOREIGN KEY (`todo_status`) REFERENCES `tbl_todo_status` (`todo_status_code`),
-    CONSTRAINT `tbl_todo_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`user_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='Todo information';
+    INDEX `tbl_todo_user_id_fk` (`user_id` ASC) VISIBLE,
+    CONSTRAINT `tbl_todo_user_id_fk`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Todo information';
 
-CREATE TABLE `tbl_user_role`
-(
-    `id`        int(11)                          NOT NULL AUTO_INCREMENT,
-    `role_code` varchar(36) CHARACTER SET latin1 NOT NULL,
-    `user_id`   varchar(36) CHARACTER SET latin1 NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `TBL_USER_ROLE_role_code_uindex` (`role_code`),
-    UNIQUE KEY `TBL_USER_ROLE_user_id_uindex` (`user_id`),
-    CONSTRAINT `tbl_user_role___fk` FOREIGN KEY (`role_code`) REFERENCES `tbl_role` (`role_code`),
-    CONSTRAINT `tbl_user_role__user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`user_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='User combination with roles in the system';
 
-CREATE TABLE `tbl_user_setting`
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_user_role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_role`
 (
-    `id`            int(11)                          NOT NULL AUTO_INCREMENT,
-    `user_id`       varchar(36) CHARACTER SET latin1 NOT NULL,
-    `language_code` varchar(2) CHARACTER SET latin1  NOT NULL,
-    `country_code`  varchar(2) CHARACTER SET latin1  NOT NULL,
-    `mobile`        varchar(15) CHARACTER SET latin1 DEFAULT NULL,
-    `address`       varchar(400)                     DEFAULT NULL,
-    `avatar`        blob,
-    `team_id`       varchar(36) CHARACTER SET latin1 NOT NULL,
-    `created_by`    varchar(36) CHARACTER SET latin1 NOT NULL,
-    `created_date`  datetime                         NOT NULL,
-    `updated_by`    varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `updated_date`  datetime                         DEFAULT NULL,
-    `active`        tinyint(1)                       NOT NULL,
-    `deleted_by`    varchar(36) CHARACTER SET latin1 DEFAULT NULL,
-    `deleted_date`  datetime                         DEFAULT NULL,
+    `id`        INT(11)     NOT NULL AUTO_INCREMENT,
+    `role_code` VARCHAR(36) NOT NULL,
+    `user_id`   VARCHAR(36) NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `tbl_user_setting_user_id_uindex` (`user_id`),
-    KEY `tbl_user_setting_team_id_fk` (`team_id`),
-    KEY `tbl_user_setting_tbl_language_language_code_fk` (`language_code`),
-    KEY `tbl_user_setting_tbl_country_country_code_fk` (`country_code`),
-    CONSTRAINT `tbl_user_setting_tbl_country_country_code_fk` FOREIGN KEY (`country_code`) REFERENCES `tbl_country` (`country_code`),
-    CONSTRAINT `tbl_user_setting_tbl_language_language_code_fk` FOREIGN KEY (`language_code`) REFERENCES `tbl_language` (`language_code`),
-    CONSTRAINT `tbl_user_setting_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `tbl_team` (`team_id`),
-    CONSTRAINT `tbl_user_setting_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`user_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8 COMMENT ='More user information setting';
+    UNIQUE INDEX `TBL_USER_ROLE_role_code_uindex` (`role_code` ASC) VISIBLE,
+    UNIQUE INDEX `TBL_USER_ROLE_user_id_uindex` (`user_id` ASC) VISIBLE,
+    CONSTRAINT `tbl_user_role___fk`
+        FOREIGN KEY (`role_code`)
+            REFERENCES `tvj_internal_db`.`tbl_role` (`role_code`),
+    CONSTRAINT `tbl_user_role__user_id_fk`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'User combination with roles in the system';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_user_setting`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
+(
+    `id`            INT(11)      NOT NULL AUTO_INCREMENT,
+    `user_id`       VARCHAR(36)  NOT NULL,
+    `language_code` VARCHAR(2)   NOT NULL,
+    `country_code`  VARCHAR(2)   NOT NULL,
+    `mobile`        VARCHAR(15)  NULL DEFAULT NULL,
+    `address`       VARCHAR(400) NULL DEFAULT NULL,
+    `avatar`        BLOB         NULL DEFAULT NULL,
+    `team_id`       VARCHAR(36)  NOT NULL,
+    `created_by`    VARCHAR(36)  NOT NULL,
+    `created_date`  DATETIME     NOT NULL,
+    `updated_by`    VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`  DATETIME     NULL DEFAULT NULL,
+    `active`        TINYINT(1)   NOT NULL,
+    `deleted_by`    VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`  DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `tbl_user_setting_user_id_uindex` (`user_id` ASC) VISIBLE,
+    INDEX `tbl_user_setting_team_id_fk` (`team_id` ASC) VISIBLE,
+    CONSTRAINT `tbl_user_setting_team_id_fk`
+        FOREIGN KEY (`team_id`)
+            REFERENCES `tvj_internal_db`.`tbl_team` (`team_id`),
+    CONSTRAINT `tbl_user_setting_user_id_fk`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'More user information setting';
