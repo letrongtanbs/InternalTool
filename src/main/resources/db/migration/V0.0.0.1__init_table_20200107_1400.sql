@@ -2,6 +2,30 @@ CREATE SCHEMA IF NOT EXISTS `tvj_internal_db` DEFAULT CHARACTER SET utf8mb4 COLL
 USE `tvj_internal_db`;
 
 -- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
+(
+    `user_id`      VARCHAR(36)  NOT NULL,
+    `account`      VARCHAR(25)  NULL DEFAULT NULL,
+    `password`     VARCHAR(100) NULL DEFAULT NULL,
+    `first_name`   VARCHAR(100) NULL DEFAULT NULL,
+    `last_name`    VARCHAR(100) NULL DEFAULT NULL,
+    `email`        VARCHAR(75)  NOT NULL,
+    `created_by`   VARCHAR(36)  NOT NULL,
+    `created_date` DATETIME     NOT NULL,
+    `updated_by`   VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date` DATETIME     NULL DEFAULT NULL,
+    `deleted_by`   VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date` DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'User information';
+
+
+-- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_chatting`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting`
@@ -9,7 +33,10 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting`
     `chatting_id` VARCHAR(36)  NOT NULL,
     `user_id`     VARCHAR(36)  NOT NULL,
     `group_name`  VARCHAR(100) NULL DEFAULT NULL,
-    PRIMARY KEY (`chatting_id`)
+    PRIMARY KEY (`chatting_id`),
+    CONSTRAINT `tbl_chatting_tbl_user_user_id_fk`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
@@ -145,30 +172,6 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role_permission`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
     COMMENT = 'Defining permissions base on the role';
-
-
--- -----------------------------------------------------
--- Table `tvj_internal_db`.`tbl_user`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
-(
-    `user_id`      VARCHAR(36)  NOT NULL,
-    `account`      VARCHAR(25)  NULL DEFAULT NULL,
-    `password`     VARCHAR(100) NULL DEFAULT NULL,
-    `first_name`   VARCHAR(100) NULL DEFAULT NULL,
-    `last_name`    VARCHAR(100) NULL DEFAULT NULL,
-    `email`        VARCHAR(75)  NOT NULL,
-    `created_by`   VARCHAR(36)  NOT NULL,
-    `created_date` DATETIME     NOT NULL,
-    `updated_by`   VARCHAR(36)  NULL DEFAULT NULL,
-    `updated_date` DATETIME     NULL DEFAULT NULL,
-    `deleted_by`   VARCHAR(36)  NULL DEFAULT NULL,
-    `deleted_date` DATETIME     NULL DEFAULT NULL,
-    PRIMARY KEY (`user_id`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8
-    COMMENT = 'User information';
 
 
 -- -----------------------------------------------------
