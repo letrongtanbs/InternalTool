@@ -6,18 +6,22 @@ USE `tvj_internal_db`;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
 (
-    `user_id`      VARCHAR(36)  NOT NULL,
-    `account`      VARCHAR(25)  NULL DEFAULT NULL,
-    `password`     VARCHAR(100) NULL DEFAULT NULL,
-    `first_name`   VARCHAR(100) NULL DEFAULT NULL,
-    `last_name`    VARCHAR(100) NULL DEFAULT NULL,
-    `email`        VARCHAR(75)  NOT NULL,
-    `created_by`   VARCHAR(36)  NOT NULL,
-    `created_date` DATETIME     NOT NULL,
-    `updated_by`   VARCHAR(36)  NULL DEFAULT NULL,
-    `updated_date` DATETIME     NULL DEFAULT NULL,
-    `deleted_by`   VARCHAR(36)  NULL DEFAULT NULL,
-    `deleted_date` DATETIME     NULL DEFAULT NULL,
+    `user_id`                            VARCHAR(36)  NOT NULL,
+    `username`                           VARCHAR(25)  NULL DEFAULT NULL,
+    `password`                           VARCHAR(100) NULL DEFAULT NULL,
+    `first_name`                         VARCHAR(100) NULL DEFAULT NULL,
+    `last_name`                          VARCHAR(100) NULL DEFAULT NULL,
+    `email`                              VARCHAR(75)  NOT NULL,
+    `active`                             TINYINT(1)   NOT NULL,
+    `login_fail_count`                   TINYINT(1)   NOT NULL,
+    `forgot_password_token`              VARCHAR(200) NULL DEFAULT NULL,
+    `forgot_password_token_expired_date` DATETIME     NULL DEFAULT NULL,
+    `created_by`                         VARCHAR(36)  NOT NULL,
+    `created_date`                       DATETIME     NOT NULL,
+    `updated_by`                         VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`                       DATETIME     NULL DEFAULT NULL,
+    `deleted_by`                         VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`                       DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`user_id`)
 )
     ENGINE = InnoDB
@@ -30,9 +34,11 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting`
 (
-    `chatting_id` VARCHAR(36)  NOT NULL,
-    `user_id`     VARCHAR(36)  NOT NULL,
-    `group_name`  VARCHAR(100) NULL DEFAULT NULL,
+    `chatting_id`  VARCHAR(36)  NOT NULL,
+    `user_id`      VARCHAR(36)  NOT NULL,
+    `group_name`   VARCHAR(100) NULL DEFAULT NULL,
+    `mute_chat`    INT(1)       NOT NULL,
+    `deleted_date` DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`chatting_id`),
     CONSTRAINT `tbl_chatting_tbl_user_user_id_fk`
         FOREIGN KEY (`user_id`)
@@ -105,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_message`
     `message`        TEXT        NULL DEFAULT NULL,
     `message_status` VARCHAR(15) NOT NULL,
     `created_date`   DATETIME    NOT NULL,
+    `deleted_date`   DATETIME    NULL DEFAULT NULL,
     PRIMARY KEY (`message_id`),
     INDEX `tbl_message_tbl_chatting_chatting_id_fk` (`chatting_id` ASC) VISIBLE,
     CONSTRAINT `tbl_message_tbl_chatting_chatting_id_fk`
@@ -304,15 +311,16 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
     `user_id`       VARCHAR(36)  NOT NULL,
     `language_code` VARCHAR(2)   NOT NULL,
     `country_code`  VARCHAR(2)   NOT NULL,
-    `mobile`        VARCHAR(15)  NULL DEFAULT NULL,
+    `phone`         VARCHAR(15)  NULL DEFAULT NULL,
     `address`       VARCHAR(400) NULL DEFAULT NULL,
-    `avatar`        BLOB         NULL DEFAULT NULL,
+    `avatar`        VARCHAR(400) NULL DEFAULT NULL,
     `team_id`       VARCHAR(36)  NOT NULL,
+    `title`         VARCHAR(36)  NULL DEFAULT NULL,
     `created_by`    VARCHAR(36)  NOT NULL,
     `created_date`  DATETIME     NOT NULL,
     `updated_by`    VARCHAR(36)  NULL DEFAULT NULL,
     `updated_date`  DATETIME     NULL DEFAULT NULL,
-    `active`        TINYINT(1)   NOT NULL,
+    `status`        TINYINT(1)   NOT NULL,
     `deleted_by`    VARCHAR(36)  NULL DEFAULT NULL,
     `deleted_date`  DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
