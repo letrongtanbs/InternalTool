@@ -135,29 +135,49 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_department`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_event`
 (
-    `event_id`              VARCHAR(36)  NOT NULL,
-    `event_name`            VARCHAR(200) NULL DEFAULT NULL,
-    `event_status`          INT(1)       NOT NULL,
-    `event_type`            INT(1)       NOT NULL,
-    `author`                INT(11)      NOT NULL,
-    `start_datetime`        INT(11)      NOT NULL,
-    `end_datetime`          INT(11)      NOT NULL,
-    `description`           TEXT         NULL DEFAULT NULL,
-    `event_decision_status` INT(1)       NOT NULL,
-    `num_of_participant`    INT(5)       NOT NULL,
-    `cancel_reason`         VARCHAR(400) NULL DEFAULT NULL,
-    `created_by`            VARCHAR(36)  NOT NULL,
-    `created_date`          DATETIME     NOT NULL,
-    `updated_by`            VARCHAR(36)  NULL DEFAULT NULL,
-    `updated_date`          DATETIME     NULL DEFAULT NULL,
-    `deleted_by`            VARCHAR(36)  NULL DEFAULT NULL,
-    `deleted_date`          DATETIME     NULL DEFAULT NULL,
+    `event_id`       VARCHAR(36)  NOT NULL,
+    `event_name`     VARCHAR(200) NULL DEFAULT NULL,
+    `event_status`   INT(1)       NOT NULL,
+    `event_type`     INT(1)       NOT NULL,
+    `author`         VARCHAR(36)  NOT NULL,
+    `start_datetime` DATETIME     NOT NULL,
+    `end_datetime`   DATETIME     NOT NULL,
+    `description`    TEXT         NULL DEFAULT NULL,
+    `cancel_reason`  VARCHAR(400) NULL DEFAULT NULL,
+    `created_by`     VARCHAR(36)  NOT NULL,
+    `created_date`   DATETIME     NOT NULL,
+    `updated_by`     VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`   DATETIME     NULL DEFAULT NULL,
+    `deleted_by`     VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`   DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`event_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
     COMMENT = 'Event information';
 
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_event_user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_event_user`
+(
+    `event_id`              VARCHAR(36) NOT NULL,
+    `user_id`               VARCHAR(36) NOT NULL,
+    `event_decision_status` INT(1)      NOT NULL,
+    `created_date`          DATETIME    NOT NULL,
+    `updated_date`          DATETIME    NULL DEFAULT NULL,
+    PRIMARY KEY (`event_id`, `user_id`),
+    CONSTRAINT `tbl_event_user_event_id_fk`
+        FOREIGN KEY (`event_id`)
+            REFERENCES `tvj_internal_db`.`tbl_event` (`event_id`),
+    CONSTRAINT `tbl_event_user_user_id_fk`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Event user information';
 
 -- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_permission`
