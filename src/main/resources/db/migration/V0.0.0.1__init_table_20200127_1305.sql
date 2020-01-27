@@ -1,6 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS `tvj_internal_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `tvj_internal_db`;
 
+
 -- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_user`
 -- -----------------------------------------------------
@@ -35,18 +36,76 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting`
 (
     `chatting_id`  VARCHAR(36)  NOT NULL,
-    `user_id`      VARCHAR(36)  NOT NULL,
     `group_name`   VARCHAR(100) NULL DEFAULT NULL,
-    `mute_chat`    INT(1)       NOT NULL,
     `deleted_date` DATETIME     NULL DEFAULT NULL,
-    PRIMARY KEY (`chatting_id`),
-    CONSTRAINT `tbl_chatting_tbl_user_user_id_fk`
+    PRIMARY KEY (`chatting_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Chat information';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_chatting_user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting_user`
+(
+    `chatting_user_id` VARCHAR(36) NOT NULL,
+    `chatting_id`      VARCHAR(36) NOT NULL,
+    `user_id`          VARCHAR(36) NOT NULL,
+    `mute_flag`        TINYINT     NOT NULL,
+    PRIMARY KEY (`chatting_user_id`),
+    UNIQUE INDEX `tbl_chatting_user_chatting_id_user_id_uindex` (`chatting_id` ASC, `user_id` ASC) VISIBLE,
+    CONSTRAINT `tbl_chatting_user_chatting_id_fk`
+        FOREIGN KEY (`chatting_id`)
+            REFERENCES `tvj_internal_db`.`tbl_chatting` (`chatting_id`),
+    CONSTRAINT `tbl_chatting_user_user_id_fk`
         FOREIGN KEY (`user_id`)
             REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
-    COMMENT = 'Chat information';
+    COMMENT = 'Chat group information';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_message`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_message`
+(
+    `message_id`       VARCHAR(36) NOT NULL,
+    `chatting_user_id` VARCHAR(36) NOT NULL,
+    `message`          TEXT        NOT NULL,
+    `message_status`   INT(1)      NOT NULL,
+    `created_date`     DATETIME    NOT NULL,
+    `deleted_date`     DATETIME    NULL DEFAULT NULL,
+    PRIMARY KEY (`message_id`),
+    CONSTRAINT `tbl_message_chatting_user_id_fk`
+        FOREIGN KEY (`chatting_user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_chatting_user` (`chatting_user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Chat message';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_chatting_file`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting_file`
+(
+    `chatting_file_id` VARCHAR(36)  NOT NULL,
+    `chatting_user_id` VARCHAR(36)  NOT NULL,
+    `file_link`        VARCHAR(200) NOT NULL,
+    `description`      VARCHAR(400) NULL DEFAULT NULL,
+    PRIMARY KEY (`chatting_file_id`),
+    CONSTRAINT `tbl_chatting_file_chatting_user_id_fk`
+        FOREIGN KEY (`chatting_user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_chatting_user` (`chatting_user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Chat file';
 
 
 -- -----------------------------------------------------
@@ -98,29 +157,6 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_event`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
     COMMENT = 'Event information';
-
-
--- -----------------------------------------------------
--- Table `tvj_internal_db`.`tbl_message`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_message`
-(
-    `message_id`     VARCHAR(36) NOT NULL,
-    `chatting_id`    VARCHAR(36) NULL DEFAULT NULL,
-    `user_id`        VARCHAR(36) NOT NULL,
-    `message`        TEXT        NULL DEFAULT NULL,
-    `message_status` VARCHAR(15) NOT NULL,
-    `created_date`   DATETIME    NOT NULL,
-    `deleted_date`   DATETIME    NULL DEFAULT NULL,
-    PRIMARY KEY (`message_id`),
-    INDEX `tbl_message_tbl_chatting_chatting_id_fk` (`chatting_id` ASC) VISIBLE,
-    CONSTRAINT `tbl_message_tbl_chatting_chatting_id_fk`
-        FOREIGN KEY (`chatting_id`)
-            REFERENCES `tvj_internal_db`.`tbl_chatting` (`chatting_id`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8
-    COMMENT = 'Chat message';
 
 
 -- -----------------------------------------------------
