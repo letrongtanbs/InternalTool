@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class InternalToolApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InternalToolApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(InternalToolApplication.class, args);
+    }
 
 }

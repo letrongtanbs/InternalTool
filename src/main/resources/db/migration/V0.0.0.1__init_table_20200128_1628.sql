@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
     `last_name`                          VARCHAR(100) NULL DEFAULT NULL,
     `email`                              VARCHAR(75)  NOT NULL,
     `active`                             TINYINT(1)   NOT NULL,
-    `login_fail_count`                   TINYINT(1)   NOT NULL,
+    `login_fail_count`                   INT(1)       NOT NULL,
     `forgot_password_token`              VARCHAR(200) NULL DEFAULT NULL,
     `forgot_password_token_expired_date` DATETIME     NULL DEFAULT NULL,
     `created_by`                         VARCHAR(36)  NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting_user`
     `chatting_user_id` VARCHAR(36) NOT NULL,
     `chatting_id`      VARCHAR(36) NOT NULL,
     `user_id`          VARCHAR(36) NOT NULL,
-    `mute_flag`        TINYINT     NOT NULL,
+    `mute_flag`        TINYINT(1)  NOT NULL,
     PRIMARY KEY (`chatting_user_id`),
     UNIQUE INDEX `tbl_chatting_user_chatting_id_user_id_uindex` (`chatting_id` ASC, `user_id` ASC) VISIBLE,
     CONSTRAINT `tbl_chatting_user_chatting_id_fk`
@@ -131,26 +131,51 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_department`
 
 
 -- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_event_category`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_event_category`
+(
+    `event_category_id`   VARCHAR(36)  NOT NULL,
+    `event_category_name` VARCHAR(200) NOT NULL,
+    `created_by`          VARCHAR(36)  NOT NULL,
+    `created_date`        DATETIME     NOT NULL,
+    `updated_by`          VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`        DATETIME     NULL DEFAULT NULL,
+    `deleted_by`          VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`        DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`event_category_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Event information';
+
+
+-- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_event`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_event`
 (
-    `event_id`       VARCHAR(36)  NOT NULL,
-    `event_name`     VARCHAR(200) NULL DEFAULT NULL,
-    `event_status`   INT(1)       NOT NULL,
-    `event_type`     INT(1)       NOT NULL,
-    `author`         VARCHAR(36)  NOT NULL,
-    `start_datetime` DATETIME     NOT NULL,
-    `end_datetime`   DATETIME     NOT NULL,
-    `description`    TEXT         NULL DEFAULT NULL,
-    `cancel_reason`  VARCHAR(400) NULL DEFAULT NULL,
-    `created_by`     VARCHAR(36)  NOT NULL,
-    `created_date`   DATETIME     NOT NULL,
-    `updated_by`     VARCHAR(36)  NULL DEFAULT NULL,
-    `updated_date`   DATETIME     NULL DEFAULT NULL,
-    `deleted_by`     VARCHAR(36)  NULL DEFAULT NULL,
-    `deleted_date`   DATETIME     NULL DEFAULT NULL,
-    PRIMARY KEY (`event_id`)
+    `event_id`          VARCHAR(36)  NOT NULL,
+    `event_category_id` VARCHAR(36)  NOT NULL,
+    `event_status`      INT(1)       NOT NULL,
+    `author`            VARCHAR(36)  NOT NULL,
+    `start_datetime`    DATETIME     NOT NULL,
+    `end_datetime`      DATETIME     NOT NULL,
+    `description`       TEXT         NULL DEFAULT NULL,
+    `cancel_reason`     VARCHAR(400) NULL DEFAULT NULL,
+    `created_by`        VARCHAR(36)  NOT NULL,
+    `created_date`      DATETIME     NOT NULL,
+    `updated_by`        VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`      DATETIME     NULL DEFAULT NULL,
+    `deleted_by`        VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`      DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`event_id`),
+    CONSTRAINT `tbl_event_author_fk`
+        FOREIGN KEY (`author`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`),
+    CONSTRAINT `tbl_event_event_category_id_fk`
+        FOREIGN KEY (`event_category_id`)
+            REFERENCES `tvj_internal_db`.`tbl_event_category` (`event_category_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
