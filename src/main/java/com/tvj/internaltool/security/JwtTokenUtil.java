@@ -15,15 +15,16 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+
+    private static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
     private static final String secret = "BestSecret";
 
-    //retrieve username from jwt token
+    // Retrieve username from jwt token
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    //retrieve expiration date from jwt token
+    // Retrieve expiration date from jwt token
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
@@ -33,8 +34,9 @@ public class JwtTokenUtil implements Serializable {
         return claimsResolver.apply(claims);
     }
 
-    //for retrieveing any information from token we will need the secret key
+    // For retrieving any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
+        // Include check if token is expired
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 

@@ -29,10 +29,12 @@ public class UserServiceImpl implements UserService {
     public UserDetails processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
         UserEntity user = userRepository.findByUsername(username);
 
+        // Check if user exists
         if (user == null) {
             return null;
         }
 
+        // Compare password
         if (!passwordEncoder.matches(password, user.getPassword())) {
             return null;
         }
@@ -42,32 +44,28 @@ public class UserServiceImpl implements UserService {
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
-        // get role of current login user
+        // Get role of current login user
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
 
-        // by this way, UserEntity does not need to implement UserDetails
-        return new User(username, user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-    }
-
-    @Override
-    public UserEntity findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        // By this way, UserEntity does not need to implement UserDetails
+        return new User(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
     @Override
     public UserDetails getUserDetails(String username) {
         UserEntity user = userRepository.findByUsername(username);
+
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
-        // get role of current login user
+        // Get role of current login user
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
 
-        // by this way, UserEntity does not need to implement UserDetails
+        // By this way, UserEntity does not need to implement UserDetails
         return new User(username, user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 }
