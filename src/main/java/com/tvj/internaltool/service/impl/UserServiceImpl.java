@@ -68,4 +68,9 @@ public class UserServiceImpl implements UserService {
         // By this way, UserEntity does not need to implement UserDetails
         return new User(username, user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
+
+    @Override
+    public UserEntity getUserByUserName(String username) {
+        return userRepository.findByUsername(username);
+    }
 }

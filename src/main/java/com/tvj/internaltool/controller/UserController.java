@@ -37,9 +37,14 @@ public class UserController {
         return new ResponseEntity<>(new UserLoginResDto(token), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/test")
+    @GetMapping(value = "/url")
     public ResponseEntity<?> test() {
         return new ResponseEntity<>("Hello: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/url-for-root")
+    public ResponseEntity<?> testRoot() {
+        return new ResponseEntity<>("Hello boss: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
 }
