@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -25,11 +27,10 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody UserLoginReqDto userLoginReqDto) {
+    public ResponseEntity<?> generateAuthenticationToken(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
         final UserDetails userDetails = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
         if (userDetails == null) {
-            return new ResponseEntity<>(new ErrorResDto(ErrorCode.FORBIDDEN, ErrorMessage.FORBIDDEN),
-                    HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new ErrorResDto(ErrorCode.FORBIDDEN, ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
         }
         final String token = jwtTokenUtil.generateToken(userDetails);
         return new ResponseEntity<>(new UserLoginResDto(token), HttpStatus.OK);

@@ -68,4 +68,3 @@ public class UserEntity implements Serializable {
     private LocalDateTime deletedDate;
 
 }
-

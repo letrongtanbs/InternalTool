@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtRequestFilter jwtAuthenticationTokenFilter() throws Exception {
+    public JwtRequestFilter jwtAuthenticationTokenFilter() {
         return new JwtRequestFilter();
     }
 
@@ -42,10 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Permit specific requests
         httpSecurity.authorizeRequests().antMatchers("/user/login").permitAll();
 
-        // Authenticate specific requests
+        // Authenticate the rest of requests
         httpSecurity.authorizeRequests().anyRequest().authenticated();
 
-        // Add a filter to validate the tokens with every request
+        // Add a filter to validate the tokens with every request,
+        // JwtRequestFilter is executed before UsernamePasswordAuthenticationFilter
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // Check if authorize fail
