@@ -3,13 +3,35 @@ USE `tvj_internal_db`;
 
 
 -- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role`
+(
+    `role_id`      VARCHAR(36)  NOT NULL,
+    `role_name`    VARCHAR(100) NOT NULL,
+    `created_by`   VARCHAR(36)  NOT NULL,
+    `created_date` DATETIME     NOT NULL,
+    `updated_by`   VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date` DATETIME     NULL DEFAULT NULL,
+    `deleted_by`   VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date` DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`role_id`),
+    UNIQUE INDEX `tbl_role_role_name_uindex` (`role_name` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Define roles of system';
+
+
+-- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
 (
     `user_id`                            VARCHAR(36)  NOT NULL,
-    `username`                           VARCHAR(25)  NULL DEFAULT NULL,
-    `password`                           VARCHAR(100) NULL DEFAULT NULL,
+    `role_id`                            VARCHAR(36)  NOT NULL,
+    `username`                           VARCHAR(36)  NOT NULL,
+    `password`                           VARCHAR(100) NOT NULL,
     `first_name`                         VARCHAR(100) NULL DEFAULT NULL,
     `last_name`                          VARCHAR(100) NULL DEFAULT NULL,
     `email`                              VARCHAR(75)  NOT NULL,
@@ -23,7 +45,12 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
     `updated_date`                       DATETIME     NULL DEFAULT NULL,
     `deleted_by`                         VARCHAR(36)  NULL DEFAULT NULL,
     `deleted_date`                       DATETIME     NULL DEFAULT NULL,
-    PRIMARY KEY (`user_id`)
+    PRIMARY KEY (`user_id`),
+    UNIQUE INDEX `tbl_user_username_uindex` (`username` ASC) VISIBLE,
+    UNIQUE INDEX `tbl_user_email_uindex` (`email` ASC) VISIBLE,
+    CONSTRAINT `tbl_user_role_id_fk`
+        FOREIGN KEY (`role_id`)
+            REFERENCES `tvj_internal_db`.`tbl_role` (`role_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
@@ -226,36 +253,21 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_permission`
 
 
 -- -----------------------------------------------------
--- Table `tvj_internal_db`.`tbl_role`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role`
-(
-    `role_code` VARCHAR(36)  NOT NULL,
-    `role_name` VARCHAR(100) NULL DEFAULT NULL,
-    PRIMARY KEY (`role_code`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8
-    COMMENT = 'Define roles of system';
-
-
--- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_role_permission`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role_permission`
 (
-    `id`            INT(11)     NOT NULL AUTO_INCREMENT,
-    `role_code`     VARCHAR(36) NOT NULL,
+    `role_id`       VARCHAR(36) NOT NULL,
     `permission_id` VARCHAR(36) NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `TBL_ROLE_PERMISSION_permission_id_uindex` (`permission_id` ASC) VISIBLE,
-    UNIQUE INDEX `TBL_ROLE_PERMISSION_role_code_uindex` (`role_code` ASC) VISIBLE,
+    PRIMARY KEY (`role_id`, `permission_id`),
+    UNIQUE INDEX `tbl_role_permission_permission_id_uindex` (`permission_id` ASC) VISIBLE,
+    UNIQUE INDEX `tbl_role_permission_role_id_uindex` (`role_id` ASC) VISIBLE,
     CONSTRAINT `tbl_role_permission_permission_id_fk`
         FOREIGN KEY (`permission_id`)
             REFERENCES `tvj_internal_db`.`tbl_permission` (`permission_id`),
-    CONSTRAINT `tbl_role_permission_role_code_fk`
-        FOREIGN KEY (`role_code`)
-            REFERENCES `tvj_internal_db`.`tbl_role` (`role_code`)
+    CONSTRAINT `tbl_role_permission_role_id_fk`
+        FOREIGN KEY (`role_id`)
+            REFERENCES `tvj_internal_db`.`tbl_role` (`role_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
@@ -358,29 +370,6 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_todo`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
     COMMENT = 'Todo information';
-
-
--- -----------------------------------------------------
--- Table `tvj_internal_db`.`tbl_user_role`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_role`
-(
-    `id`        INT(11)     NOT NULL AUTO_INCREMENT,
-    `role_code` VARCHAR(36) NOT NULL,
-    `user_id`   VARCHAR(36) NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `TBL_USER_ROLE_role_code_uindex` (`role_code` ASC) VISIBLE,
-    UNIQUE INDEX `TBL_USER_ROLE_user_id_uindex` (`user_id` ASC) VISIBLE,
-    CONSTRAINT `tbl_user_role___fk`
-        FOREIGN KEY (`role_code`)
-            REFERENCES `tvj_internal_db`.`tbl_role` (`role_code`),
-    CONSTRAINT `tbl_user_role__user_id_fk`
-        FOREIGN KEY (`user_id`)
-            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8
-    COMMENT = 'User combination with roles in the system';
 
 
 -- -----------------------------------------------------

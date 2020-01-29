@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -20,7 +17,10 @@ public class UserEntity implements Serializable {
 
     @Id
     @Column(name = "user_id")
-    private String id;
+    private String userId;
+
+    @Column(name = "role_id")
+    private String roleId;
 
     @Column(name = "username")
     private String username;
@@ -66,5 +66,9 @@ public class UserEntity implements Serializable {
 
     @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
+
+    @ManyToOne
+    @JoinColumn(name="role_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
+    private RoleEntity role;
 
 }

@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         // Get role of current login user
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
 
         // By this way, UserEntity does not need to implement UserDetails
         return new User(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
         // Get role of current login user
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
 
         // By this way, UserEntity does not need to implement UserDetails
         return new User(username, user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);

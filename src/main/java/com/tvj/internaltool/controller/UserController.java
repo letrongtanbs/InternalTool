@@ -7,6 +7,7 @@ import com.tvj.internaltool.security.JwtTokenUtil;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.ErrorCode;
 import com.tvj.internaltool.utils.ErrorMessage;
+import com.tvj.internaltool.utils.UserUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,7 +39,7 @@ public class UserController {
 
     @GetMapping(value = "/test")
     public ResponseEntity<?> test() {
-        return new ResponseEntity<>("OK man", HttpStatus.OK);
+        return new ResponseEntity<>("Hello: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
 }

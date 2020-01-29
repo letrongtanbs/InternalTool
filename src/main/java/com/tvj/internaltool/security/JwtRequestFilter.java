@@ -46,6 +46,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 // Save userDetails to SecurityContextHolder
+                // Can pass httpSecurity.authorizeRequests().anyRequest().authenticated() in WebSecurityConfig
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
