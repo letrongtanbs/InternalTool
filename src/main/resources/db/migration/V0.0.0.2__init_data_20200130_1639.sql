@@ -1,7 +1,7 @@
-INSERT INTO `tbl_permission` (`permission_id`, `permission_name`, `permission_url`, `created_by`, `created_date`,
+INSERT INTO `tbl_permission` (`permission_id`, `permission_name`, `permission_code`, `created_by`, `created_date`,
                               `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
-VALUES ('1', 'URL1', '/user/url', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('2', 'URL2', '/user/url2', 'DD', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+VALUES ('1', 'URL1', 'SCR001', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('2', 'URL2', 'SCR002', 'DD', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
                         `deleted_by`, `deleted_date`)

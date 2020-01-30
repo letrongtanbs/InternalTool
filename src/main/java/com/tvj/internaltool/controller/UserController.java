@@ -31,7 +31,7 @@ public class UserController {
     public ResponseEntity<?> generateAuthenticationToken(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
         final UserDetails userDetails = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
         if (userDetails == null) {
-            return new ResponseEntity<>(new ErrorResDto(ErrorCode.FORBIDDEN, ErrorMessage.FORBIDDEN), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new ErrorResDto(ErrorCode.UNAUTHORIZED, ErrorMessage.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
         }
         final String token = jwtTokenUtil.generateToken(userDetails);
         return new ResponseEntity<>(new UserLoginResDto(token), HttpStatus.OK);

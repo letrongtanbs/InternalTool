@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
     `role_id`                            VARCHAR(36)  NOT NULL,
     `username`                           VARCHAR(36)  NOT NULL,
     `password`                           VARCHAR(100) NOT NULL,
-    `first_name`                         VARCHAR(100) NULL DEFAULT NULL,
-    `last_name`                          VARCHAR(100) NULL DEFAULT NULL,
+    `first_name`                         VARCHAR(100) NOT NULL,
+    `last_name`                          VARCHAR(100) NOT NULL,
     `email`                              VARCHAR(75)  NOT NULL,
     `active`                             TINYINT(1)   NOT NULL,
     `login_fail_count`                   INT(1)       NOT NULL,
@@ -141,8 +141,8 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting_file`
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_department`
 (
     `department_id`   INT(11)      NOT NULL,
-    `department_code` VARCHAR(15)  NULL DEFAULT NULL,
-    `department_name` VARCHAR(200) NULL DEFAULT NULL,
+    `department_code` VARCHAR(15)  NOT NULL,
+    `department_name` VARCHAR(200) NOT NULL,
     `created_by`      VARCHAR(36)  NOT NULL,
     `created_date`    DATETIME     NOT NULL,
     `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_department`
     `deleted_by`      VARCHAR(36)  NULL DEFAULT NULL,
     `deleted_date`    DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`department_id`),
-    UNIQUE INDEX `TBL_DEPARTMENT_department_code_uindex` (`department_code` ASC) VISIBLE
+    UNIQUE INDEX `tbl_department_department_code_uindex` (`department_code` ASC) VISIBLE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
@@ -237,8 +237,8 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_event_user`
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_permission`
 (
     `permission_id`   VARCHAR(36)  NOT NULL,
-    `permission_name` VARCHAR(100) NULL DEFAULT NULL,
-    `permission_url`  VARCHAR(400) NULL DEFAULT NULL,
+    `permission_name` VARCHAR(100) NOT NULL,
+    `permission_code` VARCHAR(100) NOT NULL,
     `created_by`      VARCHAR(36)  NOT NULL,
     `created_date`    DATETIME     NOT NULL,
     `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
@@ -278,38 +278,55 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role_permission`
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_schedule`
 (
     `schedule_id`     VARCHAR(36)  NOT NULL,
-    `user_id`         VARCHAR(36)  NOT NULL,
+    `author`          VARCHAR(36)  NOT NULL,
     `event_id`        VARCHAR(36)  NULL DEFAULT NULL,
-    `schedule_name`   VARCHAR(200) NULL DEFAULT NULL,
+    `schedule_name`   VARCHAR(200) NOT NULL,
     `schedule_repeat` INT(1)       NOT NULL,
     `schedule_status` INT(1)       NOT NULL,
     `description`     TEXT         NULL DEFAULT NULL,
     `display_type`    TINYINT(1)   NOT NULL,
-    `start_datetime`  DATETIME     NULL DEFAULT NULL,
-    `end_datetime`    DATETIME     NULL DEFAULT NULL,
+    `start_datetime`  DATETIME     NOT NULL,
+    `end_datetime`    DATETIME     NOT NULL,
+    `schedule_type`   INT(1)       NOT NULL,
     `created_by`      VARCHAR(36)  NOT NULL,
     `created_date`    DATETIME     NOT NULL,
     `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
     `updated_date`    DATETIME     NULL DEFAULT NULL,
     `deleted_by`      VARCHAR(36)  NULL DEFAULT NULL,
     `deleted_date`    DATETIME     NULL DEFAULT NULL,
-    `schedule_type`   INT(1)       NULL DEFAULT NULL,
-    `assignee`        TEXT         NULL DEFAULT NULL,
     PRIMARY KEY (`schedule_id`),
-    INDEX `tbl_schedule_tbl_user_user_id_fk` (`user_id` ASC) VISIBLE,
-    INDEX `tbl_schedule_tbl_event_event_id_fk` (`event_id` ASC) VISIBLE,
-    CONSTRAINT `tbl_schedule_tbl_event_event_id_fk`
+    INDEX `tbl_schedule_author_uindex` (`author` ASC) VISIBLE,
+    INDEX `tbl_schedule_event_id_uindex` (`event_id` ASC) VISIBLE,
+    CONSTRAINT `tbl_schedule_author_fk`
+        FOREIGN KEY (`author`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`),
+    CONSTRAINT `tbl_schedule_event_id_fk`
         FOREIGN KEY (`event_id`)
             REFERENCES `tvj_internal_db`.`tbl_event` (`event_id`)
-            ON DELETE SET NULL
-            ON UPDATE SET NULL,
-    CONSTRAINT `tbl_schedule_tbl_user_user_id_fk`
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Schedule information';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_schedule_user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_schedule_user`
+(
+    `schedule_id` VARCHAR(36) NOT NULL,
+    `user_id`     VARCHAR(36) NOT NULL,
+    PRIMARY KEY (`schedule_id`, `user_id`),
+    CONSTRAINT `tbl_schedule_user_schedule_id_fk`
+        FOREIGN KEY (`schedule_id`)
+            REFERENCES `tvj_internal_db`.`tbl_schedule` (`schedule_id`),
+    CONSTRAINT `tbl_schedule_user_user_id_fk`
         FOREIGN KEY (`user_id`)
             REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
-    COMMENT = 'Schedule information';
+    COMMENT = 'Schedule user information';
 
 
 -- -----------------------------------------------------
@@ -319,8 +336,8 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_team`
 (
     `team_id`         VARCHAR(36)  NOT NULL,
     `team_code`       VARCHAR(15)  NOT NULL,
-    `team_name`       VARCHAR(200) NULL DEFAULT NULL,
-    `department_code` VARCHAR(15)  NULL DEFAULT NULL,
+    `team_name`       VARCHAR(200) NOT NULL,
+    `department_code` VARCHAR(15)  NOT NULL,
     `created_by`      VARCHAR(36)  NOT NULL,
     `created_date`    DATETIME     NOT NULL,
     `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
@@ -329,7 +346,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_team`
     `deleted_date`    DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`team_id`),
     UNIQUE INDEX `tbl_team_team_code_uindex` (`team_code` ASC) VISIBLE,
-    INDEX `tbl_team_department_code_fk` (`department_code` ASC) VISIBLE,
+    INDEX `tbl_team_department_code_uindex` (`department_code` ASC) VISIBLE,
     CONSTRAINT `tbl_team_department_code_fk`
         FOREIGN KEY (`department_code`)
             REFERENCES `tvj_internal_db`.`tbl_department` (`department_code`)
@@ -346,21 +363,20 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_todo`
 (
     `todo_id`        VARCHAR(36)  NOT NULL,
     `user_id`        VARCHAR(36)  NOT NULL,
-    `todo_name`      VARCHAR(200) NULL DEFAULT NULL,
+    `todo_name`      VARCHAR(200) NOT NULL,
     `todo_status`    INT(1)       NOT NULL,
-    `assignee`       VARCHAR(200) NULL DEFAULT NULL,
     `start_datetime` DATETIME     NOT NULL,
     `due_datetime`   DATETIME     NOT NULL,
     `description`    TEXT         NULL DEFAULT NULL,
-    `created_date`   DATETIME     NOT NULL,
+    `priority_level` INT(1)       NULL DEFAULT NULL,
+    `created_by`     VARCHAR(36)  NOT NULL,
+    `created_date`   DATETIME     NULL DEFAULT NULL,
     `updated_by`     VARCHAR(36)  NULL DEFAULT NULL,
     `updated_date`   DATETIME     NULL DEFAULT NULL,
-    `created_by`     VARCHAR(36)  NOT NULL,
     `deleted_by`     VARCHAR(36)  NULL DEFAULT NULL,
     `deleted_date`   DATETIME     NULL DEFAULT NULL,
-    `priority_type`  INT(1)       NULL DEFAULT NULL,
     PRIMARY KEY (`todo_id`),
-    INDEX `tbl_todo_user_id_fk` (`user_id` ASC) VISIBLE,
+    INDEX `tbl_todo_user_id_uindex` (`user_id` ASC) VISIBLE,
     CONSTRAINT `tbl_todo_user_id_fk`
         FOREIGN KEY (`user_id`)
             REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
@@ -375,23 +391,23 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_todo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
 (
-    `id`            INT(11)      NOT NULL AUTO_INCREMENT,
-    `user_id`       VARCHAR(36)  NOT NULL,
-    `language_code` VARCHAR(2)   NOT NULL,
-    `country_code`  VARCHAR(2)   NOT NULL,
-    `phone`         VARCHAR(15)  NULL DEFAULT NULL,
-    `address`       VARCHAR(400) NULL DEFAULT NULL,
-    `avatar`        VARCHAR(400) NULL DEFAULT NULL,
-    `team_id`       VARCHAR(36)  NOT NULL,
-    `title`         VARCHAR(36)  NULL DEFAULT NULL,
-    `created_by`    VARCHAR(36)  NOT NULL,
-    `created_date`  DATETIME     NOT NULL,
-    `updated_by`    VARCHAR(36)  NULL DEFAULT NULL,
-    `updated_date`  DATETIME     NULL DEFAULT NULL,
-    `status`        TINYINT(1)   NOT NULL,
-    `deleted_by`    VARCHAR(36)  NULL DEFAULT NULL,
-    `deleted_date`  DATETIME     NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
+    `user_setting_id` VARCHAR(36)  NOT NULL,
+    `user_id`         VARCHAR(36)  NOT NULL,
+    `language_code`   VARCHAR(2)   NOT NULL,
+    `country_code`    VARCHAR(2)   NOT NULL,
+    `phone`           VARCHAR(15)  NOT NULL,
+    `address`         VARCHAR(400) NULL DEFAULT NULL,
+    `avatar`          VARCHAR(400) NULL DEFAULT NULL,
+    `team_id`         VARCHAR(36)  NOT NULL,
+    `title`           VARCHAR(36)  NOT NULL,
+    `status`          TINYINT(1)   NOT NULL,
+    `created_by`      VARCHAR(36)  NOT NULL,
+    `created_date`    DATETIME     NOT NULL,
+    `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`    DATETIME     NULL DEFAULT NULL,
+    `deleted_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`    DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`user_setting_id`),
     UNIQUE INDEX `tbl_user_setting_user_id_uindex` (`user_id` ASC) VISIBLE,
     INDEX `tbl_user_setting_team_id_fk` (`team_id` ASC) VISIBLE,
     CONSTRAINT `tbl_user_setting_team_id_fk`

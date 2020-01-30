@@ -6,6 +6,7 @@ import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.ErrorCode;
 import com.tvj.internaltool.utils.ErrorMessage;
 import com.tvj.internaltool.utils.ErrorResUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,28 +30,33 @@ public class UserRoleFilter extends OncePerRequestFilter {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            final String requestScreenCode = request.getHeader("Screen-Code");
+            if (StringUtils.isBlank(requestScreenCode)) {
+                ErrorResUtils errorResUtils = new ErrorResUtils();
+                errorResUtils.responseError(ErrorCode.FORBIDDEN, ErrorMessage.FORBIDDEN, response);
+                return;
+            }
+
             String username = authentication.getName();
-            String url = request.getRequestURI();
-
             UserEntity user = userService.getUserByUserName(username);
-
             Set<RolePermissionEntity> rolePermissionSet = user.getRole().getRolePermission();
 
             boolean isAccessible = false;
 
             for (RolePermissionEntity rolePermission : rolePermissionSet) {
-                if (rolePermission.getPermission().getPermissionUrl().equals(url)) {
-                    // Continue next process after filter
+                if (rolePermission.getPermission().getPermissionCode().equals(requestScreenCode)) {
+                    // Check if user can access request url
                     isAccessible = true;
                     break;
                 }
             }
 
             if (isAccessible) {
+                // Continue next process after filter
                 chain.doFilter(request, response);
             } else {
                 ErrorResUtils errorResUtils = new ErrorResUtils();
-                errorResUtils.responseError(ErrorCode.UNAUTHORIZED, ErrorMessage.UNAUTHORIZED, response);
+                errorResUtils.responseError(ErrorCode.FORBIDDEN, ErrorMessage.FORBIDDEN, response);
             }
 
         } else {

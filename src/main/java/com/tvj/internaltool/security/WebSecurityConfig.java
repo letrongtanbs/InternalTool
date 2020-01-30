@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Add a filter to validate the tokens with every request,
         // JwtRequestFilter is executed before UsernamePasswordAuthenticationFilter
+        // Must implement at least one filter to activate filter chain
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // Check if authorize fail
