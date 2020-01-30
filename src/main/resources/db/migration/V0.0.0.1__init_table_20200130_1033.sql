@@ -236,15 +236,15 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_event_user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_permission`
 (
-    `permission_id`      VARCHAR(36)  NOT NULL,
-    `permission_name`    VARCHAR(100) NULL DEFAULT NULL,
-    `permission_details` VARCHAR(400) NULL DEFAULT NULL,
-    `created_by`         VARCHAR(36)  NOT NULL,
-    `created_date`       DATETIME     NOT NULL,
-    `updated_by`         VARCHAR(36)  NULL DEFAULT NULL,
-    `updated_date`       DATETIME     NULL DEFAULT NULL,
-    `deleted_by`         VARCHAR(36)  NULL DEFAULT NULL,
-    `deleted_date`       DATETIME     NULL DEFAULT NULL,
+    `permission_id`   VARCHAR(36)  NOT NULL,
+    `permission_name` VARCHAR(100) NULL DEFAULT NULL,
+    `permission_url`  VARCHAR(400) NULL DEFAULT NULL,
+    `created_by`      VARCHAR(36)  NOT NULL,
+    `created_date`    DATETIME     NOT NULL,
+    `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`    DATETIME     NULL DEFAULT NULL,
+    `deleted_by`      VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`    DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`permission_id`)
 )
     ENGINE = InnoDB
@@ -260,8 +260,6 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role_permission`
     `role_id`       VARCHAR(36) NOT NULL,
     `permission_id` VARCHAR(36) NOT NULL,
     PRIMARY KEY (`role_id`, `permission_id`),
-    UNIQUE INDEX `tbl_role_permission_permission_id_uindex` (`permission_id` ASC) VISIBLE,
-    UNIQUE INDEX `tbl_role_permission_role_id_uindex` (`role_id` ASC) VISIBLE,
     CONSTRAINT `tbl_role_permission_permission_id_fk`
         FOREIGN KEY (`permission_id`)
             REFERENCES `tvj_internal_db`.`tbl_permission` (`permission_id`),

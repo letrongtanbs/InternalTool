@@ -1,21 +1,15 @@
 package com.tvj.internaltool.security;
 
-import com.google.gson.Gson;
-import com.tvj.internaltool.dto.res.ErrorResDto;
+import com.tvj.internaltool.entity.RolePermissionEntity;
 import com.tvj.internaltool.entity.UserEntity;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.ErrorCode;
 import com.tvj.internaltool.utils.ErrorMessage;
-import com.tvj.internaltool.utils.UserUtils;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.tvj.internaltool.utils.ErrorResUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -23,7 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 public class UserRoleFilter extends OncePerRequestFilter {
 
@@ -38,22 +32,27 @@ public class UserRoleFilter extends OncePerRequestFilter {
             String username = authentication.getName();
             String url = request.getRequestURI();
 
-            UserEntity userEntity = userService.getUserByUserName(username);
+            UserEntity user = userService.getUserByUserName(username);
 
-            System.out.println("username is ->>: " + username);
-            System.out.println("url is ->>: " + url);
+            Set<RolePermissionEntity> rolePermissionSet = user.getRole().getRolePermission();
 
-            if (url.equals("/user/url-for-root") && userEntity.getRole().getRoleName().equals("ROOT")) {
-                // Continue next process after filter
+            boolean isAccessible = false;
+
+            for (RolePermissionEntity rolePermission : rolePermissionSet) {
+                if (rolePermission.getPermission().getPermissionUrl().equals(url)) {
+                    // Continue next process after filter
+                    isAccessible = true;
+                    break;
+                }
+            }
+
+            if (isAccessible) {
                 chain.doFilter(request, response);
             } else {
-                ErrorResDto errorResDto = new ErrorResDto(ErrorCode.UNAUTHORIZED, ErrorMessage.UNAUTHORIZED);
-                Gson gson = new Gson();
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write(gson.toJson(errorResDto));
+                ErrorResUtils errorResUtils = new ErrorResUtils();
+                errorResUtils.responseError(ErrorCode.UNAUTHORIZED, ErrorMessage.UNAUTHORIZED, response);
             }
+
         } else {
             // Continue next process after filter
             chain.doFilter(request, response);

@@ -42,9 +42,9 @@ public class UserController {
         return new ResponseEntity<>("Hello: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/url-for-root")
-    public ResponseEntity<?> testRoot() {
-        return new ResponseEntity<>("Hello boss: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
+    @GetMapping(value = "/url2")
+    public ResponseEntity<?> test2() {
+        return new ResponseEntity<>("Hello2: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
 }

@@ -10,18 +10,21 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "TBL_ROLE")
+@Table(name = "TBL_PERMISSION")
 @Setter
 @Getter
 @NoArgsConstructor
-public class RoleEntity implements Serializable {
+public class PermissionEntity implements Serializable {
 
     @Id
-    @Column(name = "role_id")
-    private String roleId;
+    @Column(name = "permission_id")
+    private String permissionId;
 
-    @Column(name = "role_name")
-    private String roleName;
+    @Column(name = "permission_name")
+    private String permissionName;
+
+    @Column(name = "permission_url")
+    private String permissionUrl;
 
     @Column(name = "created_by")
     private String createdBy;
@@ -41,10 +44,7 @@ public class RoleEntity implements Serializable {
     @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
 
-    @OneToMany(mappedBy="role", fetch = FetchType.EAGER)
-    private Set<UserEntity> user;
-
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "permission", fetch = FetchType.EAGER)
     Set<RolePermissionEntity> rolePermission;
 
 }
