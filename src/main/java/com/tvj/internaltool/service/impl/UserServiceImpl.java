@@ -70,7 +70,9 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        emailService.sendSimpleMessage(userEntity.getEmail(), "Forgot password mail verification", "This is token");
+        emailService.sendSimpleMessage(userEntity.getEmail()
+                , "Forgot password mail verification"
+                , "This is token for user <b><font color='red'>" + userEntity.getFirstName()  + " " + userEntity.getLastName() + "</font></b>");
         return true;
     }
 

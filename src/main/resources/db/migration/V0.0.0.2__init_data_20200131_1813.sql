@@ -18,5 +18,5 @@ INSERT INTO `tbl_user` (`user_id`, `role_id`, `username`, `password`, `first_nam
                         `created_date`, `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
 VALUES ('1', '1', 'root', '$2y$12$i.2/5js7PdP6.O1ikIsl2e1soqZCwJYXg5xPQtgoOFCEtrZZ/8iGm', 'X1', 'X11', 'ngocdc@tinhvan.com', 1, 0,
         NULL, NULL, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('2', '2', 'admin', '$2a$10$CxA/SQQbIogEd.Q/xkdjpu1VwOwxpCGrnVq7H3tFyqrcbu2SSRuli', 'Y1', 'Y11', 'hunghx@tinhvan.com', 1, 0,
+       ('2', '2', 'admin', '$2a$10$CxA/SQQbIogEd.Q/xkdjpu1VwOwxpCGrnVq7H3tFyqrcbu2SSRuli', 'Hoang', 'Hung', 'hunghx@tinhvan.com', 1, 0,
         NULL, NULL, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);

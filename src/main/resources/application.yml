@@ -14,10 +14,10 @@ spring:
     user: root # should not use root
     password: 123456!a
   mail:
-    host: smtp.office365.com
+    host: smtp.tinhvan.com
     username: ngocdc@tinhvan.com
     password: Djr01001@
-    port: 587
+    port: 587 #443
     properties:
       mail:
         smpt:
@@ -26,10 +26,10 @@ spring:
           starttls:
             enable: true
           ssl:
-            trust: smtp.office365.com # trust ssl host
-#          timeout: 3000
-#          connecttimeout: 5000
-#          writetimeout: 5000
+            trust: smtp.tinhvan.com # trust ssl host
+          timeout: 20000
+          connecttimeout: 20000
+          writetimeout: 20000
 
 server: ## use for embedded tomcat server port
   port: 8080
