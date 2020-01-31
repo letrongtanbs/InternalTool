@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorResDto {
-    private String errorCode;
+public class MessageResDto {
+    private String code;
 
-    private String errorMessage;
+    private String message;
 }

@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_permission`
 (
     `permission_id`   VARCHAR(36)  NOT NULL,
     `permission_name` VARCHAR(100) NOT NULL,
-    `permission_code` VARCHAR(100) NOT NULL,
+    `permission_url`  VARCHAR(200) NOT NULL,
     `created_by`      VARCHAR(36)  NOT NULL,
     `created_date`    DATETIME     NOT NULL,
     `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,

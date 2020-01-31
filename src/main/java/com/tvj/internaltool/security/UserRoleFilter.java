@@ -3,10 +3,9 @@ package com.tvj.internaltool.security;
 import com.tvj.internaltool.entity.RolePermissionEntity;
 import com.tvj.internaltool.entity.UserEntity;
 import com.tvj.internaltool.service.UserService;
-import com.tvj.internaltool.utils.ErrorCode;
-import com.tvj.internaltool.utils.ErrorMessage;
 import com.tvj.internaltool.utils.ErrorResUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.tvj.internaltool.utils.ResponseCode;
+import com.tvj.internaltool.utils.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,25 +29,43 @@ public class UserRoleFilter extends OncePerRequestFilter {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            final String requestScreenCode = request.getHeader("Screen-Code");
-            if (StringUtils.isBlank(requestScreenCode)) {
-                ErrorResUtils errorResUtils = new ErrorResUtils();
-                errorResUtils.responseError(ErrorCode.FORBIDDEN, ErrorMessage.FORBIDDEN, response);
-                return;
-            }
+            final String url = request.getRequestURI();
 
             String username = authentication.getName();
-            UserEntity user = userService.getUserByUserName(username);
+            UserEntity user = userService.getUserByUsername(username);
             Set<RolePermissionEntity> rolePermissionSet = user.getRole().getRolePermission();
 
             boolean isAccessible = false;
 
+            String[] urlParts = url.split("/");
+
             for (RolePermissionEntity rolePermission : rolePermissionSet) {
-                if (rolePermission.getPermission().getPermissionCode().equals(requestScreenCode)) {
-                    // Check if user can access request url
+                String[] rolePermissionSetParts = rolePermission.getPermission().getPermissionUrl().split("/");
+                boolean isPartMatch = false;
+
+                // Compare each path of url
+                for (int i = 0; i < rolePermissionSetParts.length; i++) {
+
+                    // If current part is path variable, bypass current loop
+                    if (rolePermissionSetParts[i].startsWith("{")) {
+                        continue;
+                    }
+
+                    // If any part is mismatch, stop loop
+                    if (!rolePermissionSetParts[i].equals(urlParts[i])) {
+                        isPartMatch = false;
+                        break;
+                    }
+
+                    isPartMatch = true;
+                }
+
+                // If match at least 1 url, stop loop grant access
+                if (isPartMatch) {
                     isAccessible = true;
                     break;
                 }
+
             }
 
             if (isAccessible) {
@@ -56,7 +73,7 @@ public class UserRoleFilter extends OncePerRequestFilter {
                 chain.doFilter(request, response);
             } else {
                 ErrorResUtils errorResUtils = new ErrorResUtils();
-                errorResUtils.responseError(ErrorCode.FORBIDDEN, ErrorMessage.FORBIDDEN, response);
+                errorResUtils.responseError(ResponseCode.FORBIDDEN, ResponseMessage.FORBIDDEN, response);
             }
 
         } else {

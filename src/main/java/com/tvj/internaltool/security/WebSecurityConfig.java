@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Permit specific requests
         httpSecurity.authorizeRequests().antMatchers("/user/login").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/user/forgot-password").permitAll();
 
         // Authenticate the rest of requests
         httpSecurity.authorizeRequests().anyRequest().authenticated();

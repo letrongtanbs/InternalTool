@@ -23,8 +23,8 @@ public class PermissionEntity implements Serializable {
     @Column(name = "permission_name")
     private String permissionName;
 
-    @Column(name = "permission_code")
-    private String permissionCode;
+    @Column(name = "permission_url")
+    private String permissionUrl;
 
     @Column(name = "created_by")
     private String createdBy;

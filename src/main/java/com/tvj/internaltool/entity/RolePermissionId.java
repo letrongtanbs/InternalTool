@@ -1,17 +1,13 @@
 package com.tvj.internaltool.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-@Setter
-@Getter
-@NoArgsConstructor
+@Data
 public class RolePermissionId implements Serializable {
 
     @Column(name = "role_id")
