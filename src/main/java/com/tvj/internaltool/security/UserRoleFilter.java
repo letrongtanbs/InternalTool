@@ -35,13 +35,18 @@ public class UserRoleFilter extends OncePerRequestFilter {
             UserEntity user = userService.getUserByUsername(username);
             Set<RolePermissionEntity> rolePermissionSet = user.getRole().getRolePermission();
 
-            boolean isAccessible = false;
-
             String[] urlParts = url.split("/");
+
+            boolean isAccessible = false;
 
             for (RolePermissionEntity rolePermission : rolePermissionSet) {
                 String[] rolePermissionSetParts = rolePermission.getPermission().getPermissionUrl().split("/");
-                boolean isPartMatch = false;
+                boolean isAllPartsMatch = false;
+
+                // If number of path is different, stop loop
+                if (rolePermissionSetParts.length != urlParts.length) {
+                    continue;
+                }
 
                 // Compare each path of url
                 for (int i = 0; i < rolePermissionSetParts.length; i++) {
@@ -53,19 +58,18 @@ public class UserRoleFilter extends OncePerRequestFilter {
 
                     // If any part is mismatch, stop loop
                     if (!rolePermissionSetParts[i].equals(urlParts[i])) {
-                        isPartMatch = false;
+                        isAllPartsMatch = false;
                         break;
                     }
 
-                    isPartMatch = true;
+                    isAllPartsMatch = true;
                 }
 
                 // If match at least 1 url, stop loop grant access
-                if (isPartMatch) {
+                if (isAllPartsMatch) {
                     isAccessible = true;
                     break;
                 }
-
             }
 
             if (isAccessible) {

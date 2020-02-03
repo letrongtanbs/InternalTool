@@ -48,6 +48,16 @@ public class UserController {
         return new ResponseEntity<>("Hello2: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{id}/list/{listId}/item")
+    public ResponseEntity<?> test3() {
+        return new ResponseEntity<>("Hello3: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}/list")
+    public ResponseEntity<?> test4() {
+        return new ResponseEntity<>("Hello4: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/forgot-password")
     public ResponseEntity<?> forgotPasswordProcess(@Valid @RequestBody ForgotPasswordReqDto forgotPasswordReqDto) {
         boolean isMailSent = userService.processForgotPassword(forgotPasswordReqDto);
