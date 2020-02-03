@@ -7,4 +7,6 @@ public class ResponseCode {
     public static final String SEND_MAIL_FAIL = "ERR003";
 
     public static final String SEND_MAIL_SUCCESS = "SUC001";
+    public static final String RECOVER_PASSWORD_SUCCESS = "SUC002";
+
 }

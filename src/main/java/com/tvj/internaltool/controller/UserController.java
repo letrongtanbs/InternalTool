@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/user")
@@ -66,6 +67,11 @@ public class UserController {
         } else {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.SEND_MAIL_FAIL, ResponseMessage.SEND_MAIL_FAIL), HttpStatus.REQUEST_TIMEOUT);
         }
+    }
+
+    @GetMapping(value = "/recover-password")
+    public ResponseEntity<?> recoverPasswordProcess(@NotBlank @RequestParam("token") String token) {
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.RECOVER_PASSWORD_SUCCESS, ResponseMessage.RECOVER_PASSWORD_SUCCESS), HttpStatus.OK);
     }
 
 }

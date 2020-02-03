@@ -7,4 +7,6 @@ public class ResponseMessage {
     public static final String SEND_MAIL_FAIL = "Mail is not sent!!";
 
     public static final String SEND_MAIL_SUCCESS = "Confirmation mail is successfully sent!!";
+    public static final String RECOVER_PASSWORD_SUCCESS = "New password is successfully changed!!";
+
 }

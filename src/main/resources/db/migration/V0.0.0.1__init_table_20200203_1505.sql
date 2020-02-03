@@ -28,23 +28,21 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
 (
-    `user_id`                            VARCHAR(36)  NOT NULL,
-    `role_id`                            VARCHAR(36)  NOT NULL,
-    `username`                           VARCHAR(36)  NOT NULL,
-    `password`                           VARCHAR(100) NOT NULL,
-    `first_name`                         VARCHAR(100) NOT NULL,
-    `last_name`                          VARCHAR(100) NOT NULL,
-    `email`                              VARCHAR(75)  NOT NULL,
-    `active`                             TINYINT(1)   NOT NULL,
-    `login_fail_count`                   INT(1)       NOT NULL,
-    `forgot_password_token`              VARCHAR(200) NULL DEFAULT NULL,
-    `forgot_password_token_expired_date` DATETIME     NULL DEFAULT NULL,
-    `created_by`                         VARCHAR(36)  NOT NULL,
-    `created_date`                       DATETIME     NOT NULL,
-    `updated_by`                         VARCHAR(36)  NULL DEFAULT NULL,
-    `updated_date`                       DATETIME     NULL DEFAULT NULL,
-    `deleted_by`                         VARCHAR(36)  NULL DEFAULT NULL,
-    `deleted_date`                       DATETIME     NULL DEFAULT NULL,
+    `user_id`          VARCHAR(36)  NOT NULL,
+    `role_id`          VARCHAR(36)  NOT NULL,
+    `username`         VARCHAR(36)  NOT NULL,
+    `password`         VARCHAR(100) NOT NULL,
+    `first_name`       VARCHAR(100) NOT NULL,
+    `last_name`        VARCHAR(100) NOT NULL,
+    `email`            VARCHAR(75)  NOT NULL,
+    `active`           TINYINT(1)   NOT NULL,
+    `login_fail_count` INT(1)       NOT NULL,
+    `created_by`       VARCHAR(36)  NOT NULL,
+    `created_date`     DATETIME     NOT NULL,
+    `updated_by`       VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`     DATETIME     NULL DEFAULT NULL,
+    `deleted_by`       VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`     DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`user_id`),
     UNIQUE INDEX `tbl_user_username_uindex` (`username` ASC) VISIBLE,
     UNIQUE INDEX `tbl_user_email_uindex` (`email` ASC) VISIBLE,
@@ -55,6 +53,26 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
     COMMENT = 'User information';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_forgot_password_token`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_forgot_password_token`
+(
+    `token_id`           VARCHAR(36)  NOT NULL,
+    `user_id`            VARCHAR(36)  NOT NULL,
+    `token_string`       VARCHAR(200) NOT NULL,
+    `token_expired_date` DATETIME     NOT NULL,
+    PRIMARY KEY (`token_id`),
+    UNIQUE INDEX `tbl_forgot_password_token_string_uindex` (`token_string` ASC) VISIBLE,
+    CONSTRAINT `tbl_forgot_password_token_user_id_fk`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Forgot password token information';
 
 
 -- -----------------------------------------------------

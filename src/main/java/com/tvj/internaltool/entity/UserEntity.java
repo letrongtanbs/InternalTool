@@ -43,12 +43,6 @@ public class UserEntity implements Serializable {
     @Column(name = "login_fail_count")
     private int loginFailCount;
 
-    @Column(name = "forgot_password_token")
-    private String forgotPasswordToken;
-
-    @Column(name = "forgot_password_token_expired_date")
-    private LocalDateTime forgotPasswordTokenExpiredDate;
-
     @Column(name = "created_by")
     private String createdBy;
 

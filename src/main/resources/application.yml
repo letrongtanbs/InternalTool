@@ -27,9 +27,9 @@ spring:
             enable: true
           ssl:
             trust: smtp.tinhvan.com # trust ssl host
-          timeout: 20000
-          connecttimeout: 20000
-          writetimeout: 20000
+          timeout: 30000
+          connecttimeout: 30000
+          writetimeout: 30000
 
 server: ## use for embedded tomcat server port
   port: 8080
@@ -38,3 +38,9 @@ jwt:
   token:
     validity: 3600 # 3600 = 1 * 60 * 60 = 1 hours
     secret: TVJ2019@
+
+forgot-password:
+  token-expired-time-in-hour: 1
+  mail-subject: "Forgot password mail verification"
+  mail-template: "This is mail verification for user: <b><font color=''red''>{0} {1}</font></b><br>Please click on <a href=''http://{2}:{3}/user/recover-password?token={4}''>this link</a> to update your password."
+
