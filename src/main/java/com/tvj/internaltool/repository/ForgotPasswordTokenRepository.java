@@ -13,6 +13,11 @@ public interface ForgotPasswordTokenRepository extends JpaRepository<ForgotPassw
     @Query("DELETE FROM ForgotPasswordTokenEntity fpte WHERE fpte.userId = :userId")
     void deleteTokenByUserId(String userId);
 
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM ForgotPasswordTokenEntity fpte WHERE fpte.tokenExpiredDate < CURRENT_TIMESTAMP")
+    void deleteOutOfDateToken();
+
     ForgotPasswordTokenEntity findByTokenString(String token);
 
 }

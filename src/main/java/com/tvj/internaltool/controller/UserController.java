@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> generateAuthenticationToken(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
+    public ResponseEntity<Object> generateAuthenticationToken(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
         final UserDetails userDetails = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
         if (userDetails == null) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.UNAUTHORIZED, ResponseMessage.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/forgot-password")
-    public ResponseEntity<?> forgotPasswordProcess(@Valid @RequestBody ForgotPasswordReqDto forgotPasswordReqDto) {
+    public ResponseEntity<Object> forgotPasswordProcess(@Valid @RequestBody ForgotPasswordReqDto forgotPasswordReqDto) {
         boolean isMailSent = userService.processForgotPassword(forgotPasswordReqDto.getUsername());
         if (isMailSent) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.SEND_MAIL_SUCCESS, ResponseMessage.SEND_MAIL_SUCCESS), HttpStatus.OK);
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/password-recover-confirm-token")
-    public ResponseEntity<?> forgotPasswordConfirmToken(@NotBlank @RequestParam("token") String token) {
+    public ResponseEntity<Object> forgotPasswordConfirmToken(@NotBlank @RequestParam("token") String token) {
         token = userService.processConfirmForgotPasswordToken(token);
         if (token != null) {
             return new ResponseEntity<>(new SimpleContentResDto(token), HttpStatus.OK);
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/password-recover")
-    public ResponseEntity<?> recoverPassword(@Valid @RequestBody RecoverPasswordReqDto recoverPasswordReqDto) {
+    public ResponseEntity<Object> recoverPassword(@Valid @RequestBody RecoverPasswordReqDto recoverPasswordReqDto) {
         boolean isPasswordUpdated = userService.processRecoverPassword(recoverPasswordReqDto);
         if (isPasswordUpdated) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_PASSWORD_SUCCESS, ResponseMessage.UPDATE_PASSWORD_SUCCESS), HttpStatus.OK);
@@ -75,22 +75,22 @@ public class UserController {
     // test role-permission
 
     @GetMapping(value = "/{id}/list/{listId}")
-    public ResponseEntity<?> test() {
+    public ResponseEntity<Object> test() {
         return new ResponseEntity<>("Hello: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/list2/{listId}")
-    public ResponseEntity<?> test2() {
+    public ResponseEntity<Object> test2() {
         return new ResponseEntity<>("Hello2: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/list/{listId}/item")
-    public ResponseEntity<?> test3() {
+    public ResponseEntity<Object> test3() {
         return new ResponseEntity<>("Hello3: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/list")
-    public ResponseEntity<?> test4() {
+    public ResponseEntity<Object> test4() {
         return new ResponseEntity<>("Hello4: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
