@@ -7,9 +7,12 @@ import javax.validation.constraints.NotBlank;
 
 @Setter
 @Getter
-public class ForgotPasswordReqDto {
+public class RecoverPasswordReqDto {
 
     @NotBlank
-    private String username;
+    private String token;
+
+    @NotBlank
+    private String newPassword;
 
 }

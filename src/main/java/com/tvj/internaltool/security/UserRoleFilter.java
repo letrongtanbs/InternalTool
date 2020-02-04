@@ -43,7 +43,7 @@ public class UserRoleFilter extends OncePerRequestFilter {
                 String[] rolePermissionSetParts = rolePermission.getPermission().getPermissionUrl().split("/");
                 boolean isAllPartsMatch = false;
 
-                // If number of path is different, stop loop
+                // If number of path is different, bypass current loop
                 if (rolePermissionSetParts.length != urlParts.length) {
                     continue;
                 }
@@ -65,7 +65,7 @@ public class UserRoleFilter extends OncePerRequestFilter {
                     isAllPartsMatch = true;
                 }
 
-                // If match at least 1 url, stop loop grant access
+                // If match at least 1 url, stop loop then grant access
                 if (isAllPartsMatch) {
                     isAccessible = true;
                     break;

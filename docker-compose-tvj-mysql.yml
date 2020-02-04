@@ -5,6 +5,7 @@ services:
     restart: always
     container_name: tvj_internal_db_container
     environment:
+      TZ: "Asia/Tokyo"
       MYSQL_DATABASE: 'tvj_internal_db'
       MYSQL_ROOT_PASSWORD: '123456!a'
     ports:

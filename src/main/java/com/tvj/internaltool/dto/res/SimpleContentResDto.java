@@ -11,8 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserLoginResDto {
-
-    private String token;
-
+public class SimpleContentResDto {
+    private String content;
 }
