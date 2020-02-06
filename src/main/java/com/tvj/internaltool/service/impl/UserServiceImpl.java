@@ -1,13 +1,14 @@
 package com.tvj.internaltool.service.impl;
 
 import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
+import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
 import com.tvj.internaltool.entity.UserEntity;
 import com.tvj.internaltool.entity.UserSettingEntity;
 import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
 import com.tvj.internaltool.repository.UserRepository;
-import com.tvj.internaltool.repository.UserSettingRepository;
+import com.tvj.internaltool.security.JwtTokenUtil;
 import com.tvj.internaltool.service.EmailService;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.EnvironmentUtils;
@@ -46,23 +47,24 @@ public class UserServiceImpl implements UserService {
     @Value("${forgot-password.token-expired-duration-in-hour}")
     private long forgotPasswordDurationInHour;
 
+    private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final EnvironmentUtils environmentUtils;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
-    private final UserSettingRepository userSettingRepository;
 
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository, UserSettingRepository userSettingRepository) {
+    public UserServiceImpl(JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, UserRepository userRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository) {
+        this.jwtTokenUtil = jwtTokenUtil;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.environmentUtils = environmentUtils;
         this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
-        this.userSettingRepository = userSettingRepository;
     }
 
-    public UserDetails processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
+    @Override
+    public UserLoginResDto processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
 
         // Check if user exists
         UserEntity user = userRepository.findByUsername(username);
@@ -75,7 +77,18 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        return buildUserDetails(user);
+        // Build token
+        UserDetails userDetails = buildUserDetails(user);
+        String token = jwtTokenUtil.generateToken(userDetails);
+
+        // Return UserLoginResDto
+        UserLoginResDto userLoginResDto = new UserLoginResDto();
+        userLoginResDto.setToken(token);
+        userLoginResDto.setFirstName(user.getFirstName());
+        userLoginResDto.setLastName(user.getLastName());
+        userLoginResDto.setRoleName(user.getRole().getRoleName());
+
+        return userLoginResDto;
     }
 
     @Override

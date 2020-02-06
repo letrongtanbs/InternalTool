@@ -8,14 +8,12 @@ import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.dto.res.SimpleContentResDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
-import com.tvj.internaltool.security.JwtTokenUtil;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.ResponseMessage;
 import com.tvj.internaltool.utils.UserUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,22 +24,20 @@ import javax.validation.constraints.NotBlank;
 @CrossOrigin
 public class UserController {
 
-    private final JwtTokenUtil jwtTokenUtil;
+
     private final UserService userService;
 
-    public UserController(JwtTokenUtil jwtTokenUtil, UserService userService) {
-        this.jwtTokenUtil = jwtTokenUtil;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping(value = "/login")
     public ResponseEntity<?> generateAuthenticationToken(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
-        final UserDetails userDetails = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
-        if (userDetails == null) {
-            return new ResponseEntity<>(new MessageResDto(ResponseCode.UNAUTHORIZED, ResponseMessage.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
+        final UserLoginResDto userLoginResDto = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
+        if (userLoginResDto != null) {
+            return new ResponseEntity<>(userLoginResDto, HttpStatus.OK);
         }
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        return new ResponseEntity<>(new UserLoginResDto(token), HttpStatus.OK);
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.UNAUTHORIZED, ResponseMessage.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping(value = "/forgot-password")

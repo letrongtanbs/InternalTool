@@ -1,13 +1,14 @@
 package com.tvj.internaltool.service;
 
 import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
+import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.UserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserService {
 
-    UserDetails processLogin(String username, String password);
+    UserLoginResDto processLogin(String username, String password);
 
     UserDetails getUserDetails(String username);
 
