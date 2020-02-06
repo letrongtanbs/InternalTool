@@ -19,6 +19,9 @@ public class UserEntity implements Serializable {
     @Column(name = "user_id")
     private String userId;
 
+    @Column(name = "user_setting_id")
+    private String userSettingId;
+
     @Column(name = "role_id")
     private String roleId;
 
@@ -65,7 +68,8 @@ public class UserEntity implements Serializable {
     @JoinColumn(name="role_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
     private RoleEntity role;
 
-    @OneToOne(mappedBy = "userEntity")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_setting_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
     private UserSettingEntity userSettingEntity;
 
 }

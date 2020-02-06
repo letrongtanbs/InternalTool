@@ -19,9 +19,6 @@ public class UserSettingEntity implements Serializable {
     @Column(name = "user_setting_id")
     private String userSettingId;
 
-    @Column(name = "user_id")
-    private String userId;
-
     @Column(name = "team_id")
     private String teamId;
 
@@ -64,8 +61,7 @@ public class UserSettingEntity implements Serializable {
     @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
+    @OneToOne(mappedBy = "userSettingEntity")
     private UserEntity userEntity;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -1,13 +1,18 @@
 package com.tvj.internaltool.service.impl;
 
 import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
+import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
 import com.tvj.internaltool.entity.UserEntity;
+import com.tvj.internaltool.entity.UserSettingEntity;
 import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
 import com.tvj.internaltool.repository.UserRepository;
+import com.tvj.internaltool.repository.UserSettingRepository;
 import com.tvj.internaltool.service.EmailService;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.EnvironmentUtils;
+import com.tvj.internaltool.utils.ModelMapperUtils;
+import com.tvj.internaltool.utils.UserUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,13 +51,15 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final EnvironmentUtils environmentUtils;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
+    private final UserSettingRepository userSettingRepository;
 
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository, UserSettingRepository userSettingRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.environmentUtils = environmentUtils;
         this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
+        this.userSettingRepository = userSettingRepository;
     }
 
     public UserDetails processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
@@ -174,6 +181,27 @@ public class UserServiceImpl implements UserService {
         }
 
         return false;
+    }
+
+    @Override
+    public UserSettingResDto getUserSetting() {
+
+        UserSettingResDto userSettingResDto = new UserSettingResDto();
+
+        UserEntity userEntity = userRepository.findByUsername(UserUtils.getCurrentUsername());
+
+        if (userEntity != null) {
+            UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
+            userSettingResDto = ModelMapperUtils.map(userSettingEntity, UserSettingResDto.class);
+            userSettingResDto.setUsername(userEntity.getUsername());
+            userSettingResDto.setFirstname(userEntity.getFirstName());
+            userSettingResDto.setLastname(userEntity.getLastName());
+            userSettingResDto.setEmail(userEntity.getEmail());
+            userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
+            userSettingResDto.setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
+        }
+
+        return userSettingResDto;
     }
 
 

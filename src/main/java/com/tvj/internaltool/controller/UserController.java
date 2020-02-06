@@ -7,6 +7,7 @@ import com.tvj.internaltool.dto.req.UserSettingReqDto;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.dto.res.SimpleContentResDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
+import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.security.JwtTokenUtil;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.ResponseCode;
@@ -72,8 +73,8 @@ public class UserController {
 
     @GetMapping(value = "/user-setting")
     public ResponseEntity<?> showUserSetting() {
-
-        return null;
+        UserSettingResDto userSettingResDto = userService.getUserSetting();
+        return new ResponseEntity<>(userSettingResDto, HttpStatus.OK);
     }
 
 
