@@ -15,6 +15,7 @@ public class UserLoginReqDto {
     private String username;
 
     @NotBlank
+    @Size(min = 8)
     private String password;
 
 }

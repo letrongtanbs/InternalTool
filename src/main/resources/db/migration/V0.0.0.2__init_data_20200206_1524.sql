@@ -52,8 +52,8 @@ INSERT INTO `tbl_user` (`user_id`, `user_setting_id`, `role_id`, `username`, `pa
                         `email`, `active`,
                         `login_fail_count`, `created_by`, `created_date`, `updated_by`, `updated_date`, `deleted_by`,
                         `deleted_date`)
-VALUES ('1', '1', '1', 'root', '$2y$12$i.2/5js7PdP6.O1ikIsl2e1soqZCwJYXg5xPQtgoOFCEtrZZ/8iGm', 'Dinh', 'Ngoc',
+VALUES ('1', '1', '1', 'root', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Dinh', 'Ngoc',
         'ngocdc@tinhvan.com', 1, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('2', '2', '2', 'admin', '$2a$10$CxA/SQQbIogEd.Q/xkdjpu1VwOwxpCGrnVq7H3tFyqrcbu2SSRuli', 'Hoang', 'Hung',
+       ('2', '2', '2', 'admin', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Hoang', 'Hung',
         'hunghx@tinhvan.com', 1, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 

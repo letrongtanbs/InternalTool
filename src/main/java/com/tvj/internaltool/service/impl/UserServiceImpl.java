@@ -194,8 +194,8 @@ public class UserServiceImpl implements UserService {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
             userSettingResDto = ModelMapperUtils.map(userSettingEntity, UserSettingResDto.class);
             userSettingResDto.setUsername(userEntity.getUsername());
-            userSettingResDto.setFirstname(userEntity.getFirstName());
-            userSettingResDto.setLastname(userEntity.getLastName());
+            userSettingResDto.setFirstName(userEntity.getFirstName());
+            userSettingResDto.setLastName(userEntity.getLastName());
             userSettingResDto.setEmail(userEntity.getEmail());
             userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
             userSettingResDto.setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
