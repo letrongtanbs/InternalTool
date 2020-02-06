@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_chatting_file`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_department`
 (
-    `department_id`   INT(11)      NOT NULL,
+    `department_id`   VARCHAR(36)  NOT NULL,
     `department_code` VARCHAR(15)  NOT NULL,
     `department_name` VARCHAR(200) NOT NULL,
     `created_by`      VARCHAR(36)  NOT NULL,
@@ -352,22 +352,22 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_schedule_user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_team`
 (
-    `team_id`         VARCHAR(36)  NOT NULL,
-    `team_code`       VARCHAR(15)  NOT NULL,
-    `team_name`       VARCHAR(200) NOT NULL,
-    `department_code` VARCHAR(15)  NOT NULL,
-    `created_by`      VARCHAR(36)  NOT NULL,
-    `created_date`    DATETIME     NOT NULL,
-    `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
-    `updated_date`    DATETIME     NULL DEFAULT NULL,
-    `deleted_by`      VARCHAR(36)  NULL DEFAULT NULL,
-    `deleted_date`    DATETIME     NULL DEFAULT NULL,
+    `team_id`       VARCHAR(36)  NOT NULL,
+    `team_code`     VARCHAR(15)  NOT NULL,
+    `team_name`     VARCHAR(200) NOT NULL,
+    `department_id` VARCHAR(36)  NOT NULL,
+    `created_by`    VARCHAR(36)  NOT NULL,
+    `created_date`  DATETIME     NOT NULL,
+    `updated_by`    VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date`  DATETIME     NULL DEFAULT NULL,
+    `deleted_by`    VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date`  DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`team_id`),
     UNIQUE INDEX `tbl_team_team_code_uindex` (`team_code` ASC) VISIBLE,
-    INDEX `tbl_team_department_code_uindex` (`department_code` ASC) VISIBLE,
-    CONSTRAINT `tbl_team_department_code_fk`
-        FOREIGN KEY (`department_code`)
-            REFERENCES `tvj_internal_db`.`tbl_department` (`department_code`)
+    INDEX `tbl_team_department_id_uindex` (`department_id` ASC) VISIBLE,
+    CONSTRAINT `tbl_team_department_id_fk`
+        FOREIGN KEY (`department_id`)
+            REFERENCES `tvj_internal_db`.`tbl_department` (`department_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
@@ -405,20 +405,62 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_todo`
 
 
 -- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_country`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_country`
+(
+    `country_id`   VARCHAR(36) NOT NULL,
+    `country_name` VARCHAR(36) NOT NULL,
+    `created_by`   VARCHAR(36) NOT NULL,
+    `created_date` DATETIME    NOT NULL,
+    `updated_by`   VARCHAR(36) NULL DEFAULT NULL,
+    `updated_date` DATETIME    NULL DEFAULT NULL,
+    `deleted_by`   VARCHAR(36) NULL DEFAULT NULL,
+    `deleted_date` DATETIME    NULL DEFAULT NULL,
+    PRIMARY KEY (`country_id`),
+    UNIQUE INDEX `tbl_country_country_name_uindex` (`country_name` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Country';
+
+
+-- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_language`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_language`
+(
+    `language_id`   VARCHAR(36) NOT NULL,
+    `language_name` VARCHAR(36) NOT NULL,
+    `created_by`    VARCHAR(36) NOT NULL,
+    `created_date`  DATETIME    NOT NULL,
+    `updated_by`    VARCHAR(36) NULL DEFAULT NULL,
+    `updated_date`  DATETIME    NULL DEFAULT NULL,
+    `deleted_by`    VARCHAR(36) NULL DEFAULT NULL,
+    `deleted_date`  DATETIME    NULL DEFAULT NULL,
+    PRIMARY KEY (`language_id`),
+    UNIQUE INDEX `tbl_language_language_name_uindex` (`language_name` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Language setting';
+
+
+-- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_user_setting`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
 (
     `user_setting_id` VARCHAR(36)  NOT NULL,
     `user_id`         VARCHAR(36)  NOT NULL,
-    `language_code`   VARCHAR(2)   NOT NULL,
-    `country_code`    VARCHAR(2)   NOT NULL,
-    `phone`           VARCHAR(15)  NOT NULL,
+    `team_id`         VARCHAR(36)  NULL DEFAULT NULL,
+    `title`           VARCHAR(36)  NULL DEFAULT NULL,
     `address`         VARCHAR(400) NULL DEFAULT NULL,
+    `phone`           VARCHAR(15)  NULL DEFAULT NULL,
+    `country_id`      VARCHAR(36)  NOT NULL,
+    `language_id`     VARCHAR(36)  NOT NULL,
+    `status`          INT(1)       NOT NULL,
     `avatar`          VARCHAR(400) NULL DEFAULT NULL,
-    `team_id`         VARCHAR(36)  NOT NULL,
-    `title`           VARCHAR(36)  NOT NULL,
-    `status`          TINYINT(1)   NOT NULL,
     `created_by`      VARCHAR(36)  NOT NULL,
     `created_date`    DATETIME     NOT NULL,
     `updated_by`      VARCHAR(36)  NULL DEFAULT NULL,
@@ -433,7 +475,13 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
             REFERENCES `tvj_internal_db`.`tbl_team` (`team_id`),
     CONSTRAINT `tbl_user_setting_user_id_fk`
         FOREIGN KEY (`user_id`)
-            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`),
+    CONSTRAINT `tbl_user_setting_country_id_fk`
+        FOREIGN KEY (`country_id`)
+            REFERENCES `tvj_internal_db`.`tbl_country` (`country_id`),
+    CONSTRAINT `tbl_user_setting_language_id_fk`
+        FOREIGN KEY (`language_id`)
+            REFERENCES `tvj_internal_db`.`tbl_language` (`language_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8

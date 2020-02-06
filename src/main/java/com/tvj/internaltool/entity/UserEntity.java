@@ -65,4 +65,7 @@ public class UserEntity implements Serializable {
     @JoinColumn(name="role_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
     private RoleEntity role;
 
+    @OneToOne(mappedBy = "userEntity")
+    private UserSettingEntity userSettingEntity;
+
 }

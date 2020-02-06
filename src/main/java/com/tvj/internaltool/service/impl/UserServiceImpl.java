@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        // Generates a 20 code point string, using only the letters a-z
+        // Generates token
         RandomStringGenerator generator =
                 new RandomStringGenerator.Builder().withinRange('0', 'z').filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
         String randomLetters = generator.generate(99);

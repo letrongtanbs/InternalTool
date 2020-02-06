@@ -1,0 +1,49 @@
+package com.tvj.internaltool.dto.res;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class UserSettingResDto {
+
+    private String username;
+
+    private String fullName;
+
+    private String email;
+
+    private String departmentId;
+
+    private String departmentName;
+
+    private String teamId;
+
+    private String teamName;
+
+    private String title;
+
+    private String address;
+
+    private String phone;
+
+    private String countryId;
+
+    private String countryName;
+
+    private String languageId;
+
+    private String languageName;
+
+    private LocalDateTime updatedDate;
+
+    private int status;
+}
