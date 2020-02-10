@@ -68,7 +68,7 @@ public class UserEntity implements Serializable {
     @JoinColumn(name="role_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
     private RoleEntity role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL) // When we perform some action on the target entity, the same action will be applied to the associated entity.
     @JoinColumn(name = "user_setting_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
     private UserSettingEntity userSettingEntity;
 

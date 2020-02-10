@@ -1,6 +1,7 @@
 package com.tvj.internaltool.service.impl;
 
 import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingReqDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
@@ -8,6 +9,7 @@ import com.tvj.internaltool.entity.UserEntity;
 import com.tvj.internaltool.entity.UserSettingEntity;
 import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
 import com.tvj.internaltool.repository.UserRepository;
+import com.tvj.internaltool.repository.UserSettingRepository;
 import com.tvj.internaltool.security.JwtTokenUtil;
 import com.tvj.internaltool.service.EmailService;
 import com.tvj.internaltool.service.UserService;
@@ -53,14 +55,16 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final EnvironmentUtils environmentUtils;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
+    private final UserSettingRepository userSettingRepository;
 
-    public UserServiceImpl(JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, UserRepository userRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository) {
+    public UserServiceImpl(JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, UserRepository userRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository, UserSettingRepository userSettingRepository) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.environmentUtils = environmentUtils;
         this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
+        this.userSettingRepository = userSettingRepository;
     }
 
     @Override
@@ -199,24 +203,55 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserSettingResDto getUserSetting() {
 
-        UserSettingResDto userSettingResDto = new UserSettingResDto();
+        UserEntity userEntity = userRepository.findByUsername(UserUtils.getCurrentUsername());
+
+        if (userEntity != null) {
+            return buildUserSettingResDto(userEntity);
+        }
+
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public UserSettingResDto updateUserSetting(UserSettingReqDto userSettingReqDto) {
 
         UserEntity userEntity = userRepository.findByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
-            userSettingResDto = ModelMapperUtils.map(userSettingEntity, UserSettingResDto.class);
-            userSettingResDto.setUsername(userEntity.getUsername());
-            userSettingResDto.setFirstName(userEntity.getFirstName());
-            userSettingResDto.setLastName(userEntity.getLastName());
-            userSettingResDto.setEmail(userEntity.getEmail());
-            userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
-            userSettingResDto.setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
+            userSettingEntity.setTeamId(userSettingReqDto.getTeamId());
+            userSettingEntity.setTitle(userSettingReqDto.getTitle());
+            userSettingEntity.setAddress(userSettingReqDto.getAddress());
+            userSettingEntity.setPhone(userSettingReqDto.getPhone());
+            userSettingEntity.setCountryId(userSettingReqDto.getCountryId());
+            userSettingEntity.setLanguageId(userSettingReqDto.getLanguageId());
+            userSettingEntity.setStatus(userSettingReqDto.getStatus());
+            userSettingEntity.setAvatar(userSettingReqDto.getAvatar());
+            userSettingEntity.setUpdatedDate(LocalDateTime.now());
+            userSettingEntity.setUpdatedBy(userEntity.getUsername());
+
+            // flush data to repository in current transaction, then refresh to get latest data
+            userSettingRepository.saveAndFlush(userSettingEntity);
+            userRepository.refresh(userEntity);
+
+            return buildUserSettingResDto(userEntity);
         }
 
-        return userSettingResDto;
+        return null;
     }
 
+    private UserSettingResDto buildUserSettingResDto(UserEntity userEntity) {
+        UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
+        UserSettingResDto userSettingResDto = ModelMapperUtils.map(userSettingEntity, UserSettingResDto.class);
+        userSettingResDto.setUsername(userEntity.getUsername());
+        userSettingResDto.setFirstName(userEntity.getFirstName());
+        userSettingResDto.setLastName(userEntity.getLastName());
+        userSettingResDto.setEmail(userEntity.getEmail());
+        userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
+        userSettingResDto.setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
+        return userSettingResDto;
+    }
 
     private User buildUserDetails(UserEntity user) {
         boolean enabled = true;

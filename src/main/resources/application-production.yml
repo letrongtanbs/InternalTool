@@ -36,7 +36,7 @@ server: ## use for embedded tomcat server port
 
 jwt:
   token:
-    validity: 3600 # 3600 = 1 * 60 * 60 = 1 hours
+    validity: 36000 # 3600 = 1 * 60 * 60 = 1 hours
     secret: TVJ2019@
 
 forgot-password:

@@ -33,7 +33,7 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<?> generateAuthenticationToken(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
-        final UserLoginResDto userLoginResDto = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
+        UserLoginResDto userLoginResDto = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
         if (userLoginResDto != null) {
             return new ResponseEntity<>(userLoginResDto, HttpStatus.OK);
         }
@@ -73,11 +73,10 @@ public class UserController {
         return new ResponseEntity<>(userSettingResDto, HttpStatus.OK);
     }
 
-
     @PutMapping(value = "/user-setting")
     public ResponseEntity<?> updateUserSetting(@Valid @RequestBody UserSettingReqDto userSettingReqDto) {
-
-        return null;
+        UserSettingResDto userSettingResDto = userService.updateUserSetting(userSettingReqDto);
+        return new ResponseEntity<>(userSettingResDto, HttpStatus.OK);
     }
 
 

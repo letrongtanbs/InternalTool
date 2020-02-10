@@ -46,4 +46,7 @@ public class UserSettingResDto {
     private LocalDateTime updatedDate;
 
     private int status;
+
+    private String avatar;
+
 }

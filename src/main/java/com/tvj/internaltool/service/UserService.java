@@ -1,6 +1,7 @@
 package com.tvj.internaltool.service;
 
 import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingReqDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.UserEntity;
@@ -21,4 +22,6 @@ public interface UserService {
     boolean processRecoverPassword(RecoverPasswordReqDto recoverPasswordReqDto);
 
     UserSettingResDto getUserSetting();
+
+    UserSettingResDto updateUserSetting(UserSettingReqDto userSettingReqDto);
 }

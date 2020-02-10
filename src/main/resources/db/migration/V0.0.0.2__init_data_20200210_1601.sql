@@ -1,16 +1,19 @@
 INSERT INTO `tbl_country` (`country_id`, `country_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
                            `deleted_by`, `deleted_date`)
-VALUES ('1', 'Viet Nam', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
-
-
-INSERT INTO `tbl_department` (`department_id`, `department_code`, `department_name`, `created_by`, `created_date`,
-                              `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
-VALUES ('1', 'TVJ', 'Tinh Van Japan', 'System', '2020-02-06 11:09:00', NULL, NULL, NULL, NULL);
+VALUES ('1', 'Viet Nam', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('2', 'Japan', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_language` (`language_id`, `language_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
                             `deleted_by`, `deleted_date`)
-VALUES ('1', 'English', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
+VALUES ('1', 'English', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('2', 'Japanese', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
+
+
+INSERT INTO `tbl_department` (`department_id`, `department_code`, `department_name`, `created_by`, `created_date`,
+                              `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
+VALUES ('1', 'TVJ', 'Tinh Van Japan', 'System', '2020-02-06 11:09:00', NULL, NULL, NULL, NULL),
+       ('2', 'TVO', 'Tinh Van Outsourcing', 'System', '2020-02-06 11:09:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_permission` (`permission_id`, `permission_name`, `permission_url`, `created_by`, `created_date`,
@@ -36,7 +39,8 @@ VALUES ('1', '1'),
 
 INSERT INTO `tbl_team` (`team_id`, `team_code`, `team_name`, `department_id`, `created_by`, `created_date`,
                         `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
-VALUES ('1', 'TEAM001', 'Team 1', '1', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
+VALUES ('1', 'TEAM001', 'Team 1', '1', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('2', 'TEAM002', 'Team 2', '2', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_user_setting` (`user_setting_id`, `team_id`, `title`, `address`, `phone`, `country_id`,

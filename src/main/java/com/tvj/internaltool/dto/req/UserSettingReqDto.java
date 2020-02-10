@@ -10,8 +10,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class UserSettingReqDto {
 
-    private String departmentId;
-
     private String teamId;
 
     private String title;
@@ -21,10 +19,10 @@ public class UserSettingReqDto {
     private String phone;
 
     @NotBlank
-    private String countryCode;
+    private String countryId;
 
     @NotBlank
-    private String languageCode;
+    private String languageId;
 
     @NotNull
     private int status;
