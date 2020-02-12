@@ -162,11 +162,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTUzMjk0NywiaWF0IjoxNTgxNDk2OTQ3fQ.RHChDi7I0Gw5jcXok_l0Jv8JFlRQmd6wh-TKhqSmFgegj-MWimj79W0R0SILOnSFcaMjO70cX80Kd8yHiSicxQ"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTUzMjk0NywiaWF0IjoxNTgxNDk2OTQ3fQ.RHChDi7I0Gw5jcXok_l0Jv8JFlRQmd6wh-TKhqSmFgegj-MWimj79W0R0SILOnSFcaMjO70cX80Kd8yHiSicxQ"
 					}
 				],
 				"body": {
@@ -200,11 +200,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxMzIwNzM3LCJpYXQiOjE1ODEzMTcxMzd9.Kd0akrFX6S8d2xbLO0xQAdVJdCup-ugtLHcoEV-asudrX7OU7zyH5MuVoEWSkiCCEPImK8lwCMWCLAzQV64ieA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTUzMjk0NywiaWF0IjoxNTgxNDk2OTQ3fQ.RHChDi7I0Gw5jcXok_l0Jv8JFlRQmd6wh-TKhqSmFgegj-MWimj79W0R0SILOnSFcaMjO70cX80Kd8yHiSicxQ"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxMzIwNzM3LCJpYXQiOjE1ODEzMTcxMzd9.Kd0akrFX6S8d2xbLO0xQAdVJdCup-ugtLHcoEV-asudrX7OU7zyH5MuVoEWSkiCCEPImK8lwCMWCLAzQV64ieA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTUzMjk0NywiaWF0IjoxNTgxNDk2OTQ3fQ.RHChDi7I0Gw5jcXok_l0Jv8JFlRQmd6wh-TKhqSmFgegj-MWimj79W0R0SILOnSFcaMjO70cX80Kd8yHiSicxQ"
 					}
 				],
 				"body": {
@@ -350,6 +350,88 @@
 							"key": "departmentId",
 							"value": "2"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Country list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/country/list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"country",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Language list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/language/list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"language",
+						"list"
 					]
 				}
 			},

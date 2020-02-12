@@ -1,5 +1,6 @@
 package com.tvj.internaltool.dto.req;
 
+import com.tvj.internaltool.validation.UserStatusConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ public class UserSettingReqDto {
     private String languageId;
 
     @NotNull
+    @UserStatusConstraint
     private int status;
 
     private String avatar;
