@@ -8,13 +8,14 @@ import javax.validation.constraints.Size;
 
 @Setter
 @Getter
-public class RecoverPasswordReqDto {
+public class UpdatePasswordReqDto {
 
     @NotBlank
-    private String token;
+    private String oldPassword;
 
     @NotBlank
     @Size(min = 8)
     private String newPassword;
+
 
 }

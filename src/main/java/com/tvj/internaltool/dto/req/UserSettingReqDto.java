@@ -18,7 +18,6 @@ public class UserSettingReqDto {
 
     private String phone;
 
-    @NotBlank
     private String countryId;
 
     @NotBlank

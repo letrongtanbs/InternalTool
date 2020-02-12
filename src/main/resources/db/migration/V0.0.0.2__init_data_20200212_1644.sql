@@ -20,7 +20,10 @@ INSERT INTO `tbl_permission` (`permission_id`, `permission_name`, `permission_ur
                               `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
 VALUES ('1', 'URL1', '/user/{id}/list/{id}', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('2', 'URL2', '/user/{id}/list2/{id}', 'DD', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('3', 'URL3', '/user/user-setting', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+       ('3', 'URL3', '/user/user-setting-get-info', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('4', 'URL4', '/user/user-setting-update-info', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('5', 'URL5', '/user/user-setting-update-password', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('6', 'URL6', '/department/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
@@ -34,7 +37,14 @@ VALUES ('1', '1'),
        ('2', '1'),
        ('1', '2'),
        ('1', '3'),
-       ('2', '3');
+       ('2', '3'),
+       ('1', '4'),
+       ('2', '4'),
+       ('1', '5'),
+       ('2', '5'),
+       ('1', '6'),
+       ('2', '6')
+;
 
 
 INSERT INTO `tbl_team` (`team_id`, `team_code`, `team_name`, `department_id`, `created_by`, `created_date`,

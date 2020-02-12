@@ -1,6 +1,7 @@
 package com.tvj.internaltool.service.impl;
 
 import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
+import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
 import com.tvj.internaltool.dto.req.UserSettingReqDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
@@ -71,26 +72,26 @@ public class UserServiceImpl implements UserService {
     public UserLoginResDto processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
 
         // Check if user exists
-        UserEntity user = userRepository.findByUsername(username);
-        if (user == null) {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        if (userEntity == null) {
             return null;
         }
 
         // Compare password
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, userEntity.getPassword())) {
             return null;
         }
 
         // Build token
-        UserDetails userDetails = buildUserDetails(user);
+        UserDetails userDetails = buildUserDetails(userEntity);
         String token = jwtTokenUtil.generateToken(userDetails);
 
         // Return UserLoginResDto
         UserLoginResDto userLoginResDto = new UserLoginResDto();
         userLoginResDto.setToken(token);
-        userLoginResDto.setFirstName(user.getFirstName());
-        userLoginResDto.setLastName(user.getLastName());
-        userLoginResDto.setRoleName(user.getRole().getRoleName());
+        userLoginResDto.setFirstName(userEntity.getFirstName());
+        userLoginResDto.setLastName(userEntity.getLastName());
+        userLoginResDto.setRoleName(userEntity.getRole().getRoleName());
 
         return userLoginResDto;
     }
@@ -239,6 +240,26 @@ public class UserServiceImpl implements UserService {
         }
 
         return null;
+    }
+
+    @Transactional
+    @Override
+    public boolean updatePassword(UpdatePasswordReqDto updatePasswordReqDto) {
+
+        UserEntity userEntity = userRepository.findByUsername(UserUtils.getCurrentUsername());
+
+        if (userEntity != null) {
+
+            // Compare current password with inputted password
+            if (!passwordEncoder.matches(updatePasswordReqDto.getOldPassword(), userEntity.getPassword())) {
+                return false;
+            }
+
+            userEntity.setPassword(passwordEncoder.encode(updatePasswordReqDto.getNewPassword()));
+            userRepository.save(userEntity);
+        }
+
+        return false;
     }
 
     private UserSettingResDto buildUserSettingResDto(UserEntity userEntity) {

@@ -46,9 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Permit specific requests
         httpSecurity.authorizeRequests().antMatchers("/user/login").permitAll();
-        httpSecurity.authorizeRequests().antMatchers("/user/forgot-password").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/user/password-recover-send-request").permitAll();
         httpSecurity.authorizeRequests().antMatchers("/user/password-recover-confirm-token").permitAll();
-        httpSecurity.authorizeRequests().antMatchers("/user/password-recover").permitAll();
+        httpSecurity.authorizeRequests().antMatchers("/user/password-recover-update-password").permitAll();
 
         // Authenticate the rest of requests
         httpSecurity.authorizeRequests().anyRequest().authenticated();

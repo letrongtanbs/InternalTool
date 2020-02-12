@@ -1,9 +1,6 @@
 package com.tvj.internaltool.controller;
 
-import com.tvj.internaltool.dto.req.ForgotPasswordReqDto;
-import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
-import com.tvj.internaltool.dto.req.UserLoginReqDto;
-import com.tvj.internaltool.dto.req.UserSettingReqDto;
+import com.tvj.internaltool.dto.req.*;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.dto.res.SimpleContentResDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
@@ -40,7 +37,7 @@ public class UserController {
         return new ResponseEntity<>(new MessageResDto(ResponseCode.UNAUTHORIZED, ResponseMessage.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
     }
 
-    @PostMapping(value = "/forgot-password")
+    @PostMapping(value = "/password-recover-send-request")
     public ResponseEntity<?> forgotPasswordProcess(@Valid @RequestBody ForgotPasswordReqDto forgotPasswordReqDto) {
         boolean isMailSent = userService.processForgotPassword(forgotPasswordReqDto.getUsername());
         if (isMailSent) {
@@ -58,7 +55,7 @@ public class UserController {
         return new ResponseEntity<>(new MessageResDto(ResponseCode.TOKEN_HAS_EXPIRED, ResponseMessage.TOKEN_HAS_EXPIRED), HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(value = "/password-recover")
+    @PostMapping(value = "/password-recover-update-password")
     public ResponseEntity<?> recoverPassword(@Valid @RequestBody RecoverPasswordReqDto recoverPasswordReqDto) {
         boolean isPasswordUpdated = userService.processRecoverPassword(recoverPasswordReqDto);
         if (isPasswordUpdated) {
@@ -67,16 +64,26 @@ public class UserController {
         return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_PASSWORD_FAIL, ResponseMessage.UPDATE_PASSWORD_FAIL), HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping(value = "/user-setting")
-    public ResponseEntity<?> showUserSetting() {
+    @GetMapping(value = "/user-setting-get-info")
+    public ResponseEntity<?> getUserSetting() {
         UserSettingResDto userSettingResDto = userService.getUserSetting();
         return new ResponseEntity<>(userSettingResDto, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/user-setting")
+    @PutMapping(value = "/user-setting-update-info")
     public ResponseEntity<?> updateUserSetting(@Valid @RequestBody UserSettingReqDto userSettingReqDto) {
         UserSettingResDto userSettingResDto = userService.updateUserSetting(userSettingReqDto);
         return new ResponseEntity<>(userSettingResDto, HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/user-setting-update-password")
+    public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordReqDto updatePasswordReqDto) {
+        boolean isPasswordUpdated = userService.updatePassword(updatePasswordReqDto);
+
+        if (isPasswordUpdated) {
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_PASSWORD_SUCCESS, ResponseMessage.UPDATE_PASSWORD_SUCCESS), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_PASSWORD_FAIL, ResponseMessage.UPDATE_PASSWORD_FAIL), HttpStatus.BAD_REQUEST);
     }
 
 
