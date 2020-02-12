@@ -9,12 +9,12 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentResDto {
+public class TeamResDto {
 
-    private String departmentId;
+    private String teamId;
 
-    private String departmentCode;
+    private String teamCode;
 
-    private String departmentName;
+    private String teamName;
 
 }

@@ -1,0 +1,486 @@
+{
+	"info": {
+		"_postman_id": "a5335af8-9738-48fd-af75-b895d1e00292",
+		"name": "TVJ-Internal-Tool",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"admin\",\n\t\"password\": \"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password recover send request",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"root\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/password-recover-send-request",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"password-recover-send-request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password recover confirm token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/password-recover-confirm-token?token=VNVT3UtB2KEgVwB2nPHX2qDNjip0lgeHRKPaxzxfJ6gp9sndV0cqIASULGLx1Zf0fDkZihahmfsWFaNs59ByqdMHNO0UycgxTuu",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"password-recover-confirm-token"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "VNVT3UtB2KEgVwB2nPHX2qDNjip0lgeHRKPaxzxfJ6gp9sndV0cqIASULGLx1Zf0fDkZihahmfsWFaNs59ByqdMHNO0UycgxTuu"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Password recover update password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\": \"VNVT3UtB2KEgVwB2nPHX2qDNjip0lgeHRKPaxzxfJ6gp9sndV0cqIASULGLx1Zf0fDkZihahmfsWFaNs59ByqdMHNO0UycgxTuu\",\n\t\"newPassword\": \"root\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/password-recover-update-password",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"password-recover-update-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User setting get info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/user-setting-get-info",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"user-setting-get-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User setting update info",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxMzIwNzM3LCJpYXQiOjE1ODEzMTcxMzd9.Kd0akrFX6S8d2xbLO0xQAdVJdCup-ugtLHcoEV-asudrX7OU7zyH5MuVoEWSkiCCEPImK8lwCMWCLAzQV64ieA"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxMzIwNzM3LCJpYXQiOjE1ODEzMTcxMzd9.Kd0akrFX6S8d2xbLO0xQAdVJdCup-ugtLHcoEV-asudrX7OU7zyH5MuVoEWSkiCCEPImK8lwCMWCLAzQV64ieA"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teamId\": \"1\",\n    \"title\": \"Dev1\",\n    \"address\": \"HN1\",\n    \"phone\": \"001\",\n    \"countryId\": \"1\",\n    \"languageId\": \"1\",\n    \"status\": \"1\",\n    \"avatar\": \"img1/xxx.jpg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/user-setting-update-info",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"user-setting-update-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User setting update password",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxMzIwNzM3LCJpYXQiOjE1ODEzMTcxMzd9.Kd0akrFX6S8d2xbLO0xQAdVJdCup-ugtLHcoEV-asudrX7OU7zyH5MuVoEWSkiCCEPImK8lwCMWCLAzQV64ieA"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxMzIwNzM3LCJpYXQiOjE1ODEzMTcxMzd9.Kd0akrFX6S8d2xbLO0xQAdVJdCup-ugtLHcoEV-asudrX7OU7zyH5MuVoEWSkiCCEPImK8lwCMWCLAzQV64ieA"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPassword\": \"12345678\",\n    \"newPassword\": \"root\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/user-setting-update-password",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"user-setting-update-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Department list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/department/list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"department",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Team get by department",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/team/list-by-department?departmentId=2",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"team",
+						"list-by-department"
+					],
+					"query": [
+						{
+							"key": "departmentId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgwNjk2Nzg5LCJpYXQiOjE1ODA2OTMxODl9.CvJMYFj6W_54y-GxBXpjs9ULcVGzB6MTPhV9fGS50BJ34pplEks6KMKDNWVNOwIreJkhRh-80TPu4h8odsK_-Q"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/user/1/list/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"1",
+						"list",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgwNjk2Nzg5LCJpYXQiOjE1ODA2OTMxODl9.CvJMYFj6W_54y-GxBXpjs9ULcVGzB6MTPhV9fGS50BJ34pplEks6KMKDNWVNOwIreJkhRh-80TPu4h8odsK_-Q"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/user/1/list2/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"1",
+						"list2",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test3",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MDY5NjUyMiwiaWF0IjoxNTgwNjkyOTIyfQ.Fr6mKWT-kJqFJhmDb763K9IXBl1DxRtYJ50FphwpHzV0shv6ndT8pr9kKLID5jWoNDrEmeI_0s39TBMmJTS79Q"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/user/1/list2/1/item",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"1",
+						"list2",
+						"1",
+						"item"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test4",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MDY5NjUyMiwiaWF0IjoxNTgwNjkyOTIyfQ.Fr6mKWT-kJqFJhmDb763K9IXBl1DxRtYJ50FphwpHzV0shv6ndT8pr9kKLID5jWoNDrEmeI_0s39TBMmJTS79Q"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/user/1/list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"1",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e7c3601b-65ee-43fb-9d1c-059e1dd522b6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ba51133f-5258-4f69-83ab-8b0b6e1da894",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

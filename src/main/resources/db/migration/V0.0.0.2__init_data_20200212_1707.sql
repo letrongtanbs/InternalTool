@@ -23,7 +23,8 @@ VALUES ('1', 'URL1', '/user/{id}/list/{id}', 'D', '2020-01-01 00:00:00', NULL, N
        ('3', 'URL3', '/user/user-setting-get-info', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('4', 'URL4', '/user/user-setting-update-info', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('5', 'URL5', '/user/user-setting-update-password', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('6', 'URL6', '/department/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+       ('6', 'URL6', '/department/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('7', 'URL7', '/team/list-by-department', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
@@ -43,14 +44,16 @@ VALUES ('1', '1'),
        ('1', '5'),
        ('2', '5'),
        ('1', '6'),
-       ('2', '6')
-;
+       ('2', '6'),
+       ('1', '7'),
+       ('2', '7');
 
 
 INSERT INTO `tbl_team` (`team_id`, `team_code`, `team_name`, `department_id`, `created_by`, `created_date`,
                         `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
 VALUES ('1', 'TEAM001', 'Team 1', '1', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
-       ('2', 'TEAM002', 'Team 2', '2', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
+       ('2', 'TEAM002', 'Team 2', '2', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('3', 'TEAM003', 'Team 3', '2', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_user_setting` (`user_setting_id`, `team_id`, `title`, `address`, `phone`, `country_id`,
