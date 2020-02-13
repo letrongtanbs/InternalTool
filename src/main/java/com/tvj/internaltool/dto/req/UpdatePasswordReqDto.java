@@ -11,10 +11,11 @@ import javax.validation.constraints.Size;
 public class UpdatePasswordReqDto {
 
     @NotBlank
+    @Size(min = 8, max = 20)
     private String oldPassword;
 
     @NotBlank
-    @Size(min = 8)
+    @Size(min = 8, max = 20)
     private String newPassword;
 
 

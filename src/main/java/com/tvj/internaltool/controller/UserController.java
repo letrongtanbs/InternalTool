@@ -77,7 +77,6 @@ public class UserController {
     @PatchMapping(value = "/user-setting-update-password")
     public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordReqDto updatePasswordReqDto) {
         boolean isPasswordUpdated = userService.updatePassword(updatePasswordReqDto);
-
         if (isPasswordUpdated) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_PASSWORD_SUCCESS, ResponseMessage.UPDATE_PASSWORD_SUCCESS), HttpStatus.OK);
         }
@@ -87,7 +86,6 @@ public class UserController {
     @PostMapping(value = "/upload-avatar")
     public ResponseEntity<?> uploadAvatar(@RequestParam("file") MultipartFile multipartFile) {
         String imgPath = userService.uploadAvatar(multipartFile);
-
         if (StringUtils.isNotBlank(imgPath)) {
             return new ResponseEntity<>(new FileResDto(imgPath), HttpStatus.OK);
         }
@@ -97,7 +95,6 @@ public class UserController {
     @DeleteMapping(value = "/remove-avatar")
     public ResponseEntity<?> removeAvatar() {
         boolean isRemoved = userService.removeAvatar();
-
         if (isRemoved) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.REMOVE_AVATAR_SUCCESS, ResponseMessage.REMOVE_AVATAR_SUCCESS), HttpStatus.OK);
         }

@@ -277,18 +277,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String uploadAvatar(MultipartFile file) {
 
-        AvatarFileType[] fileTypes = AvatarFileType.values();
-
-        boolean isFileValid = false;
-
-        for (AvatarFileType fileType : fileTypes) {
-            if (fileType.getFileType().equals(file.getContentType())) {
-                isFileValid = true;
-                break;
-            }
-        }
-
-        if (!isFileValid) {
+        if (!isFileValid(file)) {
             return null;
         }
 
@@ -317,6 +306,21 @@ public class UserServiceImpl implements UserService {
         }
 
         return false;
+    }
+
+    private boolean isFileValid(MultipartFile file) {
+        AvatarFileType[] fileTypes = AvatarFileType.values();
+
+        boolean isFileValid = false;
+
+        for (AvatarFileType fileType : fileTypes) {
+            if (fileType.getFileType().equals(file.getContentType())) {
+                isFileValid = true;
+                break;
+            }
+        }
+
+        return isFileValid;
     }
 
     private UserSettingResDto buildUserSettingResDto(UserEntity userEntity) {

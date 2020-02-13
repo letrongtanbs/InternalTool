@@ -21,11 +21,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomAccessDeniedHandler();
     }
 
+    // Must declare Filter in WebSecurityConfig to join FilterChain
     @Bean
     public JwtRequestFilter jwtAuthenticationTokenFilter() {
         return new JwtRequestFilter();
     }
 
+    // Must declare Filter in WebSecurityConfig to join FilterChain
     @Bean
     public UserRoleFilter userRoleFilter() {
         return new UserRoleFilter();
@@ -38,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        // ignore CSRF protection
+        // Ignore CSRF protection
         httpSecurity.csrf().ignoringAntMatchers("/**");
 
         // Make sure we use stateless session; session won't be used to store user's state.

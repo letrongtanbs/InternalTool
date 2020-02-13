@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
+// Must declare Filter as @Bean in WebSecurityConfig to join FilterChain
 public class UserRoleFilter extends OncePerRequestFilter {
 
     @Autowired

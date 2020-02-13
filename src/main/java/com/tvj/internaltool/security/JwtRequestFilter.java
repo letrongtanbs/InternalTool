@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+// Must declare Filter as @Bean in WebSecurityConfig to join FilterChain
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
