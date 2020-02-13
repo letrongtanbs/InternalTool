@@ -98,7 +98,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/user/password-recover-confirm-token?token=VNVT3UtB2KEgVwB2nPHX2qDNjip0lgeHRKPaxzxfJ6gp9sndV0cqIASULGLx1Zf0fDkZihahmfsWFaNs59ByqdMHNO0UycgxTuu",
+					"raw": "{{host}}/user/password-recover-confirm-token?token=tNwvyIq3JYCdh4xeYB9vN4tOuWldcfny7wGQ0tlPQefli5rFqxwV4MxckHTpK2myBGJaOjoJwwxzGosal6OlhUixOp5OFbXVsAc",
 					"host": [
 						"{{host}}"
 					],
@@ -109,7 +109,7 @@
 					"query": [
 						{
 							"key": "token",
-							"value": "VNVT3UtB2KEgVwB2nPHX2qDNjip0lgeHRKPaxzxfJ6gp9sndV0cqIASULGLx1Zf0fDkZihahmfsWFaNs59ByqdMHNO0UycgxTuu"
+							"value": "tNwvyIq3JYCdh4xeYB9vN4tOuWldcfny7wGQ0tlPQefli5rFqxwV4MxckHTpK2myBGJaOjoJwwxzGosal6OlhUixOp5OFbXVsAc"
 						}
 					]
 				}
@@ -213,7 +213,7 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/C:/Users/Dex/Desktop/65035812_367459510572063_8312762983541374976_n.jpg"
+							"src": "/C:/Users/Dex/Desktop/it.png"
 						}
 					],
 					"options": {

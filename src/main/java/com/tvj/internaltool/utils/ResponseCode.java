@@ -13,5 +13,6 @@ public class ResponseCode {
     public static final String SEND_MAIL_SUCCESS = "SUC001";
     public static final String UPDATE_PASSWORD_SUCCESS = "SUC002";
     public static final String REMOVE_AVATAR_SUCCESS = "SUC003";
+    public static final String TOKEN_IS_VALID = "SUC004";
 
 }

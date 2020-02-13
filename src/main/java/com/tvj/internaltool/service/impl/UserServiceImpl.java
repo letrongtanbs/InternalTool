@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
                     , MessageFormat.format(forgotPasswordMailTemplate,
                             userEntity.getFirstName(),
                             userEntity.getLastName(),
-                            "localhost",
+                            "192.168.1.9",
                             environmentUtils.getPort(),
                             randomLetters));
         } catch (MessagingException e) {
@@ -170,34 +170,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String processConfirmForgotPasswordToken(String token) {
-
-        // Check if token exists
+    public boolean processConfirmForgotPasswordToken(String token) {
         ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenRepository.findByTokenString(token);
-        if (forgotPasswordTokenEntity == null) {
-            return null;
-        }
-
-        // Check if token expired
-        if (forgotPasswordTokenEntity.getTokenExpiredDate().isBefore(LocalDateTime.now())) {
-            return null;
-        }
-
-        return token;
+        return isTokenValid(forgotPasswordTokenEntity);
     }
 
     @Transactional
     @Override
     public boolean processRecoverPassword(RecoverPasswordReqDto recoverPasswordReqDto) {
 
-        // Check if token exists
         ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken());
-        if (forgotPasswordTokenEntity == null) {
-            return false;
-        }
-
-        // Check if token expired
-        if (forgotPasswordTokenEntity.getTokenExpiredDate().isBefore(LocalDateTime.now())) {
+        if (!isTokenValid(forgotPasswordTokenEntity)) {
             return false;
         }
 
@@ -306,6 +289,21 @@ public class UserServiceImpl implements UserService {
         }
 
         return false;
+    }
+
+    private boolean isTokenValid(ForgotPasswordTokenEntity forgotPasswordTokenEntity) {
+
+        // Check if token exists
+        if (forgotPasswordTokenEntity == null) {
+            return false;
+        }
+
+        // Check if token expired
+        if (forgotPasswordTokenEntity.getTokenExpiredDate().isBefore(LocalDateTime.now())) {
+            return false;
+        }
+
+        return true;
     }
 
     private boolean isFileValid(MultipartFile file) {

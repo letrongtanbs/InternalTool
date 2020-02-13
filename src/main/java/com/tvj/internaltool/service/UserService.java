@@ -19,7 +19,7 @@ public interface UserService {
 
     boolean processForgotPassword(String forgotPasswordReqDto);
 
-    String processConfirmForgotPasswordToken(String token);
+    boolean processConfirmForgotPasswordToken(String token);
 
     boolean processRecoverPassword(RecoverPasswordReqDto recoverPasswordReqDto);
 

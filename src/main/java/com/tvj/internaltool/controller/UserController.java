@@ -46,9 +46,9 @@ public class UserController {
 
     @GetMapping(value = "/password-recover-confirm-token")
     public ResponseEntity<?> forgotPasswordConfirmToken(@NotBlank @RequestParam("token") String token) {
-        token = userService.processConfirmForgotPasswordToken(token);
-        if (token != null) {
-            return new ResponseEntity<>(new SimpleContentResDto(token), HttpStatus.OK);
+        boolean isTokenValid = userService.processConfirmForgotPasswordToken(token);
+        if (isTokenValid) {
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.TOKEN_IS_VALID, ResponseMessage.TOKEN_IS_VALID), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MessageResDto(ResponseCode.TOKEN_HAS_EXPIRED, ResponseMessage.TOKEN_HAS_EXPIRED), HttpStatus.BAD_REQUEST);
     }
