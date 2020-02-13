@@ -26,7 +26,9 @@ VALUES ('1', 'URL1', '/user/{id}/list/{id}', 'D', '2020-01-01 00:00:00', NULL, N
        ('6', 'URL6', '/department/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('7', 'URL7', '/team/list-by-department', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('8', 'URL8', '/country/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('9', 'URL9', '/language/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+       ('9', 'URL9', '/language/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('10', 'URL10', '/user/upload-avatar', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('11', 'URL11', '/user/remove-avatar', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
@@ -52,7 +54,11 @@ VALUES ('1', '1'),
        ('1', '8'),
        ('2', '8'),
        ('1', '9'),
-       ('2', '9');
+       ('2', '9'),
+       ('1', '10'),
+       ('2', '10'),
+       ('1', '11'),
+       ('2', '11');
 
 
 INSERT INTO `tbl_team` (`team_id`, `team_code`, `team_name`, `department_id`, `created_by`, `created_date`,

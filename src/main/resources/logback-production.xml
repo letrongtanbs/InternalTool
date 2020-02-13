@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--
+        Log level desc:
+        FATAL
+        ERROR
+        WARN
+        INFO
+        DEBUG
+        TRACE
+        ALL
+    -->
+
+    <property name="LOGS" value="F:/TVJ/log" /> <!-- declare parameter ${LOGS} -->
+
+    <!-- define appender name Console -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n <!-- display format for console -->
+            </Pattern>
+        </layout>
+    </appender>
+    <!-- define appender name RollingFile -->
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/normal-logger.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily with file name pattern -->
+            <fileNamePattern>
+                ${LOGS}/archived/spring-boot-logger-%d{yyyy-MM-dd}.%i.log <!-- if the file reach over 1MB this day, i++ -->
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+    <!-- define appender name SevereRollingFile -->
+    <appender name="SevereRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/severe-logger.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level> <!-- log at WARN level -->
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily with file name pattern -->
+            <fileNamePattern>${LOGS}/archived/severe-logger-%d{yyyy-MM-dd}.%i.log <!-- if the file reach over 1MB this day, i++ -->
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!-- LOG everything(root) at INFO level -->
+    <root level="INFO"> <!-- by default the root logger is assigned the DEBUG level. -->
+        <appender-ref ref="Console" />
+    </root>
+
+    <!-- LOG "com.example.springbootstudy.demo.service*" at INFO level -->
+    <logger name="com.tvj.internaltool.service" level="INFO" additivity="false">
+        <appender-ref ref="RollingFile" /> <!-- INFO level -->
+        <appender-ref ref="Console" /> <!-- INFO level -->
+        <appender-ref ref="SevereRollingFile" /> <!-- WARN level -->
+    </logger>
+
+</configuration>

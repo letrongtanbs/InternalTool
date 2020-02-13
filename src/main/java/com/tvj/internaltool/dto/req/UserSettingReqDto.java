@@ -28,6 +28,4 @@ public class UserSettingReqDto {
     @UserStatusConstraint
     private int status;
 
-    private String avatar;
-
 }

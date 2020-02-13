@@ -13,12 +13,15 @@ import com.tvj.internaltool.repository.UserRepository;
 import com.tvj.internaltool.repository.UserSettingRepository;
 import com.tvj.internaltool.security.JwtTokenUtil;
 import com.tvj.internaltool.service.EmailService;
+import com.tvj.internaltool.service.FileStorageService;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.EnvironmentUtils;
 import com.tvj.internaltool.utils.ModelMapperUtils;
 import com.tvj.internaltool.utils.UserUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +32,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.text.MessageFormat;
@@ -40,6 +44,11 @@ import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    @Value("${file.avatar-upload-dir}")
+    private String avatarUploadDir;
 
     @Value("${forgot-password.mail-subject}")
     private String forgotPasswordMailSubject;
@@ -53,19 +62,21 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserSettingRepository userSettingRepository;
     private final EmailService emailService;
+    private final FileStorageService fileStorageService;
     private final EnvironmentUtils environmentUtils;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
-    private final UserSettingRepository userSettingRepository;
 
-    public UserServiceImpl(JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, UserRepository userRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository, UserSettingRepository userSettingRepository) {
+    public UserServiceImpl(JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, UserRepository userRepository, UserSettingRepository userSettingRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository, FileStorageService fileStorageService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.userSettingRepository = userSettingRepository;
         this.emailService = emailService;
+        this.fileStorageService = fileStorageService;
         this.environmentUtils = environmentUtils;
         this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
-        this.userSettingRepository = userSettingRepository;
     }
 
     @Override
@@ -146,11 +157,11 @@ public class UserServiceImpl implements UserService {
                     , MessageFormat.format(forgotPasswordMailTemplate,
                             userEntity.getFirstName(),
                             userEntity.getLastName(),
-                            "192.168.1.2", // InetAddress.getLocalHost().getHostAddress()
+                            "localhost",
                             environmentUtils.getPort(),
                             randomLetters));
         } catch (MessagingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
             return false;
         }
 
@@ -228,7 +239,6 @@ public class UserServiceImpl implements UserService {
             userSettingEntity.setCountryId(userSettingReqDto.getCountryId());
             userSettingEntity.setLanguageId(userSettingReqDto.getLanguageId());
             userSettingEntity.setStatus(userSettingReqDto.getStatus());
-            userSettingEntity.setAvatar(userSettingReqDto.getAvatar());
             userSettingEntity.setUpdatedDate(LocalDateTime.now());
             userSettingEntity.setUpdatedBy(userEntity.getUsername());
 
@@ -257,6 +267,36 @@ public class UserServiceImpl implements UserService {
 
             userEntity.setPassword(passwordEncoder.encode(updatePasswordReqDto.getNewPassword()));
             userRepository.save(userEntity);
+        }
+
+        return false;
+    }
+
+    @Transactional
+    @Override
+    public String uploadAvatar(MultipartFile file) {
+        UserEntity userEntity = userRepository.findByUsername(UserUtils.getCurrentUsername());
+
+        if (userEntity != null) {
+            String fileName = fileStorageService.storeFile(file);
+            UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
+            userSettingEntity.setAvatar(fileName);
+            userSettingRepository.save(userSettingEntity);
+            return avatarUploadDir + "\\" + fileName;
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean removeAvatar() {
+        UserEntity userEntity = userRepository.findByUsername(UserUtils.getCurrentUsername());
+
+        if (userEntity != null) {
+            UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
+            userSettingEntity.setAvatar(null);
+            userSettingRepository.save(userSettingEntity);
+            return true;
         }
 
         return false;

@@ -7,6 +7,7 @@ import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.UserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -27,4 +28,8 @@ public interface UserService {
     UserSettingResDto updateUserSetting(UserSettingReqDto userSettingReqDto);
 
     boolean updatePassword(UpdatePasswordReqDto updatePasswordReqDto);
+
+    String uploadAvatar(MultipartFile file);
+
+    boolean removeAvatar();
 }

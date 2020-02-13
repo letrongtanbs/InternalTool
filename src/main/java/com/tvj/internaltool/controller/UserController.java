@@ -1,17 +1,16 @@
 package com.tvj.internaltool.controller;
 
 import com.tvj.internaltool.dto.req.*;
-import com.tvj.internaltool.dto.res.MessageResDto;
-import com.tvj.internaltool.dto.res.SimpleContentResDto;
-import com.tvj.internaltool.dto.res.UserLoginResDto;
-import com.tvj.internaltool.dto.res.UserSettingResDto;
+import com.tvj.internaltool.dto.res.*;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.ResponseMessage;
 import com.tvj.internaltool.utils.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -20,7 +19,6 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/user")
 @CrossOrigin
 public class UserController {
-
 
     private final UserService userService;
 
@@ -86,9 +84,29 @@ public class UserController {
         return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_PASSWORD_FAIL, ResponseMessage.UPDATE_PASSWORD_FAIL), HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping(value = "/upload-avatar")
+    public ResponseEntity<?> uploadAvatar(@RequestParam("file") MultipartFile multipartFile) {
+        String imgPath = userService.uploadAvatar(multipartFile);
+
+        if (StringUtils.isNotBlank(imgPath)) {
+            return new ResponseEntity<>(new FileResDto(imgPath), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_AVATAR_FAIL, ResponseMessage.UPDATE_AVATAR_FAIL), HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping(value = "/remove-avatar")
+    public ResponseEntity<?> removeAvatar() {
+        boolean isRemoved = userService.removeAvatar();
+
+        if (isRemoved) {
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.REMOVE_AVATAR_SUCCESS, ResponseMessage.REMOVE_AVATAR_SUCCESS), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.REMOVE_AVATAR_FAIL, ResponseMessage.REMOVE_AVATAR_FAIL), HttpStatus.BAD_REQUEST);
+    }
+
+
 
     // test role-permission
-
     @GetMapping(value = "/{id}/list/{listId}")
     public ResponseEntity<?> test() {
         return new ResponseEntity<>("Hello: " + UserUtils.getCurrentUsername(), HttpStatus.OK);

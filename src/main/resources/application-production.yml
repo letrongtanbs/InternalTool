@@ -30,6 +30,18 @@ spring:
           timeout: 30000
           connecttimeout: 30000
           writetimeout: 30000
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+file:
+  avatar-upload-dir: F:\TVJ\file_upload\avatar
+
+date-time-pattern:
+  sticky: yyyyMMddhhmmss
 
 server: ## use for embedded tomcat server port
   port: 8082
@@ -42,5 +54,8 @@ jwt:
 forgot-password:
   token-expired-duration-in-hour: 1
   mail-subject: "Forgot password mail verification"
-  mail-template: "This is mail verification for user: <b><font color=''red''>{0} {1}</font></b><br>Please click on <a href=''http://{2}:{3}/user/password-recover-confirm-token?token={4}''>this link</a> to update your password."
+  mail-template: "This is mail verification for user: <b><font color=''red''>{0} {1}</font></b><br>Please click on <a href=''http://{2}:{3}/password-recover-confirm-token?token={4}''>this link</a> to update your password."
   cron-expression: "0 0/5 * * * ?"
+
+logging:
+  config: src/main/resources/logback-production.xml
