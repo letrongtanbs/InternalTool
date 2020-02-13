@@ -8,6 +8,7 @@ import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
 import com.tvj.internaltool.entity.UserEntity;
 import com.tvj.internaltool.entity.UserSettingEntity;
+import com.tvj.internaltool.enums.AvatarFileType;
 import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
 import com.tvj.internaltool.repository.UserRepository;
 import com.tvj.internaltool.repository.UserSettingRepository;
@@ -275,6 +276,22 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public String uploadAvatar(MultipartFile file) {
+
+        AvatarFileType[] fileTypes = AvatarFileType.values();
+
+        boolean isFileValid = false;
+
+        for (AvatarFileType fileType : fileTypes) {
+            if (fileType.getFileType().equals(file.getContentType())) {
+                isFileValid = true;
+                break;
+            }
+        }
+
+        if (!isFileValid) {
+            return null;
+        }
+
         UserEntity userEntity = userRepository.findByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
@@ -282,7 +299,7 @@ public class UserServiceImpl implements UserService {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
             userSettingEntity.setAvatar(fileName);
             userSettingRepository.save(userSettingEntity);
-            return avatarUploadDir + "\\" + fileName;
+            return avatarUploadDir + fileName;
         }
 
         return null;
