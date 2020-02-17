@@ -43,6 +43,9 @@ public class UserEntity implements Serializable {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "is_first_time_login")
+    private boolean isFirstTimeLogin;
+
     @Column(name = "login_fail_count")
     private int loginFailCount;
 

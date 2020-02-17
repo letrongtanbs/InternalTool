@@ -143,6 +143,7 @@ public class UserServiceImpl implements UserService {
         userLoginResDto.setFirstName(userEntity.getFirstName());
         userLoginResDto.setLastName(userEntity.getLastName());
         userLoginResDto.setRoleName(userEntity.getRole().getRoleName());
+        userLoginResDto.setFirstTimeLogin(userEntity.isFirstTimeLogin());
 
         return userLoginResDto;
     }
@@ -195,8 +196,7 @@ public class UserServiceImpl implements UserService {
             emailService.sendSimpleMessage(userEntity.getEmail()
                     , forgotPasswordMailSubject
                     , MessageFormat.format(forgotPasswordMailTemplate,
-                            userEntity.getFirstName(),
-                            userEntity.getLastName(),
+                            userEntity.getUsername(),
                             "192.168.1.9",
                             environmentUtils.getPort(),
                             randomLetters));
@@ -229,6 +229,12 @@ public class UserServiceImpl implements UserService {
             updatedUser.setPassword(passwordEncoder.encode(recoverPasswordReqDto.getNewPassword()));
             updatedUser.setActive(true);
             updatedUser.setLoginFailCount(0);
+
+            // Verify user changed password after first time login
+            if (updatedUser.isFirstTimeLogin()) {
+                updatedUser.setFirstTimeLogin(false);
+            }
+
             userRepository.save(updatedUser);
             forgotPasswordTokenRepository.delete(forgotPasswordTokenEntity);
             return true;
@@ -290,8 +296,14 @@ public class UserServiceImpl implements UserService {
                 return false;
             }
 
+            // Verify user changed password after first time login
+            if (userEntity.isFirstTimeLogin()) {
+                userEntity.setFirstTimeLogin(false);
+            }
+
             userEntity.setPassword(passwordEncoder.encode(updatePasswordReqDto.getNewPassword()));
             userRepository.save(userEntity);
+            return true;
         }
 
         return false;

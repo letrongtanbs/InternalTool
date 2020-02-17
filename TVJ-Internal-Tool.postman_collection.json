@@ -130,7 +130,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"token\": \"wxbVNk7XQ7MMBJckwcedHSan4PBRkA9jx1LP0jt4UMRdiS4IuxSsuIF4LO9VuuOsRMog6Qgx0lUIsk4OaHCPKhtNdeFJlTzzYjZ\",\n\t\"newPassword\": \"12345678\"\n}",
+					"raw": "{\n\t\"token\": \"l3GeJupUJOdB4cECKLYvQBg94KgVTlT2MbJIcB65Gm4ExXbQBE7VPzP52GqiUNcW2dN5i32pm7ggZx0Iy1IFGL04SQLbzTbSR7E\",\n\t\"newPassword\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -327,16 +327,16 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxMzIwNzM3LCJpYXQiOjE1ODEzMTcxMzd9.Kd0akrFX6S8d2xbLO0xQAdVJdCup-ugtLHcoEV-asudrX7OU7zyH5MuVoEWSkiCCEPImK8lwCMWCLAzQV64ieA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxOTQzNTM5LCJpYXQiOjE1ODE5MDc1Mzl9.NT-bzoKGBip-Q09vnduQQIlhkp1pJX4JGXpPjoCkkZJfXLM2D0-k697Z4XpmN9HnW40TyTV22oPyN4pxVm3smg"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxMzIwNzM3LCJpYXQiOjE1ODEzMTcxMzd9.Kd0akrFX6S8d2xbLO0xQAdVJdCup-ugtLHcoEV-asudrX7OU7zyH5MuVoEWSkiCCEPImK8lwCMWCLAzQV64ieA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxOTQzNTM5LCJpYXQiOjE1ODE5MDc1Mzl9.NT-bzoKGBip-Q09vnduQQIlhkp1pJX4JGXpPjoCkkZJfXLM2D0-k697Z4XpmN9HnW40TyTV22oPyN4pxVm3smg"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"oldPassword\": \"12345678\",\n    \"newPassword\": \"root\"\n}",
+					"raw": "{\n    \"oldPassword\": \"123456789\",\n    \"newPassword\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

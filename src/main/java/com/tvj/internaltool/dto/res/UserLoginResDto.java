@@ -19,4 +19,6 @@ public class UserLoginResDto {
 
     private String roleName;
 
+    private boolean isFirstTimeLogin;
+
 }
