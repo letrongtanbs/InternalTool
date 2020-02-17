@@ -49,6 +49,9 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    @Value("${front-end-host}")
+    private String frontEndHost;
+
     @Value("${file.avatar-upload-dir}")
     private String avatarUploadDir;
 
@@ -99,7 +102,7 @@ public class UserServiceImpl implements UserService {
             return ResponseCode.UNAUTHORIZED;
         }
 
-        // Check if user is locked
+        // Check if user is deactivated or locked
         if (!userEntity.isActive() || userEntity.getLoginFailCount() == forgotPasswordMaxLoginFailedCount) {
             return ResponseCode.USER_IS_LOCKED;
         }
@@ -110,7 +113,6 @@ public class UserServiceImpl implements UserService {
 
             // Lock user if login failed times more than threshold
             if (userEntity.getLoginFailCount() == forgotPasswordMaxLoginFailedCount) {
-                userEntity.setActive(false);
                 try {
                     // Send notification email
                     emailService.sendSimpleMessage(userEntity.getEmail()
@@ -127,7 +129,7 @@ public class UserServiceImpl implements UserService {
             return ResponseCode.UNAUTHORIZED;
         }
 
-        // Reset active status of login success
+        // Reset login fail count of login success
         if (userEntity.getLoginFailCount() != 0) {
             userEntity.setLoginFailCount(0);
             userRepository.save(userEntity);
@@ -197,7 +199,7 @@ public class UserServiceImpl implements UserService {
                     , forgotPasswordMailSubject
                     , MessageFormat.format(forgotPasswordMailTemplate,
                             userEntity.getUsername(),
-                            "192.168.1.9",
+                            frontEndHost,
                             environmentUtils.getPort(),
                             randomLetters));
         } catch (MessagingException e) {
@@ -227,7 +229,6 @@ public class UserServiceImpl implements UserService {
         if (userEntity.isPresent()) {
             UserEntity updatedUser = userEntity.get();
             updatedUser.setPassword(passwordEncoder.encode(recoverPasswordReqDto.getNewPassword()));
-            updatedUser.setActive(true);
             updatedUser.setLoginFailCount(0);
 
             // Verify user changed password after first time login

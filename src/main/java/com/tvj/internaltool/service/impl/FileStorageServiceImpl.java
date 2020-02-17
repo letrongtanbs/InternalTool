@@ -4,6 +4,8 @@ import com.tvj.internaltool.exception.FileStorageException;
 import com.tvj.internaltool.properties.FileStorageProperties;
 import com.tvj.internaltool.service.FileStorageService;
 import com.tvj.internaltool.utils.UserUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -21,6 +23,8 @@ import java.util.Objects;
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
 
+    private static final Logger logger = LoggerFactory.getLogger(FileStorageServiceImpl.class);
+
     @Value("${date-time-pattern.sticky}")
     private String dateTimePatternSticky;
 
@@ -33,6 +37,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
+            logger.error(ex.getMessage());
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
     }
@@ -56,6 +61,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
             return newFileName;
         } catch (IOException ex) {
+            logger.error(ex.getMessage());
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
