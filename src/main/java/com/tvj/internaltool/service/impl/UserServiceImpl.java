@@ -22,6 +22,7 @@ import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.UserUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
+import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -94,6 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Object processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
 
         // Check if user exists
@@ -230,6 +232,8 @@ public class UserServiceImpl implements UserService {
             UserEntity updatedUser = userEntity.get();
             updatedUser.setPassword(passwordEncoder.encode(recoverPasswordReqDto.getNewPassword()));
             updatedUser.setLoginFailCount(0);
+            updatedUser.setUpdatedBy(updatedUser.getUsername());
+            updatedUser.setUpdatedDate(LocalDateTime.now());
 
             // Verify user changed password after first time login
             if (updatedUser.isFirstTimeLogin()) {
@@ -303,6 +307,8 @@ public class UserServiceImpl implements UserService {
             }
 
             userEntity.setPassword(passwordEncoder.encode(updatePasswordReqDto.getNewPassword()));
+            userEntity.setUpdatedBy(UserUtils.getCurrentUsername());
+            userEntity.setUpdatedDate(LocalDateTime.now());
             userRepository.save(userEntity);
             return true;
         }
@@ -324,6 +330,8 @@ public class UserServiceImpl implements UserService {
             String fileName = fileStorageService.storeFile(file);
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
             userSettingEntity.setAvatar(fileName);
+            userSettingEntity.setUpdatedBy(UserUtils.getCurrentUsername());
+            userSettingEntity.setUpdatedDate(LocalDateTime.now());
             userSettingRepository.save(userSettingEntity);
             return avatarUploadDir + fileName;
         }
@@ -338,6 +346,8 @@ public class UserServiceImpl implements UserService {
         if (userEntity != null) {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
             userSettingEntity.setAvatar(null);
+            userSettingEntity.setUpdatedBy(UserUtils.getCurrentUsername());
+            userSettingEntity.setUpdatedDate(LocalDateTime.now());
             userSettingRepository.save(userSettingEntity);
             return true;
         }

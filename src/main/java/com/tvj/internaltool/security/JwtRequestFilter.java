@@ -45,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.getUserDetails(username);
 
-            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+            if (userDetails!= null && jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 // Save userDetails to SecurityContextHolder
                 // Can pass httpSecurity.authorizeRequests().anyRequest().authenticated() in WebSecurityConfig
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
