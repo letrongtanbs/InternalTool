@@ -1,7 +1,10 @@
 package com.tvj.internaltool.controller;
 
 import com.tvj.internaltool.dto.req.*;
-import com.tvj.internaltool.dto.res.*;
+import com.tvj.internaltool.dto.res.FileResDto;
+import com.tvj.internaltool.dto.res.MessageResDto;
+import com.tvj.internaltool.dto.res.UserLoginResDto;
+import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.ResponseMessage;
@@ -28,11 +31,14 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<?> generateAuthenticationToken(@Valid @RequestBody UserLoginReqDto userLoginReqDto) {
-        UserLoginResDto userLoginResDto = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
-        if (userLoginResDto != null) {
+        Object userLoginResDto = userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword());
+        if (userLoginResDto instanceof UserLoginResDto) {
             return new ResponseEntity<>(userLoginResDto, HttpStatus.OK);
+        } else if (ResponseCode.USER_IS_LOCKED.equals(userLoginResDto)) {
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.USER_IS_LOCKED, ResponseMessage.USER_IS_LOCKED), HttpStatus.LOCKED);
+        } else {
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.UNAUTHORIZED, ResponseMessage.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(new MessageResDto(ResponseCode.UNAUTHORIZED, ResponseMessage.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping(value = "/password-recover-send-request")

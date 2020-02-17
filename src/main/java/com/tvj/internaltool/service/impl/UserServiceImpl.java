@@ -18,6 +18,7 @@ import com.tvj.internaltool.service.FileStorageService;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.EnvironmentUtils;
 import com.tvj.internaltool.utils.ModelMapperUtils;
+import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.UserUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
@@ -51,6 +52,12 @@ public class UserServiceImpl implements UserService {
     @Value("${file.avatar-upload-dir}")
     private String avatarUploadDir;
 
+    @Value("${account-is-locked.mail-subject}")
+    private String accountIsLockedMailSubject;
+
+    @Value("${account-is-locked.mail-template}")
+    private String accountIsLockedMailTemplate;
+
     @Value("${forgot-password.mail-subject}")
     private String forgotPasswordMailSubject;
 
@@ -59,6 +66,9 @@ public class UserServiceImpl implements UserService {
 
     @Value("${forgot-password.token-expired-duration-in-hour}")
     private long forgotPasswordDurationInHour;
+
+    @Value("${forgot-password.max-login-failed-count}")
+    private int forgotPasswordMaxLoginFailedCount;
 
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
@@ -81,17 +91,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserLoginResDto processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
+    public Object processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
 
         // Check if user exists
         UserEntity userEntity = userRepository.findByUsername(username);
         if (userEntity == null) {
-            return null;
+            return ResponseCode.UNAUTHORIZED;
+        }
+
+        // Check if user is locked
+        if (!userEntity.isActive() || userEntity.getLoginFailCount() == forgotPasswordMaxLoginFailedCount) {
+            return ResponseCode.USER_IS_LOCKED;
         }
 
         // Compare password
         if (!passwordEncoder.matches(password, userEntity.getPassword())) {
-            return null;
+            userEntity.setLoginFailCount(userEntity.getLoginFailCount() + 1);
+
+            // Lock user if login failed times more than threshold
+            if (userEntity.getLoginFailCount() == forgotPasswordMaxLoginFailedCount) {
+                userEntity.setActive(false);
+                try {
+                    // Send notification email
+                    emailService.sendSimpleMessage(userEntity.getEmail()
+                            , accountIsLockedMailSubject
+                            , MessageFormat.format(accountIsLockedMailTemplate,
+                                    userEntity.getUsername(),
+                                    LocalDateTime.now()));
+                } catch (MessagingException e) {
+                    logger.error(e.getMessage());
+                    return false;
+                }
+            }
+            userRepository.save(userEntity);
+            return ResponseCode.UNAUTHORIZED;
+        }
+
+        // Reset active status of login success
+        if (userEntity.getLoginFailCount() != 0) {
+            userEntity.setLoginFailCount(0);
+            userRepository.save(userEntity);
         }
 
         // Build token
@@ -188,6 +227,8 @@ public class UserServiceImpl implements UserService {
         if (userEntity.isPresent()) {
             UserEntity updatedUser = userEntity.get();
             updatedUser.setPassword(passwordEncoder.encode(recoverPasswordReqDto.getNewPassword()));
+            updatedUser.setActive(true);
+            updatedUser.setLoginFailCount(0);
             userRepository.save(updatedUser);
             forgotPasswordTokenRepository.delete(forgotPasswordTokenEntity);
             return true;

@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"admin\",\n\t\"password\": \"12345678\"\n}",
+					"raw": "{\n\t\"username\": \"root\",\n\t\"password\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,7 +98,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/user/password-recover-confirm-token?token=tNwvyIq3JYCdh4xeYB9vN4tOuWldcfny7wGQ0tlPQefli5rFqxwV4MxckHTpK2myBGJaOjoJwwxzGosal6OlhUixOp5OFbXVsAc",
+					"raw": "{{host}}/user/password-recover-confirm-token?token=wxbVNk7XQ7MMBJckwcedHSan4PBRkA9jx1LP0jt4UMRdiS4IuxSsuIF4LO9VuuOsRMog6Qgx0lUIsk4OaHCPKhtNdeFJlTzzYjZ",
 					"host": [
 						"{{host}}"
 					],
@@ -109,7 +109,7 @@
 					"query": [
 						{
 							"key": "token",
-							"value": "tNwvyIq3JYCdh4xeYB9vN4tOuWldcfny7wGQ0tlPQefli5rFqxwV4MxckHTpK2myBGJaOjoJwwxzGosal6OlhUixOp5OFbXVsAc"
+							"value": "wxbVNk7XQ7MMBJckwcedHSan4PBRkA9jx1LP0jt4UMRdiS4IuxSsuIF4LO9VuuOsRMog6Qgx0lUIsk4OaHCPKhtNdeFJlTzzYjZ"
 						}
 					]
 				}
@@ -130,7 +130,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"token\": \"VNVT3UtB2KEgVwB2nPHX2qDNjip0lgeHRKPaxzxfJ6gp9sndV0cqIASULGLx1Zf0fDkZihahmfsWFaNs59ByqdMHNO0UycgxTuu\",\n\t\"newPassword\": \"root\"\n}",
+					"raw": "{\n\t\"token\": \"wxbVNk7XQ7MMBJckwcedHSan4PBRkA9jx1LP0jt4UMRdiS4IuxSsuIF4LO9VuuOsRMog6Qgx0lUIsk4OaHCPKhtNdeFJlTzzYjZ\",\n\t\"newPassword\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -162,11 +162,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTYwMzc5OCwiaWF0IjoxNTgxNTY3Nzk4fQ.7Y_dzgx_SMT1YI0uDp1GMOfE37AtmbsMieqnLgWah507lJF2VOW_HEENBIZZOy73TxYfL6IR0ba2Ptd74jjmjA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxOTM4MjUzLCJpYXQiOjE1ODE5MDIyNTN9.Uym9QXER4JF8GDTXVLFPkz-Rg_v_UKSqnteP-JyYvOWtTtA7UTc10n9_HVwAmU6FpFQH3yk9jcolh7jHm2H_UA"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTYwMzc5OCwiaWF0IjoxNTgxNTY3Nzk4fQ.7Y_dzgx_SMT1YI0uDp1GMOfE37AtmbsMieqnLgWah507lJF2VOW_HEENBIZZOy73TxYfL6IR0ba2Ptd74jjmjA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxOTM4MjUzLCJpYXQiOjE1ODE5MDIyNTN9.Uym9QXER4JF8GDTXVLFPkz-Rg_v_UKSqnteP-JyYvOWtTtA7UTc10n9_HVwAmU6FpFQH3yk9jcolh7jHm2H_UA"
 					}
 				],
 				"body": {

@@ -9,6 +9,7 @@ public class ResponseCode {
     public static final String UPDATE_PASSWORD_FAIL = "ERR005";
     public static final String UPDATE_AVATAR_FAIL = "ERR006";
     public static final String REMOVE_AVATAR_FAIL = "ERR007";
+    public static final String USER_IS_LOCKED = "ERR007";
 
     public static final String SEND_MAIL_SUCCESS = "SUC001";
     public static final String UPDATE_PASSWORD_SUCCESS = "SUC002";

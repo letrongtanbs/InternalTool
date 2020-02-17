@@ -55,6 +55,11 @@ forgot-password:
   mail-subject: "Forgot password mail verification"
   mail-template: "This is mail verification for user: <b><font color=''red''>{0} {1}</font></b><br>Please click on <a href=''http://{2}:{3}/password-recover-confirm-token/{4}''>this link</a> to update your password."
   cron-expression: "0 0/60 * * * ?"
+  max-login-failed-count: 5
+
+account-is-locked:
+  mail-subject: "Your account is locked"
+  mail-template: "Account <b><font color=''red''>{0}</font></b> is locked at {1}. Please contact administrator to get support or do forgot password process to recover password."
 
 logging:
   config: src/main/resources/logback.xml
