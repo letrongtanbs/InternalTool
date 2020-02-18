@@ -76,6 +76,8 @@ VALUES ('1', '1', 'Dev', 'homie', '1234567890', '1', '1', 1, NULL, 'Dexx', '2020
        ('2', '1', 'Dev2', 'homie', '0987654321', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),
        ('3', '1', 'Dev3', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+        NULL),
+       ('4', '1', 'Dev4', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL);
 
 
@@ -88,5 +90,7 @@ VALUES ('1', '1', '1', 'ngocdc', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/I
        ('2', '2', '1', 'hunghx', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Hoang', 'Hung',
         'hunghx@tinhvan.com', 1, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('3', '3', '2', 'tamdt', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Do', 'Tam',
-        'tamdt@tinhvan.com', 1, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+        'tamdt@tinhvan.com', 1, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('4', '4', '2', 'xxx', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Do', 'Tam',
+        'xxx@tinhvan.com', 0, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 

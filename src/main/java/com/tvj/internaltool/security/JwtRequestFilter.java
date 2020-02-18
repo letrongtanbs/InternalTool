@@ -46,8 +46,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             UserDetails userDetails = userService.getUserDetails(username);
 
             if (userDetails!= null && jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                // Save userDetails to SecurityContextHolder
-                // Can pass httpSecurity.authorizeRequests().anyRequest().authenticated() in WebSecurityConfig
+                // Save authentication to SecurityContextHolder
+                // If SecurityContextHolder.getContext().getAuthentication() == null,
+                // httpSecurity.authorizeRequests().anyRequest().authenticated() in WebSecurityConfig will be failed right after JwtRequestFilter,
+                // maybe because of JwtRequestFilter is execute before UsernamePasswordAuthenticationFilter?
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
