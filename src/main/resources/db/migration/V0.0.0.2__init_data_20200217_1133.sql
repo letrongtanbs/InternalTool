@@ -82,7 +82,7 @@ VALUES ('1', '1', 'Dev', 'homie', '1234567890', '1', '1', 1, NULL, 'Dexx', '2020
 
 
 INSERT INTO `tbl_user` (`user_id`, `user_setting_id`, `role_id`, `username`, `password`, `first_name`, `last_name`,
-                        `email`, `active`, `is_first_time_login`,
+                        `email`, `is_activated`, `is_first_time_login`,
                         `login_fail_count`, `created_by`, `created_date`, `updated_by`, `updated_date`, `deleted_by`,
                         `deleted_date`)
 VALUES ('1', '1', '1', 'ngocdc', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Dinh', 'Ngoc',

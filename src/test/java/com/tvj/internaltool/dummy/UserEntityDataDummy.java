@@ -23,7 +23,7 @@ public class UserEntityDataDummy {
         admin.setFirstName("Ad1");
         admin.setLastName("Min1");
         admin.setEmail("ngocdc@tinhvan.com");
-        admin.setActive(true);
+        admin.setActivated(true);
         admin.setLoginFailCount(0);
         admin.setCreatedBy("Dex");
         admin.setCreatedDate(LocalDateTime.now());
@@ -49,7 +49,7 @@ public class UserEntityDataDummy {
         admin.setFirstName("Ad2");
         admin.setLastName("Min2");
         admin.setEmail("ngocdc@tinhvan.com");
-        admin.setActive(true);
+        admin.setActivated(true);
         admin.setLoginFailCount(0);
         admin.setCreatedBy("Dex");
         admin.setCreatedDate(LocalDateTime.now());
@@ -75,7 +75,7 @@ public class UserEntityDataDummy {
         user.setFirstName("U1");
         user.setLastName("Ser1");
         user.setEmail("ngocdc@tinhvan.com");
-        user.setActive(true);
+        user.setActivated(true);
         user.setLoginFailCount(0);
         user.setCreatedBy("Dex");
         user.setCreatedDate(LocalDateTime.now());

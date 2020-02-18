@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
     public Object processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
 
         // Check if user exists
-        UserEntity userEntity = userRepository.findActiveUserByUsername(username);
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(username);
         if (userEntity == null) {
             return ResponseCode.UNAUTHORIZED;
         }
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails getUserDetails(String username) {
 
         // Check if user exists
-        UserEntity user = userRepository.findActiveUserByUsername(username);
+        UserEntity user = userRepository.findActivatedUserByUsername(username);
         if (user == null) {
             return null;
         }
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getUserByUsername(String username) {
-        return userRepository.findActiveUserByUsername(username);
+        return userRepository.findActivatedUserByUsername(username);
     }
 
     @Override
@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService {
     public boolean processForgotPassword(String username) {
 
         // Check if user exits
-        UserEntity userEntity = userRepository.findActiveUserByUsername(username);
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(username);
         if (userEntity == null) {
             return false;
         }
@@ -250,7 +250,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserSettingResDto getUserSetting() {
 
-        UserEntity userEntity = userRepository.findActiveUserByUsername(UserUtils.getCurrentUsername());
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
             return buildUserSettingResDto(userEntity);
@@ -263,7 +263,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserSettingResDto updateUserSetting(UserSettingReqDto userSettingReqDto) {
 
-        UserEntity userEntity = userRepository.findActiveUserByUsername(UserUtils.getCurrentUsername());
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
@@ -291,7 +291,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updatePassword(UpdatePasswordReqDto updatePasswordReqDto) {
 
-        UserEntity userEntity = userRepository.findActiveUserByUsername(UserUtils.getCurrentUsername());
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
 
@@ -323,7 +323,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        UserEntity userEntity = userRepository.findActiveUserByUsername(UserUtils.getCurrentUsername());
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
             String fileName = fileStorageService.storeFile(file);
@@ -340,7 +340,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean removeAvatar() {
-        UserEntity userEntity = userRepository.findActiveUserByUsername(UserUtils.getCurrentUsername());
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();

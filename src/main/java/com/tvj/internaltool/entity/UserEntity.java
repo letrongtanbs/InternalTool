@@ -40,8 +40,8 @@ public class UserEntity implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "active")
-    private boolean active;
+    @Column(name = "is_activated")
+    private boolean isActivated;
 
     @Column(name = "is_first_time_login")
     private boolean isFirstTimeLogin;
