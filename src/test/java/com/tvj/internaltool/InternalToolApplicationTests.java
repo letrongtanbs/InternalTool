@@ -9,8 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class InternalToolApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }

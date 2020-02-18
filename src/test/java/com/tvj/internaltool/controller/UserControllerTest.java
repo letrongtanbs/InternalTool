@@ -1,7 +1,5 @@
 package com.tvj.internaltool.controller;
 
-import com.tvj.internaltool.dummy.UserEntityDataDummy;
-import com.tvj.internaltool.entity.UserEntity;
 import com.tvj.internaltool.service.UserService;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -30,9 +28,6 @@ class UserControllerTest {
 
     @Test
     void generateAuthenticationToken() {
-
-        UserEntityDataDummy dataDummy = new UserEntityDataDummy();
-        UserEntity userEntity = dataDummy.getRootUser();
 
 
     }
