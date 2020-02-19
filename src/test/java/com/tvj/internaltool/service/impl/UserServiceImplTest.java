@@ -1,22 +1,27 @@
 package com.tvj.internaltool.service.impl;
 
+import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dummy.UserEntityDataDummy;
 import com.tvj.internaltool.entity.UserEntity;
 import com.tvj.internaltool.repository.UserRepository;
-import org.junit.jupiter.api.Test;
+import com.tvj.internaltool.security.JwtTokenUtil;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
+
 
 @RunWith(MockitoJUnitRunner.class)
-class UserServiceImplTest {
+public class UserServiceImplTest { // use public always
 
     @InjectMocks
     private UserServiceImpl userService; // cannot InjectMocks interface
@@ -24,33 +29,41 @@ class UserServiceImplTest {
     @Mock
     private UserRepository userRepository; // this will be injected into userService (use for when(...))
 
-    @Test
-    void processLogin() {
+    @Mock
+    private PasswordEncoder passwordEncoder; // this will be injected into userService (use for when(...))
+
+    @Mock
+    private JwtTokenUtil jwtTokenUtil; // this will be injected into userService (use for when(...))
+
+    @Before
+    public void setUp() {
+        ReflectionTestUtils.setField(userService, "forgotPasswordMaxLoginFailedCount", 5);
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void processLogin() { // use public always
+        // value from user
+        String username = "admin1";
+        String password = "12345678";
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
         UserEntity admin = userEntityDataDummy.getAdminUser1();
+        when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
+        when(passwordEncoder.matches(password, admin.getPassword())).thenReturn(true);
+        when(jwtTokenUtil.generateToken(any(UserDetails.class))).thenReturn("sampleToken");
 
-        // Mocking Spring Security Context
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(admin.getUsername());
-//
-//        when(userRepository.findActivatedUserByUsername(userEntityDataDummy.getRootUser().getUsername()))
-//                .thenReturn(userEntityDataDummy.getRootUser());
-//        when(userPrivilegesRepository.findActivatedPrivilegesByRole(userEntityDataDummy.getRootUser().getRole()))
-//                .thenReturn(userPrivilegesEntityDataDummy.getRootPrivileges());
-//        when(userRepository.findAll())
-//                .thenReturn(listUser);
-//
-//
-//        List<UserResDto> userResDtoList = userService.findAllUser(new HttpReqDto("/user/get-all", "GET"));
-//
-//        assertEquals(userResDtoList.size(), 3);
-//        verify(userRepository, times(1)).findActivatedUserByUsername(userEntityDataDummy.getRootUser().getUsername());
-//        verify(userPrivilegesRepository, times(1)).findActivatedPrivilegesByRole(userEntityDataDummy.getRootUser().getRole());
-//        verify(userRepository, times(1)).findAll();
-//
+        // input value from user
+        Object userLoginResDto = userService.processLogin(username, password);
+
+        if (userLoginResDto instanceof UserLoginResDto) {
+            assertEquals(((UserLoginResDto) userLoginResDto).getFirstName(), admin.getFirstName());
+            assertEquals(((UserLoginResDto) userLoginResDto).getLastName(), admin.getLastName());
+            assertEquals(((UserLoginResDto) userLoginResDto).getRoleName(), admin.getRole().getRoleName());
+            assertEquals(((UserLoginResDto) userLoginResDto).getToken(), "sampleToken");
+            verify(userRepository, times(1)).findActivatedUserByUsername(admin.getUsername());
+        } else {
+            fail("Return error code!!");
+        }
     }
+
 }

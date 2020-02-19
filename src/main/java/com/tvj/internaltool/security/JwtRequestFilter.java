@@ -49,7 +49,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // Save authentication to SecurityContextHolder
                 // If SecurityContextHolder.getContext().getAuthentication() == null,
                 // httpSecurity.authorizeRequests().anyRequest().authenticated() in WebSecurityConfig will be failed right after JwtRequestFilter,
-                // maybe because of JwtRequestFilter is execute before UsernamePasswordAuthenticationFilter?
+                // maybe because JwtRequestFilter is executed before UsernamePasswordAuthenticationFilter?
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
