@@ -1,4 +1,4 @@
-package com.tvj.internaltool.dummy;
+package com.tvj.internaltool.dummy.entity;
 
 import com.tvj.internaltool.entity.RoleEntity;
 import com.tvj.internaltool.entity.RolePermissionEntity;

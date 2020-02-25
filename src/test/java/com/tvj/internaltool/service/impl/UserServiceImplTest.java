@@ -1,7 +1,7 @@
 package com.tvj.internaltool.service.impl;
 
 import com.tvj.internaltool.dto.res.UserLoginResDto;
-import com.tvj.internaltool.dummy.UserEntityDataDummy;
+import com.tvj.internaltool.dummy.entity.UserEntityDataDummy;
 import com.tvj.internaltool.entity.UserEntity;
 import com.tvj.internaltool.repository.UserRepository;
 import com.tvj.internaltool.security.JwtTokenUtil;
@@ -64,6 +64,7 @@ public class UserServiceImplTest {
             assertEquals(((UserLoginResDto) userLoginResDto).getLastName(), admin.getLastName());
             assertEquals(((UserLoginResDto) userLoginResDto).getRoleName(), admin.getRole().getRoleName());
             assertEquals(((UserLoginResDto) userLoginResDto).getToken(), "sampleToken");
+            assertEquals(((UserLoginResDto) userLoginResDto).isFirstTimeLogin(), admin.isFirstTimeLogin());
             verify(userRepository, times(1)).findActivatedUserByUsername(admin.getUsername());
             try {
                 verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
@@ -97,6 +98,7 @@ public class UserServiceImplTest {
             assertEquals(((UserLoginResDto) userLoginResDto).getLastName(), admin.getLastName());
             assertEquals(((UserLoginResDto) userLoginResDto).getRoleName(), admin.getRole().getRoleName());
             assertEquals(((UserLoginResDto) userLoginResDto).getToken(), "sampleToken");
+            assertEquals(((UserLoginResDto) userLoginResDto).isFirstTimeLogin(), admin.isFirstTimeLogin());
             verify(userRepository, times(1)).findActivatedUserByUsername(admin.getUsername());
             try {
                 verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
