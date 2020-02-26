@@ -1,10 +1,15 @@
 package com.tvj.internaltool.service.impl;
 
+import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
+import com.tvj.internaltool.dummy.entity.ForgotPasswordTokenEntityDataDummy;
 import com.tvj.internaltool.dummy.entity.UserEntityDataDummy;
+import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
 import com.tvj.internaltool.entity.UserEntity;
+import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
 import com.tvj.internaltool.repository.UserRepository;
 import com.tvj.internaltool.security.JwtTokenUtil;
+import com.tvj.internaltool.utils.EnvironmentUtils;
 import com.tvj.internaltool.utils.ResponseCode;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,9 +22,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.mail.MessagingException;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,7 +41,13 @@ public class UserServiceImplTest {
     private UserRepository userRepository; // this will be injected into userService (use for when(...))
 
     @Mock
+    private ForgotPasswordTokenRepository forgotPasswordTokenRepository; // this will be injected into userService (use for when(...))
+
+    @Mock
     private JwtTokenUtil jwtTokenUtil; // this will be injected into userService (use for when(...))
+
+    @Mock
+    private EnvironmentUtils environmentUtils; // this will be injected into userService (use for when(...))
 
     @Before
     public void setUp() {
@@ -43,15 +55,17 @@ public class UserServiceImplTest {
         ReflectionTestUtils.setField(userService, "forgotPasswordMaxLoginFailedCount", 5);
         // Override value
         ReflectionTestUtils.setField(userService, "passwordEncoder", new BCryptPasswordEncoder());
-        ReflectionTestUtils.setField(userService, "accountIsLockedMailSubject", "Mail Subject");
-        ReflectionTestUtils.setField(userService, "accountIsLockedMailTemplate", "Mail Template");
+        ReflectionTestUtils.setField(userService, "accountIsLockedMailSubject", "Mail Subject 1");
+        ReflectionTestUtils.setField(userService, "accountIsLockedMailTemplate", "Mail Template 1");
+        ReflectionTestUtils.setField(userService, "forgotPasswordMailSubject", "Mail Subject 2");
+        ReflectionTestUtils.setField(userService, "forgotPasswordMailTemplate", "Mail Template 3");
     }
 
     // ---------- processLogin START ---------
 
     @Test // Do not use org.junit.jupiter.api
     public void processLogin_success() {
-        // value from user
+        // Value from client
         String username = "admin1";
         String password = "12345678";
 
@@ -60,7 +74,6 @@ public class UserServiceImplTest {
         when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
         when(jwtTokenUtil.generateToken(any(UserDetails.class))).thenReturn("sampleToken");
 
-        // input value from user
         Object userLoginResDto = userService.processLogin(username, password);
 
         if (userLoginResDto instanceof UserLoginResDto) {
@@ -71,11 +84,11 @@ public class UserServiceImplTest {
             assertEquals(((UserLoginResDto) userLoginResDto).isFirstTimeLogin(), admin.isFirstTimeLogin());
             verify(userRepository, times(1)).findActivatedUserByUsername(admin.getUsername());
             try {
-                verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
+                verify(emailService, times(0)).sendSimpleMessage(any(), any(), any());
             } catch (MessagingException e) {
                 fail("Cannot send email!!");
             }
-            verify(userRepository, times(0)).save(any(UserEntity.class));
+            verify(userRepository, times(0)).save(any());
             verify(jwtTokenUtil, times(1)).generateToken(any(UserDetails.class));
         } else {
             fail("Must return error code!!");
@@ -84,7 +97,7 @@ public class UserServiceImplTest {
 
     @Test // Do not use org.junit.jupiter.api
     public void processLogin_resetLoginFailedCountAfterLoginSuccess() {
-        // value from user
+        // Value from client
         String username = "admin1";
         String password = "12345678";
 
@@ -94,7 +107,6 @@ public class UserServiceImplTest {
         when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
         when(jwtTokenUtil.generateToken(any(UserDetails.class))).thenReturn("sampleToken");
 
-        // input value from user
         Object userLoginResDto = userService.processLogin(username, password);
 
         if (userLoginResDto instanceof UserLoginResDto) {
@@ -105,7 +117,7 @@ public class UserServiceImplTest {
             assertEquals(((UserLoginResDto) userLoginResDto).isFirstTimeLogin(), admin.isFirstTimeLogin());
             verify(userRepository, times(1)).findActivatedUserByUsername(admin.getUsername());
             try {
-                verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
+                verify(emailService, times(0)).sendSimpleMessage(any(), any(), any());
             } catch (MessagingException e) {
                 fail("Cannot send email!!");
             }
@@ -117,25 +129,24 @@ public class UserServiceImplTest {
     }
 
     @Test // Do not use org.junit.jupiter.api
-    public void processLogin_userDoesNotExists() {
-        // value from user
+    public void processLogin_userDoesNotExist() {
+        // Value from client
         String username = "admin1";
         String password = "12345678";
 
         when(userRepository.findActivatedUserByUsername(username)).thenReturn(null);
 
-        // input value from user
         Object userLoginResDto = userService.processLogin(username, password);
 
         if (userLoginResDto instanceof String) {
             verify(userRepository, times(1)).findActivatedUserByUsername(username);
             try {
-                verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
+                verify(emailService, times(0)).sendSimpleMessage(any(), any(), any());
             } catch (MessagingException e) {
                 fail("Cannot send email!!");
             }
-            verify(userRepository, times(0)).save(any(UserEntity.class));
-            verify(jwtTokenUtil, times(0)).generateToken(any(UserDetails.class));
+            verify(userRepository, times(0)).save(any());
+            verify(jwtTokenUtil, times(0)).generateToken(any());
             assertEquals(userLoginResDto, ResponseCode.UNAUTHORIZED);
         } else {
             fail("Must return error code!!");
@@ -144,7 +155,7 @@ public class UserServiceImplTest {
 
     @Test // Do not use org.junit.jupiter.api
     public void processLogin_userIsLocked() throws MessagingException {
-        // value from user
+        // Value from client
         String username = "admin1";
         String password = "12345678";
 
@@ -153,14 +164,13 @@ public class UserServiceImplTest {
         admin.setLoginFailCount(5);
         when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
 
-        // input value from user
         Object userLoginResDto = userService.processLogin(username, password);
 
         if (userLoginResDto instanceof String) {
             verify(userRepository, times(1)).findActivatedUserByUsername(username);
-            verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
-            verify(userRepository, times(0)).save(any(UserEntity.class));
-            verify(jwtTokenUtil, times(0)).generateToken(any(UserDetails.class));
+            verify(emailService, times(0)).sendSimpleMessage(any(), any(), any());
+            verify(userRepository, times(0)).save(any());
+            verify(jwtTokenUtil, times(0)).generateToken(any());
             assertEquals(userLoginResDto, ResponseCode.USER_IS_LOCKED);
         } else {
             fail("Must return error code!!");
@@ -169,7 +179,7 @@ public class UserServiceImplTest {
 
     @Test // Do not use org.junit.jupiter.api
     public void processLogin_userIsLocked_thenSendMail() throws MessagingException {
-        // value from user
+        // Value from client
         String username = "admin1";
         String password = "123456789";
 
@@ -180,14 +190,13 @@ public class UserServiceImplTest {
         // Mock void method
         doNothing().when(emailService).sendSimpleMessage(anyString(), anyString(), anyString());
 
-        // input value from user
         Object userLoginResDto = userService.processLogin(username, password);
 
         if (userLoginResDto instanceof String) {
             verify(userRepository, times(1)).findActivatedUserByUsername(username);
             verify(emailService, times(1)).sendSimpleMessage(anyString(), anyString(), anyString());
             verify(userRepository, times(1)).save(any(UserEntity.class));
-            verify(jwtTokenUtil, times(0)).generateToken(any(UserDetails.class));
+            verify(jwtTokenUtil, times(0)).generateToken(any());
             assertEquals(userLoginResDto, ResponseCode.UNAUTHORIZED);
         } else {
             fail("Must return error code!!");
@@ -196,7 +205,7 @@ public class UserServiceImplTest {
 
     @Test // Do not use org.junit.jupiter.api
     public void processLogin_passwordIsNotMatched() {
-        // value from user
+        // Value from client
         String username = "admin1";
         String password = "123456789";
 
@@ -204,18 +213,17 @@ public class UserServiceImplTest {
         UserEntity admin = userEntityDataDummy.getAdminUser1();
         when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
 
-        // input value from user
         Object userLoginResDto = userService.processLogin(username, password);
 
         if (userLoginResDto instanceof String) {
             verify(userRepository, times(1)).findActivatedUserByUsername(username);
             try {
-                verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
+                verify(emailService, times(0)).sendSimpleMessage(any(), any(), any());
             } catch (MessagingException e) {
                 fail("Cannot send email!!");
             }
             verify(userRepository, times(1)).save(any(UserEntity.class));
-            verify(jwtTokenUtil, times(0)).generateToken(any(UserDetails.class));
+            verify(jwtTokenUtil, times(0)).generateToken(any());
             assertEquals(userLoginResDto, ResponseCode.UNAUTHORIZED);
         } else {
             fail("Must return error code!!");
@@ -224,24 +232,266 @@ public class UserServiceImplTest {
 
     // ---------- processLogin END ---------
 
+    // ---------- getUserDetails START ---------
+
     @Test
-    public void getUserDetails() {
+    public void getUserDetails_success() {
+        // Value from client
+        String username = "admin1";
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+        when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
+
+        UserDetails userDetails = userService.getUserDetails(username);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(username);
+        assertEquals(userDetails.getUsername(), username);
     }
 
     @Test
-    public void getUserByUsername() {
+    public void getUserDetails_userDoesNotExist() {
+        // Value from client
+        String username = "admin1";
+
+        when(userRepository.findActivatedUserByUsername(username)).thenReturn(null);
+
+        UserDetails userDetails = userService.getUserDetails(username);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(username);
+        assertNull(userDetails);
+    }
+    // ---------- getUserDetails END ---------
+
+    // ---------- getUserByUsername START ---------
+
+    @Test
+    public void getUserByUsername_success() {
+        // Value from client
+        String username = "admin1";
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+        when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
+
+        UserEntity userEntity = userService.getUserByUsername(username);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(username);
+        assertEquals(userEntity.getUsername(), username);
     }
 
     @Test
-    public void processForgotPassword() {
+    public void getUserByUsername_userDoesNotExist() {
+        // Value from client
+        String username = "admin1";
+
+        when(userRepository.findActivatedUserByUsername(username)).thenReturn(null);
+
+        UserEntity userEntity = userService.getUserByUsername(username);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(username);
+        assertNull(userEntity);
+    }
+
+    // ---------- getUserByUsername END ---------
+
+    // ---------- processForgotPassword START ---------
+
+    @Test
+    public void processForgotPassword_success() throws MessagingException {
+        // Value from client
+        String username = "admin1";
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+        when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
+        when(forgotPasswordTokenRepository.save(any(ForgotPasswordTokenEntity.class))).thenReturn(null);
+
+        // Mock void method
+        doNothing().when(forgotPasswordTokenRepository).deleteTokenByUserId(admin.getUserId());
+        doNothing().when(emailService).sendSimpleMessage(anyString(), anyString(), anyString());
+
+        boolean result = userService.processForgotPassword(username);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(username);
+        verify(forgotPasswordTokenRepository, times(1)).deleteTokenByUserId(admin.getUserId());
+        verify(forgotPasswordTokenRepository, times(1)).save(any(ForgotPasswordTokenEntity.class));
+        verify(emailService, times(1)).sendSimpleMessage(anyString(), anyString(), anyString());
+        assertTrue(result);
     }
 
     @Test
-    public void processConfirmForgotPasswordToken() {
+    public void processForgotPassword_userDoesNotExist() throws MessagingException {
+        // Value from client
+        String username = "admin1";
+
+        when(userRepository.findActivatedUserByUsername(username)).thenReturn(null);
+
+        boolean result = userService.processForgotPassword(username);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(username);
+        verify(forgotPasswordTokenRepository, times(0)).deleteTokenByUserId(any());
+        verify(forgotPasswordTokenRepository, times(0)).save(any());
+        verify(emailService, times(0)).sendSimpleMessage(any(), any(), any());
+        assertFalse(result);
+    }
+
+    // ---------- processForgotPassword END ---------
+
+    // ---------- processConfirmForgotPasswordToken START ---------
+
+    @Test
+    public void processConfirmForgotPasswordToken_success() {
+        // Value from client
+        String token = "Token1";
+
+        ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().plusHours(1));
+
+        when(forgotPasswordTokenRepository.findByTokenString(token)).thenReturn(forgotPasswordTokenEntity);
+
+        boolean result = userService.processConfirmForgotPasswordToken(token);
+
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(token);
+        assertTrue(result);
     }
 
     @Test
-    public void processRecoverPassword() {
+    public void processConfirmForgotPasswordToken_tokenIsEmpty() {
+        // Value from client
+        String token = "Token1";
+
+        when(forgotPasswordTokenRepository.findByTokenString(token)).thenReturn(null);
+
+        boolean result = userService.processConfirmForgotPasswordToken(token);
+
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(token);
+        assertFalse(result);
     }
+
+    @Test
+    public void processConfirmForgotPasswordToken_tokenIsExpired() {
+        // Value from client
+        String token = "Token1";
+
+        ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().minusHours(1));
+
+        when(forgotPasswordTokenRepository.findByTokenString(token)).thenReturn(forgotPasswordTokenEntity);
+
+        boolean result = userService.processConfirmForgotPasswordToken(token);
+
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(token);
+        assertFalse(result);
+    }
+
+    // ---------- processConfirmForgotPasswordToken END ---------
+
+    // ---------- processRecoverPassword START ---------
+
+    @Test
+    public void processRecoverPassword_success() {
+        // Value from client
+        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
+        recoverPasswordReqDto.setToken("Token1");
+        recoverPasswordReqDto.setNewPassword("newPassword");
+
+        ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().plusHours(1));
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+
+        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(forgotPasswordTokenEntity);
+        when(userRepository.findById(forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity().getUserId()))
+                .thenReturn(Optional.of(admin));
+        when(userRepository.save(Optional.of(admin).get())).thenReturn(null);
+
+        // Mock void method
+        doNothing().when(forgotPasswordTokenRepository).delete(forgotPasswordTokenEntity);
+
+        boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
+
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
+        verify(userRepository, times(1))
+                .findById(forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity().getUserId());
+        verify(userRepository, times(1)).save(Optional.of(admin).get());
+        verify(forgotPasswordTokenRepository, times(1)).delete(forgotPasswordTokenEntity);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void processRecoverPassword_tokenIsEmpty() {
+        // Value from client
+        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
+        recoverPasswordReqDto.setToken("Token1");
+        recoverPasswordReqDto.setNewPassword("newPassword");
+
+        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(null);
+
+        boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
+
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
+        verify(userRepository, times(0)).findById(any());
+        verify(userRepository, times(0)).save(any());
+        verify(forgotPasswordTokenRepository, times(0)).delete(any());
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void processRecoverPassword_tokenIsExpired() {
+        // Value from client
+        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
+        recoverPasswordReqDto.setToken("Token1");
+        recoverPasswordReqDto.setNewPassword("newPassword");
+
+        ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().minusHours(1));
+
+        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(forgotPasswordTokenEntity);
+
+        boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
+
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
+        verify(userRepository, times(0)).findById(any());
+        verify(userRepository, times(0)).save(any());
+        verify(forgotPasswordTokenRepository, times(0)).delete(any());
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void processRecoverPassword_userDoesNotExist() {
+        // Value from client
+        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
+        recoverPasswordReqDto.setToken("Token1");
+        recoverPasswordReqDto.setNewPassword("newPassword");
+
+        ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().plusHours(1));
+
+        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(forgotPasswordTokenEntity);
+        when(userRepository.findById(forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity().getUserId()))
+                .thenReturn(Optional.empty());
+
+        boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
+
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
+        verify(userRepository, times(1))
+                .findById(forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity().getUserId());
+        verify(userRepository, times(0)).save(any());
+        verify(forgotPasswordTokenRepository, times(0)).delete(any());
+
+        assertFalse(result);
+    }
+
+    // ---------- processRecoverPassword END ---------
 
 }

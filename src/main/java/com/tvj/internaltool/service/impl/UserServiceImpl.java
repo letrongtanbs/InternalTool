@@ -178,13 +178,13 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
+        // Remove old token
+        forgotPasswordTokenRepository.deleteTokenByUserId(userEntity.getUserId());
+
         // Generates token
         RandomStringGenerator generator =
                 new RandomStringGenerator.Builder().withinRange('0', 'z').filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
         String randomLetters = generator.generate(99);
-
-        // Remove old token
-        forgotPasswordTokenRepository.deleteTokenByUserId(userEntity.getUserId());
 
         // Save new token
         ForgotPasswordTokenEntity newToken = new ForgotPasswordTokenEntity();
