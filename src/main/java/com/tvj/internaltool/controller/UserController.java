@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/password-recover-send-request")
-    public ResponseEntity<?> forgotPasswordProcess(@Valid @RequestBody ForgotPasswordReqDto forgotPasswordReqDto) {
+    public ResponseEntity<?> forgotPasswordSendRequest(@Valid @RequestBody ForgotPasswordReqDto forgotPasswordReqDto) {
         boolean isMailSent = userService.processForgotPassword(forgotPasswordReqDto.getUsername());
         if (isMailSent) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.SEND_MAIL_SUCCESS, ResponseMessage.SEND_MAIL_SUCCESS), HttpStatus.OK);
@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/password-recover-update-password")
-    public ResponseEntity<?> recoverPassword(@Valid @RequestBody RecoverPasswordReqDto recoverPasswordReqDto) {
+    public ResponseEntity<?> recoverPasswordUpdatePassword(@Valid @RequestBody RecoverPasswordReqDto recoverPasswordReqDto) {
         boolean isPasswordUpdated = userService.processRecoverPassword(recoverPasswordReqDto);
         if (isPasswordUpdated) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_PASSWORD_SUCCESS, ResponseMessage.UPDATE_PASSWORD_SUCCESS), HttpStatus.OK);
@@ -106,7 +106,6 @@ public class UserController {
         }
         return new ResponseEntity<>(new MessageResDto(ResponseCode.REMOVE_AVATAR_FAIL, ResponseMessage.REMOVE_AVATAR_FAIL), HttpStatus.BAD_REQUEST);
     }
-
 
 
     // test role-permission

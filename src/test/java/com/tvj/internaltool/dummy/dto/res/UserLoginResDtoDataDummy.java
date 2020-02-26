@@ -14,14 +14,4 @@ public class UserLoginResDtoDataDummy {
         return admin1;
     }
 
-    public UserLoginResDto getAdminUserResDto2() {
-        UserLoginResDto admin1 = new UserLoginResDto();
-        admin1.setToken("sampleToken");
-        admin1.setFirstName("Ad");
-        admin1.setLastName("Min2");
-        admin1.setRoleName("ADMIN");
-        admin1.setFirstTimeLogin(true);
-        return admin1;
-    }
-
 }

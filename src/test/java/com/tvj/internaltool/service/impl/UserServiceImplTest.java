@@ -43,7 +43,11 @@ public class UserServiceImplTest {
         ReflectionTestUtils.setField(userService, "forgotPasswordMaxLoginFailedCount", 5);
         // Override value
         ReflectionTestUtils.setField(userService, "passwordEncoder", new BCryptPasswordEncoder());
+        ReflectionTestUtils.setField(userService, "accountIsLockedMailSubject", "Mail Subject");
+        ReflectionTestUtils.setField(userService, "accountIsLockedMailTemplate", "Mail Template");
     }
+
+    // ---------- processLogin START ---------
 
     @Test // Do not use org.junit.jupiter.api
     public void processLogin_success() {
@@ -139,7 +143,7 @@ public class UserServiceImplTest {
     }
 
     @Test // Do not use org.junit.jupiter.api
-    public void processLogin_userIsLocked() {
+    public void processLogin_userIsLocked() throws MessagingException {
         // value from user
         String username = "admin1";
         String password = "12345678";
@@ -154,14 +158,37 @@ public class UserServiceImplTest {
 
         if (userLoginResDto instanceof String) {
             verify(userRepository, times(1)).findActivatedUserByUsername(username);
-            try {
-                verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
-            } catch (MessagingException e) {
-                fail("Cannot send email!!");
-            }
+            verify(emailService, times(0)).sendSimpleMessage(anyString(), anyString(), anyString());
             verify(userRepository, times(0)).save(any(UserEntity.class));
             verify(jwtTokenUtil, times(0)).generateToken(any(UserDetails.class));
             assertEquals(userLoginResDto, ResponseCode.USER_IS_LOCKED);
+        } else {
+            fail("Must return error code!!");
+        }
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void processLogin_userIsLocked_thenSendMail() throws MessagingException {
+        // value from user
+        String username = "admin1";
+        String password = "123456789";
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+        admin.setLoginFailCount(4);
+        when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
+        // Mock void method
+        doNothing().when(emailService).sendSimpleMessage(anyString(), anyString(), anyString());
+
+        // input value from user
+        Object userLoginResDto = userService.processLogin(username, password);
+
+        if (userLoginResDto instanceof String) {
+            verify(userRepository, times(1)).findActivatedUserByUsername(username);
+            verify(emailService, times(1)).sendSimpleMessage(anyString(), anyString(), anyString());
+            verify(userRepository, times(1)).save(any(UserEntity.class));
+            verify(jwtTokenUtil, times(0)).generateToken(any(UserDetails.class));
+            assertEquals(userLoginResDto, ResponseCode.UNAUTHORIZED);
         } else {
             fail("Must return error code!!");
         }
@@ -195,5 +222,26 @@ public class UserServiceImplTest {
         }
     }
 
+    // ---------- processLogin END ---------
+
+    @Test
+    public void getUserDetails() {
+    }
+
+    @Test
+    public void getUserByUsername() {
+    }
+
+    @Test
+    public void processForgotPassword() {
+    }
+
+    @Test
+    public void processConfirmForgotPasswordToken() {
+    }
+
+    @Test
+    public void processRecoverPassword() {
+    }
 
 }
