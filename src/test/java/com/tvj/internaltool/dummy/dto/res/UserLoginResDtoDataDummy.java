@@ -5,13 +5,13 @@ import com.tvj.internaltool.dto.res.UserLoginResDto;
 public class UserLoginResDtoDataDummy {
 
     public UserLoginResDto getAdminUserResDto1() {
-        UserLoginResDto admin1 = new UserLoginResDto();
-        admin1.setToken("sampleToken");
-        admin1.setFirstName("Ad");
-        admin1.setLastName("Min1");
-        admin1.setRoleName("ADMIN");
-        admin1.setFirstTimeLogin(false);
-        return admin1;
+        UserLoginResDto admin = new UserLoginResDto();
+        admin.setToken("sampleToken");
+        admin.setFirstName("Ad");
+        admin.setLastName("Min1");
+        admin.setRoleName("ADMIN");
+        admin.setFirstTimeLogin(false);
+        return admin;
     }
 
 }
