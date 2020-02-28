@@ -1,13 +1,20 @@
 package com.tvj.internaltool.service.impl;
 
 import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
+import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingReqDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
+import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.dummy.entity.ForgotPasswordTokenEntityDataDummy;
 import com.tvj.internaltool.dummy.entity.UserEntityDataDummy;
+import com.tvj.internaltool.dummy.entity.UserSettingEntityDataDummy;
 import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
 import com.tvj.internaltool.entity.UserEntity;
+import com.tvj.internaltool.entity.UserSettingEntity;
+import com.tvj.internaltool.enums.UserStatus;
 import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
 import com.tvj.internaltool.repository.UserRepository;
+import com.tvj.internaltool.repository.UserSettingRepository;
 import com.tvj.internaltool.security.JwtTokenUtil;
 import com.tvj.internaltool.utils.EnvironmentUtils;
 import com.tvj.internaltool.utils.ResponseCode;
@@ -17,6 +24,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -41,6 +51,9 @@ public class UserServiceImplTest {
     private UserRepository userRepository; // this will be injected into userService (use for when(...))
 
     @Mock
+    private UserSettingRepository userSettingRepository; // this will be injected into userService (use for when(...))
+
+    @Mock
     private ForgotPasswordTokenRepository forgotPasswordTokenRepository; // this will be injected into userService (use for when(...))
 
     @Mock
@@ -49,16 +62,26 @@ public class UserServiceImplTest {
     @Mock
     private EnvironmentUtils environmentUtils; // this will be injected into userService (use for when(...))
 
+    private final static String currentUsername = "admin1";
+
     @Before
     public void setUp() {
         // Initialize value for @Value parameter
         ReflectionTestUtils.setField(userService, "forgotPasswordMaxLoginFailedCount", 5);
+
         // Override value
         ReflectionTestUtils.setField(userService, "passwordEncoder", new BCryptPasswordEncoder());
         ReflectionTestUtils.setField(userService, "accountIsLockedMailSubject", "Mail Subject 1");
         ReflectionTestUtils.setField(userService, "accountIsLockedMailTemplate", "Mail Template 1");
         ReflectionTestUtils.setField(userService, "forgotPasswordMailSubject", "Mail Subject 2");
         ReflectionTestUtils.setField(userService, "forgotPasswordMailTemplate", "Mail Template 3");
+
+        // Mocking Spring Security Context
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(SecurityContextHolder.getContext().getAuthentication().getName()).thenReturn(currentUsername);
     }
 
     // ---------- processLogin START ---------
@@ -493,5 +516,155 @@ public class UserServiceImplTest {
     }
 
     // ---------- processRecoverPassword END ---------
+
+    // ---------- getUserSetting START ---------
+
+    @Test
+    public void getUserSetting_success() {
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
+
+        UserSettingResDto userSettingResDto = userService.getUserSetting();
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+
+        assertNotNull(userSettingResDto);
+    }
+
+    @Test
+    public void getUserSetting_userDoesNotExist() {
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
+
+        UserSettingResDto userSettingResDto = userService.getUserSetting();
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+
+        assertNull(userSettingResDto);
+    }
+
+    // ---------- getUserSetting END ---------
+
+    // ---------- updateUserSetting START ---------
+
+    @Test
+    public void updateUserSetting_success() {
+        // Value from client
+        UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
+        userSettingReqDto.setStatus(UserStatus.BUSY.getStatus());
+        userSettingReqDto.setLanguageId("2");
+
+        UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
+        UserSettingEntity userSettingEntity = userSettingEntityDataDummy.getAdminUserSetting1();
+        userSettingEntity.setStatus(UserStatus.BUSY.getStatus());
+        userSettingEntity.setLanguageId("2");
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
+        when(userSettingRepository.saveAndFlush(any(UserSettingEntity.class))).thenReturn(userSettingEntity);
+
+        // Mock void method
+        doNothing().when(userRepository).refresh(admin);
+
+        UserSettingResDto userSettingResDto = userService.updateUserSetting(userSettingReqDto);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+        verify(userSettingRepository, times(1)).saveAndFlush(any(UserSettingEntity.class));
+        verify(userRepository, times(1)).refresh(admin);
+
+        assertEquals(userSettingResDto.getStatus(), userSettingReqDto.getStatus());
+        assertEquals(userSettingResDto.getLanguageId(), userSettingReqDto.getLanguageId());
+    }
+
+    @Test
+    public void updateUserSetting_userDoesNotExist() {
+        // Value from client
+        UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
+        userSettingReqDto.setStatus(UserStatus.BUSY.getStatus());
+        userSettingReqDto.setLanguageId("2");
+
+        UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
+        UserSettingEntity userSettingEntity = userSettingEntityDataDummy.getAdminUserSetting1();
+        userSettingEntity.setStatus(UserStatus.BUSY.getStatus());
+        userSettingEntity.setLanguageId("2");
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
+
+        UserSettingResDto userSettingResDto = userService.updateUserSetting(userSettingReqDto);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+        verify(userSettingRepository, times(0)).saveAndFlush(any(UserSettingEntity.class));
+        verify(userRepository, times(0)).refresh(any(UserEntity.class));
+
+        assertNull(userSettingResDto);
+    }
+
+    // ---------- updateUserSetting END ---------
+
+    // ---------- updatePassword START ---------
+
+    @Test
+    public void updatePassword_success() {
+        // Value from client
+        UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
+        updatePasswordReqDto.setOldPassword("12345678");
+        updatePasswordReqDto.setNewPassword("123456789");
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
+        when(userRepository.save(admin)).thenReturn(admin);
+
+        boolean result = userService.updatePassword(updatePasswordReqDto);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+        verify(userRepository, times(1)).save(admin);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void updatePassword_userDoesNotExist() {
+        // Value from client
+        UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
+        updatePasswordReqDto.setOldPassword("12345678");
+        updatePasswordReqDto.setNewPassword("123456789");
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
+
+        boolean result = userService.updatePassword(updatePasswordReqDto);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+        verify(userRepository, times(0)).save(any(UserEntity.class));
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void updatePassword_passwordDoesNotMatched() {
+        // Value from client
+        UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
+        updatePasswordReqDto.setOldPassword("123456789");
+        updatePasswordReqDto.setNewPassword("123456789");
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
+
+        boolean result = userService.updatePassword(updatePasswordReqDto);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+        verify(userRepository, times(0)).save(any(UserEntity.class));
+
+        assertFalse(result);
+    }
+
+    // ---------- updatePassword END ---------
+
+
 
 }

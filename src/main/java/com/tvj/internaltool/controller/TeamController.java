@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/team")
-@CrossOrigin
 public class TeamController {
 
     private final TeamService teamService;

@@ -20,7 +20,6 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
 public class UserController {
 
     private final UserService userService;
