@@ -417,7 +417,7 @@ public class UserControllerTest {
                 "file",
                 "cv.jpg",
                 "image/jpeg",
-                "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.jpg\"}".getBytes());
+                "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         MockMultipartHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/user/upload-avatar");
@@ -438,7 +438,7 @@ public class UserControllerTest {
                 "file",
                 "cv.jpg",
                 "image/jpeg",
-                "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.jpg\"}".getBytes());
+                "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         MockMultipartHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/user/upload-avatar");

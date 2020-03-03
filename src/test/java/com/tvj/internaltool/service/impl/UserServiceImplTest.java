@@ -72,7 +72,7 @@ public class UserServiceImplTest {
 
     private final static String currentUsername = "admin1";
 
-    private final static String avatarUploadDir = "F:\\TVJ\\file_upload\\avatar\\";
+    private final static String avatarUploadDir = "F:\\TVJ\\file_upload\\test\\";
 
     @Before
     public void setUp() {
@@ -685,7 +685,7 @@ public class UserServiceImplTest {
                 "file",
                 "cv.jpg",
                 "image/jpeg",
-                "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.jpg\"}".getBytes());
+                "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         String dateTimePatternSticky = "yyyyMMddhhmmss";
 
@@ -721,7 +721,7 @@ public class UserServiceImplTest {
                 "file",
                 "cv.gif",
                 "image/gif",
-                "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.gif\"}".getBytes());
+                "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.gif\"}".getBytes());
 
         String outputFileName = userService.uploadAvatar(image);
 
@@ -739,7 +739,7 @@ public class UserServiceImplTest {
                 "file",
                 "cv.jpg",
                 "image/jpeg",
-                "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.jpg\"}".getBytes());
+                "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
 
