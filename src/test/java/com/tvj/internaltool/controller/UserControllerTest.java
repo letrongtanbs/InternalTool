@@ -415,8 +415,8 @@ public class UserControllerTest {
 
         MockMultipartFile image = new MockMultipartFile(
                 "file",
-                "",
-                "application/json",
+                "cv.jpg",
+                "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.jpg\"}".getBytes());
 
         MockMultipartHttpServletRequestBuilder builder =
@@ -436,8 +436,8 @@ public class UserControllerTest {
 
         MockMultipartFile image = new MockMultipartFile(
                 "file",
-                "",
-                "application/json",
+                "cv.jpg",
+                "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.jpg\"}".getBytes());
 
         MockMultipartHttpServletRequestBuilder builder =

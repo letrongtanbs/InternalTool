@@ -24,15 +24,20 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -60,9 +65,14 @@ public class UserServiceImplTest {
     private JwtTokenUtil jwtTokenUtil; // this will be injected into userService (use for when(...))
 
     @Mock
+    private FileStorageServiceImpl fileStorageService; // this will be injected into userService (use for when(...))
+
+    @Mock
     private EnvironmentUtils environmentUtils; // this will be injected into userService (use for when(...))
 
     private final static String currentUsername = "admin1";
+
+    private final static String avatarUploadDir = "F:\\TVJ\\file_upload\\avatar\\";
 
     @Before
     public void setUp() {
@@ -75,6 +85,7 @@ public class UserServiceImplTest {
         ReflectionTestUtils.setField(userService, "accountIsLockedMailTemplate", "Mail Template 1");
         ReflectionTestUtils.setField(userService, "forgotPasswordMailSubject", "Mail Subject 2");
         ReflectionTestUtils.setField(userService, "forgotPasswordMailTemplate", "Mail Template 3");
+        ReflectionTestUtils.setField(userService, "avatarUploadDir", avatarUploadDir);
 
         // Mocking Spring Security Context
         Authentication authentication = mock(Authentication.class);
@@ -665,6 +676,111 @@ public class UserServiceImplTest {
 
     // ---------- updatePassword END ---------
 
+    // ---------- uploadAvatar START ---------
 
+    @Test
+    public void uploadAvatar_success() {
+        // Value from client
+        MockMultipartFile image = new MockMultipartFile(
+                "file",
+                "cv.jpg",
+                "image/jpeg",
+                "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.jpg\"}".getBytes());
+
+        String dateTimePatternSticky = "yyyyMMddhhmmss";
+
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
+        String newFileName = currentUsername + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTimePatternSticky)) + "_" + fileName;
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+
+        UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
+        UserSettingEntity userSettingEntity = userSettingEntityDataDummy.getAdminUserSetting1();
+        userSettingEntity.setAvatar(newFileName);
+        userSettingEntity.setUpdatedBy(currentUsername);
+        userSettingEntity.setUpdatedDate(LocalDateTime.now());
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
+        when(fileStorageService.storeFile(image)).thenReturn(newFileName);
+        when(userSettingRepository.save(any(UserSettingEntity.class))).thenReturn(userSettingEntity);
+
+        String outputFileName = userService.uploadAvatar(image);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+        verify(fileStorageService, times(1)).storeFile(image);
+        verify(userSettingRepository, times(1)).save(any(UserSettingEntity.class));
+
+        assertEquals(outputFileName, avatarUploadDir + newFileName);
+    }
+
+    @Test
+    public void uploadAvatar_invalidFileType() {
+        // Value from client
+        MockMultipartFile image = new MockMultipartFile(
+                "file",
+                "cv.gif",
+                "image/gif",
+                "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.gif\"}".getBytes());
+
+        String outputFileName = userService.uploadAvatar(image);
+
+        verify(userRepository, times(0)).findActivatedUserByUsername(anyString());
+        verify(fileStorageService, times(0)).storeFile(any(MultipartFile.class));
+        verify(userSettingRepository, times(0)).save(any(UserSettingEntity.class));
+
+        assertNull(outputFileName);
+    }
+
+    @Test
+    public void uploadAvatar_userDoesNotExist() {
+        // Value from client
+        MockMultipartFile image = new MockMultipartFile(
+                "file",
+                "cv.jpg",
+                "image/jpeg",
+                "{\"image\": \"F:\\TVJ\\file_upload\\avatar\\cv.jpg\"}".getBytes());
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
+
+        String outputFileName = userService.uploadAvatar(image);
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(anyString());
+        verify(fileStorageService, times(0)).storeFile(any(MultipartFile.class));
+        verify(userSettingRepository, times(0)).save(any(UserSettingEntity.class));
+
+        assertNull(outputFileName);
+    }
+
+    // ---------- uploadAvatar END ---------
+
+    // ---------- removeAvatar START ---------
+
+    @Test
+    public void removeAvatar_success() {
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
+
+        boolean result = userService.removeAvatar();
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void removeAvatar_userDoesNotExist() {
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
+
+        boolean result = userService.removeAvatar();
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+
+        assertFalse(result);
+    }
+
+    // ---------- removeAvatar END ---------
 
 }

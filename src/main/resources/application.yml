@@ -64,4 +64,4 @@ account-is-locked:
 logging:
   config: src/main/resources/logback.xml
 
-front-end-host: "192.168.1.9"
+front-end-host: "192.168.43.189"
