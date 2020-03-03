@@ -4,6 +4,7 @@ import com.tvj.internaltool.exception.FileStorageException;
 import com.tvj.internaltool.properties.FileStorageProperties;
 import com.tvj.internaltool.service.FileStorageService;
 import com.tvj.internaltool.utils.UserUtils;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +20,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Objects;
 
 @Service
@@ -28,14 +31,14 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Value("${date-time-pattern.sticky}")
     private String dateTimePatternSticky;
 
-    private final Path fileStorageLocation;
+    private final Path filePath;
 
     public FileStorageServiceImpl(FileStorageProperties fileStorageProperties) {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getAvatarUploadDir())
+        this.filePath = Paths.get(fileStorageProperties.getAvatarUploadDir())
                 .toAbsolutePath().normalize();
 
         try {
-            Files.createDirectories(this.fileStorageLocation);
+            Files.createDirectories(this.filePath);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
@@ -56,7 +59,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             String newFileName = UserUtils.getCurrentUsername() + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTimePatternSticky)) + "_" + fileName;
 
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(newFileName);
+            Path targetLocation = this.filePath.resolve(newFileName);
             Files.copy(multipartFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return newFileName;
@@ -64,6 +67,19 @@ public class FileStorageServiceImpl implements FileStorageService {
             logger.error(ex.getMessage());
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
+    }
+
+    @Override
+    public String convertImageToBase64(String fileName) {
+        byte[] fileContent;
+        String absoluteFilePath = filePath.toString() + "\\" + fileName;
+        try {
+            fileContent = FileUtils.readFileToByteArray(new File(absoluteFilePath));
+        } catch (IOException ex) {
+            logger.error(ex.getMessage());
+            throw new FileStorageException("Could not convert file " + fileName + " to Base64 string. Please try again!", ex);
+        }
+        return Base64.getEncoder().encodeToString(fileContent);
     }
 
 }

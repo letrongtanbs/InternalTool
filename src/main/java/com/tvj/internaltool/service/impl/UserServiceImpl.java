@@ -332,7 +332,7 @@ public class UserServiceImpl implements UserService {
             userSettingEntity.setUpdatedBy(UserUtils.getCurrentUsername());
             userSettingEntity.setUpdatedDate(LocalDateTime.now());
             userSettingRepository.save(userSettingEntity);
-            return avatarUploadDir + fileName;
+            return fileName;
         }
 
         return null;
@@ -393,6 +393,7 @@ public class UserServiceImpl implements UserService {
         userSettingResDto.setEmail(userEntity.getEmail());
         userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
         userSettingResDto.setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
+        userSettingResDto.setAvatar(fileStorageService.convertImageToBase64(userSettingResDto.getAvatar()));
         return userSettingResDto;
     }
 

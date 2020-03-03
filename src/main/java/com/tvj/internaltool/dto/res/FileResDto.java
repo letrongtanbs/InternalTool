@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FileResDto {
 
-    private String filePath;
+    private String fileName;
 
 }

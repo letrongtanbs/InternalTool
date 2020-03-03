@@ -35,13 +35,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
-    private MockMvc mockMvc;
-
     @InjectMocks
     private UserController userController;
 
     @Mock
     private UserService userService;
+
+    private MockMvc mockMvc;
 
     @Before
     public void setup() {

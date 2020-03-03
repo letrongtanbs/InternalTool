@@ -711,7 +711,7 @@ public class UserServiceImplTest {
         verify(fileStorageService, times(1)).storeFile(image);
         verify(userSettingRepository, times(1)).save(any(UserSettingEntity.class));
 
-        assertEquals(outputFileName, avatarUploadDir + newFileName);
+        assertEquals(outputFileName, newFileName);
     }
 
     @Test
