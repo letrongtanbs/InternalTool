@@ -33,4 +33,5 @@ public class EmailServiceImpl implements EmailService {
 
         javaMailSender.send(mimeMessage);
     }
+
 }
