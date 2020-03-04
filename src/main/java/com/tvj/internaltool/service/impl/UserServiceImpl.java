@@ -147,6 +147,7 @@ public class UserServiceImpl implements UserService {
         userLoginResDto.setLastName(userEntity.getLastName());
         userLoginResDto.setRoleName(userEntity.getRole().getRoleName());
         userLoginResDto.setFirstTimeLogin(userEntity.isFirstTimeLogin());
+        userLoginResDto.setAvatar(fileStorageService.convertImageToBase64(userEntity.getUserSettingEntity().getAvatar()));
 
         return userLoginResDto;
     }

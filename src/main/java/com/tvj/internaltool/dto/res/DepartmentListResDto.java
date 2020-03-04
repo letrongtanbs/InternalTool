@@ -13,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class DepartmentListResDto {
 
-    private List<DepartmentResDto> departmentList;
+    private List<DepartmentResDto> departmentResDtoList;
 
 }

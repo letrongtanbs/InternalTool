@@ -21,4 +21,6 @@ public class UserLoginResDto {
 
     private boolean isFirstTimeLogin;
 
+    private String avatar;
+
 }

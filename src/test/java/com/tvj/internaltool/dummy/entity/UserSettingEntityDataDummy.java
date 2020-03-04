@@ -20,7 +20,7 @@ public class UserSettingEntityDataDummy {
         admin.setCountryId("1");
         admin.setLanguageId("1");
         admin.setStatus(1);
-        admin.setAvatar("F:\\TVJ\\file_upload\\avatar\\cv.jpg");
+        admin.setAvatar("This/is/base64/String");
         admin.setCreatedBy("Dex");
         admin.setCreatedDate(LocalDateTime.now());
         admin.setUpdatedBy("Dexx");
@@ -47,7 +47,7 @@ public class UserSettingEntityDataDummy {
         admin.setCountryId("2");
         admin.setLanguageId("2");
         admin.setStatus(1);
-        admin.setAvatar("F:\\TVJ\\file_upload\\avatar\\cv.jpg");
+        admin.setAvatar("This/is/base64/String");
         admin.setCreatedBy("Dex");
         admin.setCreatedDate(LocalDateTime.now());
         admin.setUpdatedBy("Dexx");
@@ -74,7 +74,7 @@ public class UserSettingEntityDataDummy {
         user.setCountryId("1");
         user.setLanguageId("1");
         user.setStatus(1);
-        user.setAvatar("F:\\TVJ\\file_upload\\avatar\\cv.jpg");
+        user.setAvatar("This/is/base64/String");
         user.setCreatedBy("Dex");
         user.setCreatedDate(LocalDateTime.now());
         user.setUpdatedBy("Dexx");
