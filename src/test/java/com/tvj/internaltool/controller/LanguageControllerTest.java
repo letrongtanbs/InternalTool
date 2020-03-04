@@ -77,7 +77,7 @@ public class LanguageControllerTest {
     }
 
     @Test
-    public void getAllLanguage_success_returnTwoRecord() throws Exception {
+    public void getAllLanguage_success_returnTwoRecords() throws Exception {
         LanguageResDtoDataDummy languageResDtoDataDummy = new LanguageResDtoDataDummy();
         LanguageListResDto languageListResDtoDummy = new LanguageListResDto();
         languageListResDtoDummy.setLanguageResDtoList(Arrays.asList(

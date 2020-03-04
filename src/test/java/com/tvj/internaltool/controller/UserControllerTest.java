@@ -52,6 +52,7 @@ public class UserControllerTest {
 
     @Test // Do not use org.junit.jupiter.api
     public void generateAuthenticationToken_success() throws Exception {
+        // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
         userLoginReqDto.setUsername("admin1");
         userLoginReqDto.setPassword("12345678");
@@ -79,6 +80,7 @@ public class UserControllerTest {
 
     @Test // Do not use org.junit.jupiter.api
     public void generateAuthenticationToken_userIsUnauthorized() throws Exception {
+        // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
         userLoginReqDto.setUsername("admin1");
         userLoginReqDto.setPassword("12345678");
@@ -102,6 +104,7 @@ public class UserControllerTest {
 
     @Test // Do not use org.junit.jupiter.api
     public void generateAuthenticationToken_userIsLocked() throws Exception {
+        // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
         userLoginReqDto.setUsername("admin1");
         userLoginReqDto.setPassword("12345678");
@@ -129,6 +132,7 @@ public class UserControllerTest {
 
     @Test
     public void forgotPasswordSendRequest_success() throws Exception {
+        // Value from client
         ForgotPasswordReqDto forgotPasswordReqDto = new ForgotPasswordReqDto();
         forgotPasswordReqDto.setUsername("admin1");
 
@@ -151,6 +155,7 @@ public class UserControllerTest {
 
     @Test
     public void forgotPasswordSendRequest_cannotSendRequest() throws Exception {
+        // Value from client
         ForgotPasswordReqDto forgotPasswordReqDto = new ForgotPasswordReqDto();
         forgotPasswordReqDto.setUsername("admin1");
 
@@ -177,6 +182,7 @@ public class UserControllerTest {
 
     @Test
     public void forgotPasswordConfirmToken_success() throws Exception {
+        // Value from client
         String token = "token";
 
         when(userService.processConfirmForgotPasswordToken(token)).thenReturn(true);
@@ -196,6 +202,7 @@ public class UserControllerTest {
 
     @Test
     public void forgotPasswordConfirmToken_verifyTokenFailed() throws Exception {
+        // Value from client
         String token = "token";
 
         when(userService.processConfirmForgotPasswordToken(token)).thenReturn(false);
@@ -219,6 +226,7 @@ public class UserControllerTest {
 
     @Test
     public void recoverPasswordUpdatePassword_success() throws Exception {
+        // Value from client
         RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
         recoverPasswordReqDto.setToken("Token");
         recoverPasswordReqDto.setNewPassword("newpassword");
@@ -242,6 +250,7 @@ public class UserControllerTest {
 
     @Test
     public void recoverPasswordUpdatePassword_cannotUpdatePassword() throws Exception {
+        // Value from client
         RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
         recoverPasswordReqDto.setToken("Token");
         recoverPasswordReqDto.setNewPassword("newpassword");
@@ -303,6 +312,7 @@ public class UserControllerTest {
 
     @Test
     public void updateUserSetting_success() throws Exception {
+        // Value from client
         UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
         userSettingReqDto.setTeamId("1");
         userSettingReqDto.setTitle("Back Office");
@@ -329,6 +339,7 @@ public class UserControllerTest {
 
     @Test
     public void updateUserSetting_cannotUpdateUserSetting() throws Exception {
+        // Value from client
         UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
         userSettingReqDto.setTeamId("1");
         userSettingReqDto.setTitle("Back Office");
@@ -361,6 +372,7 @@ public class UserControllerTest {
 
     @Test
     public void updatePassword_success() throws Exception {
+        // Value from client
         UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
         updatePasswordReqDto.setOldPassword("12345678");
         updatePasswordReqDto.setNewPassword("87654321");
@@ -384,6 +396,7 @@ public class UserControllerTest {
 
     @Test
     public void updatePassword_cannotUpdatePassword() throws Exception {
+        // Value from client
         UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
         updatePasswordReqDto.setOldPassword("12345678");
         updatePasswordReqDto.setNewPassword("87654321");
@@ -411,13 +424,14 @@ public class UserControllerTest {
 
     @Test
     public void uploadAvatar_success() throws Exception {
-        when(userService.uploadAvatar(any(MultipartFile.class))).thenReturn("output/file/path");
-
+        // Value from client
         MockMultipartFile image = new MockMultipartFile(
                 "file",
                 "cv.jpg",
                 "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
+
+        when(userService.uploadAvatar(any(MultipartFile.class))).thenReturn("output/file/path");
 
         MockMultipartHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/user/upload-avatar");
@@ -432,13 +446,14 @@ public class UserControllerTest {
 
     @Test
     public void uploadAvatar_cannotUploadAvatar() throws Exception {
-        when(userService.uploadAvatar(any(MultipartFile.class))).thenReturn("");
-
+        // Value from client
         MockMultipartFile image = new MockMultipartFile(
                 "file",
                 "cv.jpg",
                 "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
+
+        when(userService.uploadAvatar(any(MultipartFile.class))).thenReturn("");
 
         MockMultipartHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/user/upload-avatar");

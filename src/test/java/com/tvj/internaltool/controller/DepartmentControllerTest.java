@@ -77,7 +77,7 @@ public class DepartmentControllerTest {
     }
 
     @Test
-    public void getAllDepartment_success_returnTwoRecord() throws Exception {
+    public void getAllDepartment_success_returnTwoRecords() throws Exception {
         DepartmentResDtoDataDummy departmentResDtoDataDummy = new DepartmentResDtoDataDummy();
         DepartmentListResDto departmentListResDtoDummy = new DepartmentListResDto();
         departmentListResDtoDummy.setDepartmentResDtoList(Arrays.asList(

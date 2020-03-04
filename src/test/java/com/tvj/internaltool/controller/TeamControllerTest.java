@@ -43,6 +43,7 @@ public class TeamControllerTest {
 
     @Test
     public void getTeamByDepartment_success_returnZeroRecord() throws Exception {
+        // Value from client
         String departmentId = "1";
 
         when(teamService.getTeamByDepartment(departmentId)).thenReturn(new TeamListResDto());
@@ -61,6 +62,7 @@ public class TeamControllerTest {
 
     @Test
     public void getTeamByDepartment_success_returnOneRecord() throws Exception {
+        // Value from client
         String departmentId = "1";
 
         TeamResDtoDataDummy teamResDtoDataDummy = new TeamResDtoDataDummy();
@@ -83,7 +85,8 @@ public class TeamControllerTest {
     }
 
     @Test
-    public void getTeamByDepartment_success_returnTwoRecord() throws Exception {
+    public void getTeamByDepartment_success_returnTwoRecords() throws Exception {
+        // Value from client
         String departmentId = "1";
 
         TeamResDtoDataDummy teamResDtoDataDummy = new TeamResDtoDataDummy();
