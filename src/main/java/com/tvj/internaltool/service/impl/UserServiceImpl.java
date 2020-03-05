@@ -269,7 +269,7 @@ public class UserServiceImpl implements UserService {
         if (userEntity != null) {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
             userSettingEntity.setTeamId(userSettingReqDto.getTeamId());
-            userSettingEntity.setTitle(userSettingReqDto.getTitle());
+            userSettingEntity.setTitleId(userSettingReqDto.getTitleId());
             userSettingEntity.setAddress(userSettingReqDto.getAddress());
             userSettingEntity.setPhone(userSettingReqDto.getPhone());
             userSettingEntity.setCountryId(userSettingReqDto.getCountryId());

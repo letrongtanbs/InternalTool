@@ -14,7 +14,7 @@ public class UserSettingReqDto {
 
     private String teamId;
 
-    private String title;
+    private String titleId;
 
     private String address;
 

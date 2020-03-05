@@ -315,7 +315,7 @@ public class UserControllerTest {
         // Value from client
         UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
         userSettingReqDto.setTeamId("1");
-        userSettingReqDto.setTitle("Back Office");
+        userSettingReqDto.setTitleId("1");
         userSettingReqDto.setAddress("1 Some Where");
         userSettingReqDto.setPhone("1234567890");
         userSettingReqDto.setCountryId("1");
@@ -342,7 +342,7 @@ public class UserControllerTest {
         // Value from client
         UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
         userSettingReqDto.setTeamId("1");
-        userSettingReqDto.setTitle("Back Office");
+        userSettingReqDto.setTitleId("1");
         userSettingReqDto.setAddress("1 Some Where");
         userSettingReqDto.setPhone("1234567890");
         userSettingReqDto.setCountryId("1");

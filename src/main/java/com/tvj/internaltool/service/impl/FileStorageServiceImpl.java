@@ -71,15 +71,18 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
     public String convertImageToBase64(String fileName) {
-        byte[] fileContent;
-        String absoluteFilePath = filePath.toString() + "\\" + fileName;
-        try {
-            fileContent = FileUtils.readFileToByteArray(new File(absoluteFilePath));
-        } catch (IOException ex) {
-            logger.error(ex.getMessage());
-            throw new FileStorageException("Could not convert file " + fileName + " to Base64 string. Please try again!", ex);
+        if (fileName != null) {
+            byte[] fileContent;
+            String absoluteFilePath = filePath.toString() + "\\" + fileName;
+            try {
+                fileContent = FileUtils.readFileToByteArray(new File(absoluteFilePath));
+            } catch (IOException ex) {
+                logger.error(ex.getMessage());
+                throw new FileStorageException("Could not convert file " + fileName + " to Base64 string. Please try again!", ex);
+            }
+            return Base64.getEncoder().encodeToString(fileContent);
         }
-        return Base64.getEncoder().encodeToString(fileContent);
+        return null;
     }
 
 }

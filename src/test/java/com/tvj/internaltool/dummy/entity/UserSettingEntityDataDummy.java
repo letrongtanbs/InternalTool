@@ -14,7 +14,7 @@ public class UserSettingEntityDataDummy {
         UserSettingEntity admin = new UserSettingEntity();
         admin.setUserSettingId("1");
         admin.setTeamId("1");
-        admin.setTitle("Moderator");
+        admin.setTitleId("1");
         admin.setAddress("Ha Noi");
         admin.setPhone("0987654321");
         admin.setCountryId("1");
@@ -41,7 +41,7 @@ public class UserSettingEntityDataDummy {
         UserSettingEntity admin = new UserSettingEntity();
         admin.setUserSettingId("2");
         admin.setTeamId("2");
-        admin.setTitle("Moderator2");
+        admin.setTitleId("2");
         admin.setAddress("Ha Noi");
         admin.setPhone("0987654321");
         admin.setCountryId("2");
@@ -68,7 +68,7 @@ public class UserSettingEntityDataDummy {
         UserSettingEntity user = new UserSettingEntity();
         user.setUserSettingId("3");
         user.setTeamId("3");
-        user.setTitle("Dev1");
+        user.setTitleId("3");
         user.setAddress("Ha Noi");
         user.setPhone("0987654321");
         user.setCountryId("1");

@@ -115,13 +115,35 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_team`
 
 
 -- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_title`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_title`
+(
+    `title_id`     VARCHAR(36)  NOT NULL,
+    `title_code`   VARCHAR(15)  NOT NULL,
+    `title_name`   VARCHAR(200) NOT NULL,
+    `created_by`   VARCHAR(36)  NOT NULL,
+    `created_date` DATETIME     NOT NULL,
+    `updated_by`   VARCHAR(36)  NULL DEFAULT NULL,
+    `updated_date` DATETIME     NULL DEFAULT NULL,
+    `deleted_by`   VARCHAR(36)  NULL DEFAULT NULL,
+    `deleted_date` DATETIME     NULL DEFAULT NULL,
+    PRIMARY KEY (`title_id`),
+    UNIQUE INDEX `tbl_title_title_code_uindex` (`title_code` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'Title of member';
+
+
+-- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_user_setting`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
 (
     `user_setting_id` VARCHAR(36)  NOT NULL,
     `team_id`         VARCHAR(36)  NULL DEFAULT NULL,
-    `title`           VARCHAR(36)  NULL DEFAULT NULL,
+    `title_id`        VARCHAR(36)  NULL DEFAULT NULL,
     `address`         VARCHAR(400) NULL DEFAULT NULL,
     `phone`           VARCHAR(15)  NULL DEFAULT NULL,
     `country_id`      VARCHAR(36)  NOT NULL,
@@ -144,7 +166,10 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
             REFERENCES `tvj_internal_db`.`tbl_country` (`country_id`),
     CONSTRAINT `tbl_user_setting_language_id_fk`
         FOREIGN KEY (`language_id`)
-            REFERENCES `tvj_internal_db`.`tbl_language` (`language_id`)
+            REFERENCES `tvj_internal_db`.`tbl_language` (`language_id`),
+    CONSTRAINT `tbl_user_setting_title_id_fk`
+        FOREIGN KEY (`title_id`)
+            REFERENCES `tvj_internal_db`.`tbl_title` (`title_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8

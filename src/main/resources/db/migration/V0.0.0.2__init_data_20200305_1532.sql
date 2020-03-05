@@ -68,16 +68,24 @@ VALUES ('1', 'TEAM001', 'Team 1', '1', 'Dexx', '2020-02-06 10:10:10', NULL, NULL
        ('3', 'TEAM003', 'Team 3', '2', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
 
 
-INSERT INTO `tbl_user_setting` (`user_setting_id`, `team_id`, `title`, `address`, `phone`, `country_id`,
+INSERT INTO `tbl_title` (`title_id`, `title_code`, `title_name`, `created_by`, `created_date`,
+                         `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
+VALUES ('1', 'DEV001', 'Developer level 1', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('2', 'DEV002', 'Developer level 2', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('3', 'DEV003', 'Developer level 3', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('4', 'DEV004', 'Developer level 4', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
+
+
+INSERT INTO `tbl_user_setting` (`user_setting_id`, `team_id`, `title_id`, `address`, `phone`, `country_id`,
                                 `language_id`, `status`, `avatar`, `created_by`, `created_date`, `updated_by`,
                                 `updated_date`, `deleted_by`, `deleted_date`)
-VALUES ('1', '1', 'Dev', 'homie', '1234567890', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+VALUES ('1', '1', '1', 'homie', '1234567890', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),
-       ('2', '1', 'Dev2', 'homie', '0987654321', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+       ('2', '1', '2', 'homie', '0987654321', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),
-       ('3', '1', 'Dev3', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+       ('3', '1', '3', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),
-       ('4', '1', 'Dev4', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+       ('4', '1', '4', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL);
 
 

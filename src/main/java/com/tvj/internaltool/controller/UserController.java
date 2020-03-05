@@ -8,7 +8,6 @@ import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.service.UserService;
 import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.ResponseMessage;
-import com.tvj.internaltool.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +77,7 @@ public class UserController {
     @GetMapping(value = "/user-setting-get-info")
     public ResponseEntity<?> getUserSetting() {
         UserSettingResDto userSettingResDto = userService.getUserSetting();
-        if (userSettingResDto!= null) {
+        if (userSettingResDto != null) {
             return new ResponseEntity<>(userSettingResDto, HttpStatus.OK);
         }
         return new ResponseEntity<>(new MessageResDto(ResponseCode.GET_USER_SETTING_FAILED, ResponseMessage.GET_USER_SETTING_FAILED),
@@ -126,28 +125,6 @@ public class UserController {
         }
         return new ResponseEntity<>(new MessageResDto(ResponseCode.REMOVE_AVATAR_FAILED, ResponseMessage.REMOVE_AVATAR_FAILED),
                 HttpStatus.BAD_REQUEST);
-    }
-
-
-    // test role-permission
-    @GetMapping(value = "/{id}/list/{listId}")
-    public ResponseEntity<?> test() {
-        return new ResponseEntity<>("Hello: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{id}/list2/{listId}")
-    public ResponseEntity<?> test2() {
-        return new ResponseEntity<>("Hello2: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{id}/list/{listId}/item")
-    public ResponseEntity<?> test3() {
-        return new ResponseEntity<>("Hello3: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/{id}/list")
-    public ResponseEntity<?> test4() {
-        return new ResponseEntity<>("Hello4: " + UserUtils.getCurrentUsername(), HttpStatus.OK);
     }
 
 }
