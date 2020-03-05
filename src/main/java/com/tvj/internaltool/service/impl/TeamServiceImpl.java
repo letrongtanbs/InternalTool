@@ -25,4 +25,5 @@ public class TeamServiceImpl implements TeamService {
         List<TeamResDto> teamResDtoList = ModelMapperUtils.mapAll(teamEntityList, TeamResDto.class);
         return new TeamListResDto(teamResDtoList);
     }
+
 }

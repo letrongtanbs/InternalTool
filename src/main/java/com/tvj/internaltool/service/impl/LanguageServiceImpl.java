@@ -26,4 +26,5 @@ public class LanguageServiceImpl implements LanguageService {
         List<LanguageResDto> languageResDtoList = ModelMapperUtils.mapAll(languageEntityList, LanguageResDto.class);
         return new LanguageListResDto(languageResDtoList);
     }
+
 }

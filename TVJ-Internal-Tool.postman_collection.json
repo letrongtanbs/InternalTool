@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"tamdt\",\n\t\"password\": \"12345678\"\n}",
+					"raw": "{\n\t\"username\": \"ngocdc\",\n\t\"password\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -162,11 +162,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODE5NjMyMDEsImlhdCI6MTU4MTkyNzIwMX0.4bFpQdlDUeDbRh6B_NToLHH6vAT5UvM4-TNU8eADkRRv0xZF0bWgP05TwV-N1hoU-u0v1V7XBqIJLcL7kglARg"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODE5NjMyMDEsImlhdCI6MTU4MTkyNzIwMX0.4bFpQdlDUeDbRh6B_NToLHH6vAT5UvM4-TNU8eADkRRv0xZF0bWgP05TwV-N1hoU-u0v1V7XBqIJLcL7kglARg"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
 					}
 				],
 				"body": {
@@ -200,11 +200,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTYwMzc5OCwiaWF0IjoxNTgxNTY3Nzk4fQ.7Y_dzgx_SMT1YI0uDp1GMOfE37AtmbsMieqnLgWah507lJF2VOW_HEENBIZZOy73TxYfL6IR0ba2Ptd74jjmjA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0MjcxNjUsImlhdCI6MTU4MzM5MTE2NX0.RiU3ve1wQjO1Kd9EH86z7KqInAeCqBAdCpOFtVGzAI-UBRUcZml58oxZ1DMPar3AP6KJbXZlHt-_1dHYm0N1Og"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTYwMzc5OCwiaWF0IjoxNTgxNTY3Nzk4fQ.7Y_dzgx_SMT1YI0uDp1GMOfE37AtmbsMieqnLgWah507lJF2VOW_HEENBIZZOy73TxYfL6IR0ba2Ptd74jjmjA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0MjcxNjUsImlhdCI6MTU4MzM5MTE2NX0.RiU3ve1wQjO1Kd9EH86z7KqInAeCqBAdCpOFtVGzAI-UBRUcZml58oxZ1DMPar3AP6KJbXZlHt-_1dHYm0N1Og"
 					}
 				],
 				"body": {
@@ -213,7 +213,7 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/C:/Users/Dex/Desktop/it.png"
+							"src": "/C:/Users/Dex/Desktop/84626092_843665972760691_7508695464498167808_n.jpg"
 						}
 					],
 					"options": {
@@ -288,16 +288,16 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODE5NjMyMDEsImlhdCI6MTU4MTkyNzIwMX0.4bFpQdlDUeDbRh6B_NToLHH6vAT5UvM4-TNU8eADkRRv0xZF0bWgP05TwV-N1hoU-u0v1V7XBqIJLcL7kglARg"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODE5NjMyMDEsImlhdCI6MTU4MTkyNzIwMX0.4bFpQdlDUeDbRh6B_NToLHH6vAT5UvM4-TNU8eADkRRv0xZF0bWgP05TwV-N1hoU-u0v1V7XBqIJLcL7kglARg"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"teamId\": \"2\",\n    \"title\": \"Dev2\",\n    \"address\": \"HN2\",\n    \"phone\": \"2222222222\",\n    \"countryId\": \"2\",\n    \"languageId\": \"2\",\n    \"status\": \"2\",\n    \"avatar\": \"img2/xxx.jpg\"\n}",
+					"raw": "{\n    \"teamId\": \"2\",\n    \"titleId\": \"2\",\n    \"address\": \"HN2\",\n    \"phone\": \"2222222222\",\n    \"countryId\": \"2\",\n    \"languageId\": \"2\",\n    \"status\": \"2\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -390,6 +390,47 @@
 					],
 					"path": [
 						"department",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Title list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/title/list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"title",
 						"list"
 					]
 				}
