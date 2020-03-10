@@ -220,14 +220,12 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
 CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_forgot_password_token`
 (
     `token_id`           VARCHAR(36)  NOT NULL,
-    `user_id`            VARCHAR(36)  NOT NULL,
+    `username`           VARCHAR(36)  NOT NULL,
     `token_string`       VARCHAR(200) NOT NULL,
     `token_expired_date` DATETIME     NOT NULL,
     PRIMARY KEY (`token_id`),
     UNIQUE INDEX `tbl_forgot_password_token_string_uindex` (`token_string` ASC) VISIBLE,
-    CONSTRAINT `tbl_forgot_password_token_user_id_fk`
-        FOREIGN KEY (`user_id`)
-            REFERENCES `tvj_internal_db`.`tbl_user` (`user_id`)
+    UNIQUE INDEX `tbl_forgot_password_username_uindex` (`username` ASC) VISIBLE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8

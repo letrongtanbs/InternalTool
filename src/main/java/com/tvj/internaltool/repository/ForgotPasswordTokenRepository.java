@@ -9,8 +9,8 @@ public interface ForgotPasswordTokenRepository extends CustomRepository<ForgotPa
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM ForgotPasswordTokenEntity fpte WHERE fpte.userId = :userId")
-    void deleteTokenByUserId(String userId);
+    @Query("DELETE FROM ForgotPasswordTokenEntity fpte WHERE fpte.username = :username")
+    void deleteTokenByUsername(String username);
 
     @Transactional
     @Modifying

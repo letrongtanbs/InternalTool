@@ -10,7 +10,7 @@ public class ForgotPasswordTokenEntityDataDummy {
         ForgotPasswordTokenEntity forgotPasswordTokenEntity = new ForgotPasswordTokenEntity();
         forgotPasswordTokenEntity.setTokenId("1");
         forgotPasswordTokenEntity.setTokenString("Token1");
-        forgotPasswordTokenEntity.setUserId("admin1");
+        forgotPasswordTokenEntity.setUsername("admin1");
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now());
         return forgotPasswordTokenEntity;
     }

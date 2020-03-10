@@ -38,7 +38,6 @@ import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -72,8 +71,6 @@ public class UserServiceImplTest {
 
     private final static String currentUsername = "admin1";
 
-    private final static String avatarUploadDir = "F:\\TVJ\\file_upload\\test\\";
-
     @Before
     public void setUp() {
         // Initialize value for @Value parameter
@@ -85,7 +82,6 @@ public class UserServiceImplTest {
         ReflectionTestUtils.setField(userService, "accountIsLockedMailTemplate", "Mail Template 1");
         ReflectionTestUtils.setField(userService, "forgotPasswordMailSubject", "Mail Subject 2");
         ReflectionTestUtils.setField(userService, "forgotPasswordMailTemplate", "Mail Template 3");
-        ReflectionTestUtils.setField(userService, "avatarUploadDir", avatarUploadDir);
 
         // Mocking Spring Security Context
         Authentication authentication = mock(Authentication.class);
@@ -342,13 +338,13 @@ public class UserServiceImplTest {
         when(forgotPasswordTokenRepository.save(any(ForgotPasswordTokenEntity.class))).thenReturn(null);
 
         // Mock void method
-        doNothing().when(forgotPasswordTokenRepository).deleteTokenByUserId(admin.getUserId());
+        doNothing().when(forgotPasswordTokenRepository).deleteTokenByUsername(username);
         doNothing().when(emailService).sendSimpleMessage(anyString(), anyString(), anyString());
 
         boolean result = userService.processForgotPassword(username);
 
         verify(userRepository, times(1)).findActivatedUserByUsername(username);
-        verify(forgotPasswordTokenRepository, times(1)).deleteTokenByUserId(admin.getUserId());
+        verify(forgotPasswordTokenRepository, times(1)).deleteTokenByUsername(username);
         verify(forgotPasswordTokenRepository, times(1)).save(any(ForgotPasswordTokenEntity.class));
         verify(emailService, times(1)).sendSimpleMessage(anyString(), anyString(), anyString());
         assertTrue(result);
@@ -364,7 +360,7 @@ public class UserServiceImplTest {
         boolean result = userService.processForgotPassword(username);
 
         verify(userRepository, times(1)).findActivatedUserByUsername(username);
-        verify(forgotPasswordTokenRepository, times(0)).deleteTokenByUserId(any());
+        verify(forgotPasswordTokenRepository, times(0)).deleteTokenByUsername(any());
         verify(forgotPasswordTokenRepository, times(0)).save(any());
         verify(emailService, times(0)).sendSimpleMessage(any(), any(), any());
         assertFalse(result);
@@ -440,9 +436,8 @@ public class UserServiceImplTest {
         UserEntity admin = userEntityDataDummy.getAdminUser1();
 
         when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(forgotPasswordTokenEntity);
-        when(userRepository.findById(forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity().getUserId()))
-                .thenReturn(Optional.of(admin));
-        when(userRepository.save(Optional.of(admin).get())).thenReturn(null);
+        when(userRepository.findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername())).thenReturn(admin);
+        when(userRepository.save(admin)).thenReturn(null);
 
         // Mock void method
         doNothing().when(forgotPasswordTokenRepository).delete(forgotPasswordTokenEntity);
@@ -450,9 +445,8 @@ public class UserServiceImplTest {
         boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
 
         verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
-        verify(userRepository, times(1))
-                .findById(forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity().getUserId());
-        verify(userRepository, times(1)).save(Optional.of(admin).get());
+        verify(userRepository, times(1)).findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername());
+        verify(userRepository, times(1)).save(admin);
         verify(forgotPasswordTokenRepository, times(1)).delete(forgotPasswordTokenEntity);
 
         assertTrue(result);
@@ -512,14 +506,12 @@ public class UserServiceImplTest {
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().plusHours(1));
 
         when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(forgotPasswordTokenEntity);
-        when(userRepository.findById(forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity().getUserId()))
-                .thenReturn(Optional.empty());
+        when(userRepository.findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername())).thenReturn(null);
 
         boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
 
         verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
-        verify(userRepository, times(1))
-                .findById(forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity().getUserId());
+        verify(userRepository, times(1)).findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername());
         verify(userRepository, times(0)).save(any());
         verify(forgotPasswordTokenRepository, times(0)).delete(any());
 

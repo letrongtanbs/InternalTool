@@ -41,7 +41,6 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -51,9 +50,6 @@ public class UserServiceImpl implements UserService {
 
     @Value("${front-end-host}")
     private String frontEndHost;
-
-    @Value("${file.avatar-upload-dir}")
-    private String avatarUploadDir;
 
     @Value("${account-is-locked.mail-subject}")
     private String accountIsLockedMailSubject;
@@ -180,7 +176,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // Remove old token
-        forgotPasswordTokenRepository.deleteTokenByUserId(userEntity.getUserId());
+        forgotPasswordTokenRepository.deleteTokenByUsername(username);
 
         // Generates token
         RandomStringGenerator generator =
@@ -190,7 +186,7 @@ public class UserServiceImpl implements UserService {
         // Save new token
         ForgotPasswordTokenEntity newToken = new ForgotPasswordTokenEntity();
         newToken.setTokenId(UUID.randomUUID().toString());
-        newToken.setUserId(userEntity.getUserId());
+        newToken.setUsername(username);
         newToken.setTokenString(randomLetters);
         newToken.setTokenExpiredDate(LocalDateTime.now().plusHours(forgotPasswordDurationInHour));
         forgotPasswordTokenRepository.save(newToken);
@@ -200,7 +196,7 @@ public class UserServiceImpl implements UserService {
             emailService.sendSimpleMessage(userEntity.getEmail()
                     , forgotPasswordMailSubject
                     , MessageFormat.format(forgotPasswordMailTemplate,
-                            userEntity.getUsername(),
+                            username,
                             frontEndHost,
                             environmentUtils.getPort(),
                             randomLetters));
@@ -227,20 +223,19 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        Optional<UserEntity> userEntity = userRepository.findById(forgotPasswordTokenEntity.getUserId());
-        if (userEntity.isPresent()) {
-            UserEntity updatedUser = userEntity.get();
-            updatedUser.setPassword(passwordEncoder.encode(recoverPasswordReqDto.getNewPassword()));
-            updatedUser.setLoginFailCount(0);
-            updatedUser.setUpdatedBy(updatedUser.getUsername());
-            updatedUser.setUpdatedDate(LocalDateTime.now());
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername());
+        if (userEntity != null) {
+            userEntity.setPassword(passwordEncoder.encode(recoverPasswordReqDto.getNewPassword()));
+            userEntity.setLoginFailCount(0);
+            userEntity.setUpdatedBy(forgotPasswordTokenEntity.getUsername());
+            userEntity.setUpdatedDate(LocalDateTime.now());
 
             // Verify user changed password after first time login
-            if (updatedUser.isFirstTimeLogin()) {
-                updatedUser.setFirstTimeLogin(false);
+            if (userEntity.isFirstTimeLogin()) {
+                userEntity.setFirstTimeLogin(false);
             }
 
-            userRepository.save(updatedUser);
+            userRepository.save(userEntity);
             forgotPasswordTokenRepository.delete(forgotPasswordTokenEntity);
             return true;
         }

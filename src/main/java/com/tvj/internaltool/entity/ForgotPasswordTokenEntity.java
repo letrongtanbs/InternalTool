@@ -22,8 +22,8 @@ public class ForgotPasswordTokenEntity implements Serializable {
     @Column(name = "token_id")
     private String tokenId;
 
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "token_string")
     private String tokenString;
