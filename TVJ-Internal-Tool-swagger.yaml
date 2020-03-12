@@ -1,0 +1,599 @@
+swagger: "2.0"
+info:
+  description: "TVJ Internal tool"
+  version: "1.0.0"
+  title: "TVJ Internal tool"
+host: "localhost"
+tags:
+- name: "User"
+  description: "User Api"
+- name: "Department"
+  description: "Department Api"
+- name: "Title"
+  description: "Title Api"
+- name: "Team"
+  description: "Team Api"
+- name: "Country"
+  description: "Country Api"
+- name: "Language"
+  description: "Language Api"
+schemes:
+- "https"
+- "http"
+paths:
+
+  /user/login:
+    post:
+      tags:
+      - "User"
+      summary: "User Login"
+      description: "User Login"
+      operationId: "generateAuthenticationToken"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "UserLoginReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/UserLoginReqDto"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/UserLoginResDto"
+        401:
+          description: "Error code: ERR002"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        423:
+          description: "Error code: ERR007"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+              
+  /user/password-recover-send-request:
+    post:
+      tags:
+      - "User"
+      summary: "Recover password send request"
+      description: "Recover password send request"
+      operationId: "forgotPasswordSendRequest"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "ForgotPasswordReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/ForgotPasswordReqDto"
+      responses:
+        200:
+          description: "Return code: SUC001"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        408:
+          description: "Return code: ERR002"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+
+  /user/password-recover-confirm-token:
+    get:
+      tags:
+      - "User"
+      summary: "Recover password confirm token"
+      description: "Recover password confirm token"
+      operationId: "forgotPasswordConfirmToken"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "Inputted token"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Return code: SUC004"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        400:
+          description: "Return code: ERR004"
+          schema:
+            $ref: "#/definitions/MessageResDto" 
+              
+  /user/password-recover-update-password:
+    post:
+      tags:
+      - "User"
+      summary: "Recover password update password"
+      description: "Recover password update password"
+      operationId: "recoverPasswordUpdatePassword"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "RecoverPasswordReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/RecoverPasswordReqDto"
+      responses:
+        200:
+          description: "Return code: SUC002"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        408:
+          description: "Return code: ERR005"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+              
+  /user/user-setting-get-info:
+    get:
+      tags:
+      - "User"
+      summary: "User setting get info"
+      description: "User setting get info"
+      operationId: "getUserSetting"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/UserSettingResDto"
+        400:
+          description: "Return code: ERR009"
+          schema:
+            $ref: "#/definitions/MessageResDto" 
+            
+  /user/user-setting-update-info:
+    put:
+      tags:
+      - "User"
+      summary: "User setting update info"
+      description: "User setting update info"
+      operationId: "updateUserSetting"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "UserSettingReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/UserSettingReqDto"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/UserSettingResDto"
+        400:
+          description: "Return code: ERR009"
+          schema:
+            $ref: "#/definitions/MessageResDto" 
+            
+  /user/user-setting-update-password:
+    patch:
+      tags:
+      - "User"
+      summary: "User setting update password"
+      description: "User setting update password"
+      operationId: "updatePassword"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "UpdatePasswordReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/UpdatePasswordReqDto"
+      responses:
+        200:
+          description: "Return code: SUC002"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        400:
+          description: "Return code: ERR005"
+          schema:
+            $ref: "#/definitions/MessageResDto" 
+
+  /user/upload-avatar:
+    post:
+      tags:
+      - "User"
+      summary: "User upload avatar"
+      description: "User upload avatar"
+      operationId: "uploadAvatar"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "formData"
+          name: file
+          type: file
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/FileResDto"
+        408:
+          description: "Return code: ERR006"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+
+  /user/remove-avatar:
+    delete:
+      tags:
+      - "User"
+      summary: "User remove avatar"
+      description: "User remove avatar"
+      operationId: "removeAvatar"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Return code: SUC003"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        408:
+          description: "Return code: ERR010"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+
+  /department/list:
+    get:
+      tags:
+      - "Department"
+      summary: "Get all department"
+      description: "Get all department"
+      operationId: "getAllDepartment"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/DepartmentListResDto"
+            
+  /title/list:
+    get:
+      tags:
+      - "Title"
+      summary: "Get all title"
+      description: "Get all title"
+      operationId: "getAllTitle"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/TitleListResDto"
+            
+  /team/list-by-department:
+    get:
+      tags:
+      - "Team"
+      summary: "Get team by department"
+      description: "Get team by department"
+      operationId: "getTeamByDepartment"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "departmentId"
+        in: "query"
+        description: "department id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/TeamListResDto"
+            
+  /country/list:
+    get:
+      tags:
+      - "Country"
+      summary: "Get all country"
+      description: "Get all country"
+      operationId: "getAllCountry"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/CountryListResDto"
+            
+  /language/list:
+    get:
+      tags:
+      - "Language"
+      summary: "Get all language"
+      description: "Get all language"
+      operationId: "getAllLanguage"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/LanguageListResDto"
+            
+definitions:
+
+  UserLoginReqDto:
+    type: "object"
+    properties:
+      username:
+        type: string
+        description: "Not Blank, max 20 characters"
+      password:
+        type: string
+        description: "Not Blank, between 8 and 20 characters"
+
+  UserLoginResDto:
+    type: "object"
+    properties:
+      token:
+        type: string
+        description: ""
+      firstName:
+        type: string
+        description: ""
+      lastName:
+        type: string
+        description: ""
+      roleName:
+        type: string
+        description: ""
+      isFirstTimeLogin:
+        type: boolean
+        description: ""
+      avatar:
+        type: string
+        description: ""
+        
+  ForgotPasswordReqDto:
+    type: "object"
+    properties:
+      username:
+        type: string
+        description: "max 20 characters" 
+        
+  UserSettingResDto:    
+    type: "object"
+    properties:
+      username:
+        type: string
+        description: ""  
+      firstName:
+        type: string
+        description: ""
+      lastName:
+        type: string
+        description: ""
+      email:
+        type: string
+        description: ""
+      departmentId:
+        type: string
+        description: ""
+      departmentName:
+        type: boolean
+        description: ""
+      teamId:
+        type: string
+        description: ""
+      teamName:
+        type: string
+        description: ""
+      titleId:
+        type: string
+        description: ""
+      titleName:
+        type: string
+        description: ""
+      address:
+        type: string
+        description: ""
+      phone:
+        type: boolean
+        description: ""
+      countryId:
+        type: string
+        description: ""
+      countryName:
+        type: string
+        description: ""
+      languageId:
+        type: string
+        description: ""
+      languageName:
+        type: string
+        description: ""
+      updatedDate:
+        type: string
+        description: ""
+      status:
+        type: integer
+        description: ""
+      avatar:
+        type: string
+        description: ""
+        
+  RecoverPasswordReqDto:
+    type: "object"
+    properties:
+      token:
+        type: string
+        description: "Not Blank"
+      newPassword:
+        type: string
+        description: "Not Blank, between 8 and 20 characters"
+        
+  UserSettingReqDto:
+    type: "object"
+    properties:
+      teamId:
+        type: string
+        description: ""  
+      titleId:
+        type: string
+        description: ""
+      address:
+        type: string
+        description: ""
+      phone:
+        type: string
+        description: "between 8 and 20 characters"
+      countryId:
+        type: string
+        description: ""
+      languageId:
+        type: boolean
+        description: "Not Blank"
+      status:
+        type: integer
+        description: "Not Null"
+        
+  UpdatePasswordReqDto:
+    type: "object"
+    properties:
+      oldPassword:
+        type: string
+        description: "Not Blank, between 8 and 20 characters"
+      newPassword:
+        type: string
+        description: "Not Blank, between 8 and 20 characters"
+
+  FileResDto:
+    type: "object"
+    properties:
+      fileName:
+        type: string
+        description: ""    
+        
+  DepartmentListResDto:
+    type: "object"
+    properties:
+      departmentResDtoList:
+        type: "array"
+        items:
+          $ref: "#/definitions/DepartmentResDto"
+      
+  DepartmentResDto:
+    type: "object"
+    properties:
+      departmentId:
+        type: string
+        description: ""    
+      departmentCode:
+        type: string
+        description: ""    
+      departmentName:
+        type: string
+        description: ""    
+        
+  TitleListResDto:
+    type: "object"
+    properties:
+      titleResDtoList:
+        type: "array"
+        items:
+          $ref: "#/definitions/TitleResDto"
+      
+  TitleResDto:
+    type: "object"
+    properties:
+      titleId:
+        type: string
+        description: ""    
+      titleCode:
+        type: string
+        description: ""    
+      titleName:
+        type: string
+        description: ""   
+
+  TeamListResDto:
+    type: "object"
+    properties:
+      teamResDtoList:
+        type: "array"
+        items:
+          $ref: "#/definitions/TeamResDto"
+      
+  TeamResDto:
+    type: "object"
+    properties:
+      teamId:
+        type: string
+        description: ""    
+      teamCode:
+        type: string
+        description: ""    
+      teamName:
+        type: string
+        description: ""   
+
+  CountryListResDto:
+    type: "object"
+    properties:
+      countryResDtoList:
+        type: "array"
+        items:
+          $ref: "#/definitions/CountryResDto"
+      
+  CountryResDto:
+    type: "object"
+    properties:
+      countryId:
+        type: string
+        description: ""    
+      countryName:
+        type: string
+        description: ""    
+
+  LanguageListResDto:
+    type: "object"
+    properties:
+      languageResDtoList:
+        type: "array"
+        items:
+          $ref: "#/definitions/LanguageResDto"
+      
+  LanguageResDto:
+    type: "object"
+    properties:
+      languageId:
+        type: string
+        description: ""    
+      languageName:
+        type: string
+        description: ""    
+        
+  MessageResDto:
+    type: "object"
+    properties:
+      code:
+        type: string
+        description: ""
+      message:
+        type: string
+        description: ""

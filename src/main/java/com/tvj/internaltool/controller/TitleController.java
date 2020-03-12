@@ -19,7 +19,7 @@ public class TitleController {
     }
 
     @GetMapping(value = "/list")
-    public ResponseEntity<?> getAllCountry() {
+    public ResponseEntity<?> getAllTitle() {
         TitleListResDto titleListResDto = titleService.getAllTitle();
         return new ResponseEntity<>(titleListResDto, HttpStatus.OK);
     }
