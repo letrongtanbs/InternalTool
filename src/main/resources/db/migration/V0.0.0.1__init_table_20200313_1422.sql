@@ -143,7 +143,6 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
 (
     `user_setting_id` VARCHAR(36)  NOT NULL,
     `team_id`         VARCHAR(36)  NULL DEFAULT NULL,
-    `title_id`        VARCHAR(36)  NULL DEFAULT NULL,
     `address`         VARCHAR(400) NULL DEFAULT NULL,
     `phone`           VARCHAR(15)  NULL DEFAULT NULL,
     `country_id`      VARCHAR(36)  NOT NULL,
@@ -166,10 +165,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
             REFERENCES `tvj_internal_db`.`tbl_country` (`country_id`),
     CONSTRAINT `tbl_user_setting_language_id_fk`
         FOREIGN KEY (`language_id`)
-            REFERENCES `tvj_internal_db`.`tbl_language` (`language_id`),
-    CONSTRAINT `tbl_user_setting_title_id_fk`
-        FOREIGN KEY (`title_id`)
-            REFERENCES `tvj_internal_db`.`tbl_title` (`title_id`)
+            REFERENCES `tvj_internal_db`.`tbl_language` (`language_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8
@@ -188,6 +184,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
     `password`            VARCHAR(100) NOT NULL,
     `first_name`          VARCHAR(100) NOT NULL,
     `last_name`           VARCHAR(100) NOT NULL,
+    `title_id`            VARCHAR(36)  NULL DEFAULT NULL,
     `email`               VARCHAR(75)  NOT NULL,
     `is_activated`        TINYINT(1)   NOT NULL,
     `is_first_time_login` TINYINT(1)   NOT NULL,
@@ -207,7 +204,10 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
             REFERENCES `tvj_internal_db`.`tbl_role` (`role_id`),
     CONSTRAINT `tbl_user_user_setting_id_fk`
         FOREIGN KEY (`user_setting_id`)
-            REFERENCES `tvj_internal_db`.`tbl_user_setting` (`user_setting_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user_setting` (`user_setting_id`),
+    CONSTRAINT `tbl_user_setting_title_id_fk`
+        FOREIGN KEY (`title_id`)
+            REFERENCES `tvj_internal_db`.`tbl_title` (`title_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8

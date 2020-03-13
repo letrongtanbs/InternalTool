@@ -34,4 +34,18 @@ public class TitleEntityDataDummy {
         return titleEntity;
     }
 
+    public TitleEntity getTitle3() {
+        TitleEntity titleEntity = new TitleEntity();
+        titleEntity.setTitleId("3");
+        titleEntity.setTitleCode("DEV003");
+        titleEntity.setTitleName("Developer level 3");
+        titleEntity.setCreatedBy("Dex");
+        titleEntity.setCreatedDate(LocalDateTime.now());
+        titleEntity.setUpdatedBy("Dexx");
+        titleEntity.setUpdatedDate(LocalDateTime.now().plusHours(1));
+        titleEntity.setDeletedBy(null);
+        titleEntity.setDeletedDate(null);
+        return titleEntity;
+    }
+
 }

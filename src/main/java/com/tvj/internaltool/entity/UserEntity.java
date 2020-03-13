@@ -37,6 +37,9 @@ public class UserEntity implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "title_id")
+    private String titleId;
+
     @Column(name = "email")
     private String email;
 
@@ -74,5 +77,9 @@ public class UserEntity implements Serializable {
     @OneToOne(cascade = CascadeType.ALL) // When we perform some action on the target entity, the same action will be applied to the associated entity.
     @JoinColumn(name = "user_setting_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
     private UserSettingEntity userSettingEntity;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "title_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
+    private TitleEntity titleEntity;
 
 }

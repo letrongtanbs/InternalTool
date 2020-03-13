@@ -14,8 +14,6 @@ public class UserSettingReqDto {
 
     private String teamId;
 
-    private String titleId;
-
     private String address;
 
     @Size(min = 8, max = 20)

@@ -45,6 +45,6 @@ public class TitleEntity implements Serializable {
     private LocalDateTime deletedDate;
 
     @OneToMany(mappedBy = "titleEntity", fetch = FetchType.EAGER)
-    private Set<UserSettingEntity> userSettingEntity;
+    private Set<UserEntity> userEntity;
 
 }

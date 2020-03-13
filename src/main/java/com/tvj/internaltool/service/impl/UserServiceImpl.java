@@ -264,7 +264,6 @@ public class UserServiceImpl implements UserService {
         if (userEntity != null) {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
             userSettingEntity.setTeamId(userSettingReqDto.getTeamId());
-            userSettingEntity.setTitleId(userSettingReqDto.getTitleId());
             userSettingEntity.setAddress(userSettingReqDto.getAddress());
             userSettingEntity.setPhone(userSettingReqDto.getPhone());
             userSettingEntity.setCountryId(userSettingReqDto.getCountryId());
@@ -387,6 +386,7 @@ public class UserServiceImpl implements UserService {
         userSettingResDto.setFirstName(userEntity.getFirstName());
         userSettingResDto.setLastName(userEntity.getLastName());
         userSettingResDto.setEmail(userEntity.getEmail());
+        userSettingResDto.setTitleName(userEntity.getTitleEntity().getTitleName());
         userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
         userSettingResDto.setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
         userSettingResDto.setAvatar(fileStorageService.convertImageToBase64(userSettingResDto.getAvatar()));

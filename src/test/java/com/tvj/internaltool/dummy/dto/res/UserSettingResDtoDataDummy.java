@@ -17,7 +17,7 @@ public class UserSettingResDtoDataDummy {
         admin.setDepartmentId("DEP001");
         admin.setTeamId("1");
         admin.setTeamName("TEAM001");
-        admin.setTitleId("1");
+        admin.setTitleName("Developer level 1");
         admin.setAddress("Ha Noi");
         admin.setPhone("0987654321");
         admin.setCountryId("1");

@@ -29,7 +29,8 @@ VALUES ('1', 'URL1', '/user/{id}/list/{id}', 'D', '2020-01-01 00:00:00', NULL, N
        ('9', 'URL9', '/language/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('10', 'URL10', '/user/upload-avatar', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('11', 'URL11', '/user/remove-avatar', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('12', 'URL12', '/title/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+       ('12', 'URL12', '/title/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('13', 'URL13', '/member-management/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
@@ -61,7 +62,8 @@ VALUES ('1', '1'),
        ('1', '11'),
        ('2', '11'),
        ('1', '12'),
-       ('2', '12');
+       ('2', '12'),
+       ('1', '13');
 
 
 INSERT INTO `tbl_team` (`team_id`, `team_code`, `team_name`, `department_id`, `created_by`, `created_date`,
@@ -79,29 +81,27 @@ VALUES ('1', 'DEV001', 'Developer level 1', 'Dexx', '2020-02-06 10:10:10', NULL,
        ('4', 'DEV004', 'Developer level 4', 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
 
 
-INSERT INTO `tbl_user_setting` (`user_setting_id`, `team_id`, `title_id`, `address`, `phone`, `country_id`,
+INSERT INTO `tbl_user_setting` (`user_setting_id`, `team_id`, `address`, `phone`, `country_id`,
                                 `language_id`, `status`, `avatar`, `created_by`, `created_date`, `updated_by`,
                                 `updated_date`, `deleted_by`, `deleted_date`)
-VALUES ('1', '1', '1', 'homie', '1234567890', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+VALUES ('1', '1', 'homie', '1234567890', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),
-       ('2', '1', '2', 'homie', '0987654321', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+       ('2', '1', 'homie', '0987654321', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),
-       ('3', '1', '3', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+       ('3', '1', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),
-       ('4', '1', '4', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
+       ('4', '1', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL);
 
 
 INSERT INTO `tbl_user` (`user_id`, `user_setting_id`, `role_id`, `username`, `password`, `first_name`, `last_name`,
-                        `email`, `is_activated`, `is_first_time_login`,
-                        `login_fail_count`, `created_by`, `created_date`, `updated_by`, `updated_date`, `deleted_by`,
-                        `deleted_date`)
-VALUES ('1', '1', '1', 'ngocdc', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Dinh', 'Ngoc',
+                        `title_id`, `email`, `is_activated`, `is_first_time_login`, `login_fail_count`, `created_by`,
+                        `created_date`, `updated_by`, `updated_date`, `deleted_by`, `deleted_date`)
+VALUES ('1', '1', '1', 'ngocdc', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Dinh', 'Ngoc', '1',
         'ngocdc@tinhvan.com', 1, 1, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('2', '2', '1', 'hunghx', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Hoang', 'Hung',
+       ('2', '2', '1', 'hunghx', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Hoang', 'Hung', '2',
         'hunghx@tinhvan.com', 1, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('3', '3', '2', 'tamdt', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Do', 'Tam',
+       ('3', '3', '2', 'tamdt', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Do', 'Tam', '3',
         'tamdt@tinhvan.com', 1, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('4', '4', '2', 'xxx', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Do', 'Tam',
+       ('4', '4', '2', 'xxx', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Do', 'Tam', '4',
         'xxx@tinhvan.com', 0, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
-

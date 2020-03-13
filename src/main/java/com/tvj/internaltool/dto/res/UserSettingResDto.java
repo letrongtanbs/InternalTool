@@ -29,8 +29,6 @@ public class UserSettingResDto {
 
     private String teamName;
 
-    private String titleId;
-
     private String titleName;
 
     private String address;

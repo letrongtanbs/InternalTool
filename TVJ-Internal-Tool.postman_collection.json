@@ -98,7 +98,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/user/password-recover-confirm-token?token=oJBe41EsiiRC2zXI7hBVDD8RWs5VitHROTzNhG1zclAtzUwaBikK408JHA5nwpuO6BcPc3lMgOCcST7ycg120qAPoARuVAZk7sr",
+					"raw": "{{host}}/user/password-recover-confirm-token?token=UJpOsQ8v8OXflBv3kK8MEIa6d17Lw1QXDg5d1ZRQyucNftlCt5Icwxmi54wapqquKqWKtXEAyWnjJJb052E6riCRHuUGcskQyVK",
 					"host": [
 						"{{host}}"
 					],
@@ -109,7 +109,7 @@
 					"query": [
 						{
 							"key": "token",
-							"value": "oJBe41EsiiRC2zXI7hBVDD8RWs5VitHROTzNhG1zclAtzUwaBikK408JHA5nwpuO6BcPc3lMgOCcST7ycg120qAPoARuVAZk7sr"
+							"value": "UJpOsQ8v8OXflBv3kK8MEIa6d17Lw1QXDg5d1ZRQyucNftlCt5Icwxmi54wapqquKqWKtXEAyWnjJJb052E6riCRHuUGcskQyVK"
 						}
 					]
 				}
@@ -130,7 +130,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"token\": \"FzEDUDqN8EFYntAnONBZifuc46gOC9qCgk2UPmFDiuckLE7YHTY7LXpXXoJCdTJ5fDZ6Jh3mmxJ26WyGlRQqFTJ00yKvM6nz1rV\",\n\t\"newPassword\": \"12345678\"\n}",
+					"raw": "{\n\t\"token\": \"UJpOsQ8v8OXflBv3kK8MEIa6d17Lw1QXDg5d1ZRQyucNftlCt5Icwxmi54wapqquKqWKtXEAyWnjJJb052E6riCRHuUGcskQyVK\",\n\t\"newPassword\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -162,11 +162,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQxMTMzNTUsImlhdCI6MTU4NDA3NzM1NX0.7r27ZILHlYj8KGz1he92B-XBgoTGAlfPgIllLsvOLUVrjejuNBVffTt6-5RVsj6WjCgjTjkIgU0BsNKjdbWuLw"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQxMTMzNTUsImlhdCI6MTU4NDA3NzM1NX0.7r27ZILHlYj8KGz1he92B-XBgoTGAlfPgIllLsvOLUVrjejuNBVffTt6-5RVsj6WjCgjTjkIgU0BsNKjdbWuLw"
 					}
 				],
 				"body": {
@@ -186,6 +186,82 @@
 					"path": [
 						"user",
 						"user-setting-get-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User setting update info",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQxMTMzNTUsImlhdCI6MTU4NDA3NzM1NX0.7r27ZILHlYj8KGz1he92B-XBgoTGAlfPgIllLsvOLUVrjejuNBVffTt6-5RVsj6WjCgjTjkIgU0BsNKjdbWuLw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQxMTMzNTUsImlhdCI6MTU4NDA3NzM1NX0.7r27ZILHlYj8KGz1he92B-XBgoTGAlfPgIllLsvOLUVrjejuNBVffTt6-5RVsj6WjCgjTjkIgU0BsNKjdbWuLw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teamId\": \"2\",\n    \"address\": \"HN2\",\n    \"phone\": \"2222222222\",\n    \"countryId\": \"2\",\n    \"languageId\": \"2\",\n    \"status\": \"2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/user-setting-update-info",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"user-setting-update-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User setting update password",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxOTQzNTM5LCJpYXQiOjE1ODE5MDc1Mzl9.NT-bzoKGBip-Q09vnduQQIlhkp1pJX4JGXpPjoCkkZJfXLM2D0-k697Z4XpmN9HnW40TyTV22oPyN4pxVm3smg"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxOTQzNTM5LCJpYXQiOjE1ODE5MDc1Mzl9.NT-bzoKGBip-Q09vnduQQIlhkp1pJX4JGXpPjoCkkZJfXLM2D0-k697Z4XpmN9HnW40TyTV22oPyN4pxVm3smg"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPassword\": \"123456789\",\n    \"newPassword\": \"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/user-setting-update-password",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"user-setting-update-password"
 					]
 				}
 			},
@@ -274,82 +350,6 @@
 					"path": [
 						"user",
 						"remove-avatar"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User setting update info",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
-					},
-					{
-						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODM0Mjc3ODAsImlhdCI6MTU4MzM5MTc4MH0.QJLoSZ-UyULk3gZ1DdqIChGXSfag71I5nI2Qpal6Zt4F-P8am2tvW_keoyOWE063L67POy7WA4l8C8bfDqvpZA"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"teamId\": \"2\",\n    \"titleId\": \"2\",\n    \"address\": \"HN2\",\n    \"phone\": \"2222222222\",\n    \"countryId\": \"2\",\n    \"languageId\": \"2\",\n    \"status\": \"2\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{host}}/user/user-setting-update-info",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"user",
-						"user-setting-update-info"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User setting update password",
-			"request": {
-				"method": "PATCH",
-				"header": [
-					{
-						"key": "Authorization",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxOTQzNTM5LCJpYXQiOjE1ODE5MDc1Mzl9.NT-bzoKGBip-Q09vnduQQIlhkp1pJX4JGXpPjoCkkZJfXLM2D0-k697Z4XpmN9HnW40TyTV22oPyN4pxVm3smg"
-					},
-					{
-						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxOTQzNTM5LCJpYXQiOjE1ODE5MDc1Mzl9.NT-bzoKGBip-Q09vnduQQIlhkp1pJX4JGXpPjoCkkZJfXLM2D0-k697Z4XpmN9HnW40TyTV22oPyN4pxVm3smg"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"oldPassword\": \"123456789\",\n    \"newPassword\": \"12345678\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{host}}/user/user-setting-update-password",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"user",
-						"user-setting-update-password"
 					]
 				}
 			},
@@ -561,6 +561,47 @@
 					"path": [
 						"language",
 						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Member management member list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/member-management/search",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"member-management",
+						"search"
 					]
 				}
 			},
