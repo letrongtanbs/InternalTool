@@ -403,9 +403,6 @@ definitions:
       teamName:
         type: string
         description: ""
-      titleId:
-        type: string
-        description: ""
       titleName:
         type: string
         description: ""
@@ -453,9 +450,6 @@ definitions:
       teamId:
         type: string
         description: ""  
-      titleId:
-        type: string
-        description: ""
       address:
         type: string
         description: ""

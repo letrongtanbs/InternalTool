@@ -5,22 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberResDto {
+public class MemberListResDto {
 
-    private String username;
+    private long total;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
-    private String title;
-
-    private boolean isActivated;
+    private List<MemberResDto> memberResDtoList;
 
 }

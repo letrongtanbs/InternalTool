@@ -30,7 +30,7 @@ VALUES ('1', 'URL1', '/user/{id}/list/{id}', 'D', '2020-01-01 00:00:00', NULL, N
        ('10', 'URL10', '/user/upload-avatar', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('11', 'URL11', '/user/remove-avatar', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('12', 'URL12', '/title/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('13', 'URL13', '/member-management/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+       ('13', 'URL13', '/member-management/search', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,

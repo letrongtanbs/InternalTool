@@ -567,7 +567,7 @@
 			"response": []
 		},
 		{
-			"name": "Member management member list",
+			"name": "Member management search member",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -578,11 +578,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQzNjc3MTEsImlhdCI6MTU4NDMzMTcxMX0.OnwAeiGi_q_GW7YZA_0ZXcqMze19OqEvgr7qAnYCdsXH5RIJUjj7Mm9hjQTmMEuc_h2hWld8JBwyhiPXRkRy-A"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290IiwiZXhwIjoxNTgxNTI5MjMxLCJpYXQiOjE1ODE0OTMyMzF9.yUpukb3_JBzwMKlqkCCUCnVV7GbbjQwnMXlnQIpgK39ZZks9BD7KRsAevnk1VImhaawJ1mWU43NxCpwuZVYnfw"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQzNjc3MTEsImlhdCI6MTU4NDMzMTcxMX0.OnwAeiGi_q_GW7YZA_0ZXcqMze19OqEvgr7qAnYCdsXH5RIJUjj7Mm9hjQTmMEuc_h2hWld8JBwyhiPXRkRy-A"
 					}
 				],
 				"body": {
@@ -595,13 +595,39 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/member-management/search",
+					"raw": "{{host}}/member-management/search?name=d&username=ngo&isActivated=true&titleId=1&offset=0&limit=3",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"member-management",
 						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "d"
+						},
+						{
+							"key": "username",
+							"value": "ngo"
+						},
+						{
+							"key": "isActivated",
+							"value": "true"
+						},
+						{
+							"key": "titleId",
+							"value": "1"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "3"
+						}
 					]
 				}
 			},
