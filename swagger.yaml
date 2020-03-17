@@ -17,6 +17,8 @@ tags:
   description: "Country Api"
 - name: "Language"
   description: "Language Api"
+- name: "Member Management"
+  description: "Member Management Api"
 schemes:
 - "https"
 - "http"
@@ -335,6 +337,46 @@ paths:
           schema:
             $ref: "#/definitions/LanguageListResDto"
             
+  /member-management/search:
+    get:
+      tags:
+      - "Member Management"
+      summary: "Search member"
+      description: "Search member"
+      operationId: "searchMember"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "search by name"
+        type: "string"
+      - name: "username"
+        in: "query"
+        description: "search by username"
+        type: "string"
+      - name: "titleId"
+        in: "query"
+        description: "search by title"
+        type: "string"
+      - name: "isActivated"
+        in: "query"
+        description: "search by is activated"
+        type: "boolean"
+      - name: "limit"
+        in: "query"
+        description: "paging limit"
+        type: "integer"
+      - name: "offset"
+        in: "query"
+        description: "paging offset"
+        type: "integer"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/MemberListResDto"
+            
 definitions:
 
   UserLoginReqDto:
@@ -581,6 +623,36 @@ definitions:
       languageName:
         type: string
         description: ""    
+        
+  MemberListResDto:
+    type: "object"
+    properties:
+      languageResDtoList:
+        type: "array"
+        items:
+          $ref: "#/definitions/MemberResDto"
+      
+  MemberResDto:
+    type: "object"
+    properties:
+      username:
+        type: string
+        description: ""    
+      firstName:
+        type: string
+        description: ""   
+      lastName:
+        type: string
+        description: ""    
+      email:
+        type: string
+        description: ""   
+      titleName:
+        type: string
+        description: ""    
+      isActivated:
+        type: boolean
+        description: ""       
         
   MessageResDto:
     type: "object"

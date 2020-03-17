@@ -10,7 +10,12 @@ import java.io.Serializable;
 @Data
 public class RolePermissionId implements Serializable {
 
-    @Column(name = "role_id")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Column(name = "role_id")
     private String roleId;
 
     @Column(name = "permission_id")

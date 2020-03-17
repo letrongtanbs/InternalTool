@@ -16,7 +16,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class CountryEntity implements Serializable {
 
-    @Id
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "country_id")
     private String countryId;
 

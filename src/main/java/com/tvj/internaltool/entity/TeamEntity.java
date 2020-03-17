@@ -16,7 +16,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class TeamEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "team_id")
     private String teamId;
 

@@ -18,7 +18,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ForgotPasswordTokenEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "token_id")
     private String tokenId;
 

@@ -16,7 +16,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class PermissionEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "permission_id")
     private String permissionId;
 

@@ -16,7 +16,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class DepartmentEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "department_id")
     private String departmentId;
 

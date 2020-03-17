@@ -19,7 +19,7 @@ public class MemberResDto {
 
     private String email;
 
-    private String title;
+    private String titleName;
 
     private boolean isActivated;
 

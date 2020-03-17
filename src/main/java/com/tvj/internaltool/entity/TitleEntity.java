@@ -16,7 +16,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class TitleEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "title_id")
     private String titleId;
 

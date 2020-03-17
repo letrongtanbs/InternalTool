@@ -14,7 +14,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class RolePermissionEntity implements Serializable {
 
-    @EmbeddedId
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@EmbeddedId
     private RolePermissionId id;
 
     @ManyToOne(fetch = FetchType.EAGER)

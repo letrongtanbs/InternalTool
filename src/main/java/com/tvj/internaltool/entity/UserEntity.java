@@ -15,7 +15,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "user_id")
     private String userId;
 

@@ -16,7 +16,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class LanguageEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "language_id")
     private String languageId;
 
