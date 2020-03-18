@@ -24,8 +24,8 @@ public class UserSettingResDtoDataDummy {
         admin.setCountryName("VietNam");
         admin.setLanguageId("1");
         admin.setLanguageName("English");
-        admin.setStatusId("1");
         admin.setStatusId(UserStatus.AVAILABLE.getStatus());
+        admin.setStatusName("Available");
         admin.setAvatar("F:\\TVJ\\file_upload\\avatar\\cv.jpg");
         admin.setUpdatedDate(LocalDateTime.now());
         return admin;

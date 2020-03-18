@@ -3,12 +3,13 @@ package com.tvj.internaltool.dummy.entity;
 import java.time.LocalDateTime;
 
 import com.tvj.internaltool.entity.UserStatusEntity;
+import com.tvj.internaltool.enums.UserStatus;
 
 public class UserStatusEntityDataDummy {
 
     public UserStatusEntity getAvailable() {
         UserStatusEntity status = new UserStatusEntity();
-        status.setStatusId("1");
+        status.setStatusId(UserStatus.AVAILABLE.getStatus());
         status.setStatusName("Available");
         status.setCreatedBy("Dex");
         status.setCreatedDate(LocalDateTime.now());
@@ -21,7 +22,7 @@ public class UserStatusEntityDataDummy {
 
     public UserStatusEntity getAway() {
         UserStatusEntity status = new UserStatusEntity();
-        status.setStatusId("2");
+        status.setStatusId(UserStatus.AWAY.getStatus());
         status.setStatusName("Away");
         status.setCreatedBy("Dex");
         status.setCreatedDate(LocalDateTime.now());

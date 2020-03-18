@@ -320,11 +320,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTYwMzc5OCwiaWF0IjoxNTgxNTY3Nzk4fQ.7Y_dzgx_SMT1YI0uDp1GMOfE37AtmbsMieqnLgWah507lJF2VOW_HEENBIZZOy73TxYfL6IR0ba2Ptd74jjmjA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ1NDgzNjEsImlhdCI6MTU4NDUxMjM2MX0.KAS_q3zFKOCKUZFpMFx4bf30u5M-oQusA3v8MaDEeqeD43ExPtndEBvbMmbfF5EdulGOnZKulD2SwxHZrfaTaQ"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTYwMzc5OCwiaWF0IjoxNTgxNTY3Nzk4fQ.7Y_dzgx_SMT1YI0uDp1GMOfE37AtmbsMieqnLgWah507lJF2VOW_HEENBIZZOy73TxYfL6IR0ba2Ptd74jjmjA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ1NDgzNjEsImlhdCI6MTU4NDUxMjM2MX0.KAS_q3zFKOCKUZFpMFx4bf30u5M-oQusA3v8MaDEeqeD43ExPtndEBvbMmbfF5EdulGOnZKulD2SwxHZrfaTaQ"
 					}
 				],
 				"body": {
@@ -560,6 +560,47 @@
 					],
 					"path": [
 						"language",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User status list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ1NTQzNzEsImlhdCI6MTU4NDUxODM3MX0.OqWzrYxhEVLaFAQRntuTIXuQMiEorNH6tx3UeE1tJcbMeWDc4yyZuQkDTJX0Zww2pDlWJbmLg256OLoAeqx59A"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ1NTQzNzEsImlhdCI6MTU4NDUxODM3MX0.OqWzrYxhEVLaFAQRntuTIXuQMiEorNH6tx3UeE1tJcbMeWDc4yyZuQkDTJX0Zww2pDlWJbmLg256OLoAeqx59A"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user-status/list",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user-status",
 						"list"
 					]
 				}

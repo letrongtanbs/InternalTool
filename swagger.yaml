@@ -17,6 +17,8 @@ tags:
   description: "Country Api"
 - name: "Language"
   description: "Language Api"
+- name: "User Status"
+  description: "User Status Api"
 - name: "Member Management"
   description: "Member Management Api"
 schemes:
@@ -155,6 +157,21 @@ paths:
           description: "Return code: ERR009"
           schema:
             $ref: "#/definitions/MessageResDto" 
+            
+  /user-status/list:
+    get:
+      tags:
+      - "User Status"
+      summary: "Get all user status"
+      description: "Get all user status"
+      operationId: "getAllUserStatus"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/UserStatusListResDto"
             
   /user/user-setting-update-info:
     put:
@@ -469,8 +486,11 @@ definitions:
       updatedDate:
         type: string
         description: ""
-      status:
-        type: integer
+      statusId:
+        type: string
+        description: ""
+      statusName:
+        type: string
         description: ""
       avatar:
         type: string
@@ -504,9 +524,9 @@ definitions:
       languageId:
         type: boolean
         description: "Not Blank"
-      status:
-        type: integer
-        description: "Not Null"
+      statusId:
+        type: string
+        description: "Not Blank"
         
   UpdatePasswordReqDto:
     type: "object"
@@ -624,14 +644,32 @@ definitions:
         type: string
         description: ""    
         
+  UserStatusListResDto:
+    type: "object"
+    properties:
+      userStatusResDtoList:
+        type: "array"
+        items:
+          $ref: "#/definitions/UserStatusResDto"
+      
+  UserStatusResDto:
+    type: "object"
+    properties:
+      statusId:
+        type: string
+        description: ""    
+      statusName:
+        type: string
+        description: ""    
+        
   MemberListResDto:
     type: "object"
     properties:
-      languageResDtoList:
+      memberResDtoList:
         type: "array"
         items:
           $ref: "#/definitions/MemberResDto"
-      
+
   MemberResDto:
     type: "object"
     properties:
