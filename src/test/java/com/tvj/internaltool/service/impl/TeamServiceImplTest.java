@@ -1,21 +1,24 @@
 package com.tvj.internaltool.service.impl;
 
-import com.tvj.internaltool.dto.res.TeamListResDto;
-import com.tvj.internaltool.dummy.entity.TeamEntityDataDummy;
-import com.tvj.internaltool.entity.TeamEntity;
-import com.tvj.internaltool.repository.TeamRepository;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import com.tvj.internaltool.dto.res.TeamListResDto;
+import com.tvj.internaltool.dummy.entity.TeamEntityDataDummy;
+import com.tvj.internaltool.entity.TeamEntity;
+import com.tvj.internaltool.repository.TeamRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TeamServiceImplTest {

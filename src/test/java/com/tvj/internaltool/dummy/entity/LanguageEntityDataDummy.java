@@ -1,8 +1,8 @@
 package com.tvj.internaltool.dummy.entity;
 
-import com.tvj.internaltool.entity.LanguageEntity;
-
 import java.time.LocalDateTime;
+
+import com.tvj.internaltool.entity.LanguageEntity;
 
 public class LanguageEntityDataDummy {
 

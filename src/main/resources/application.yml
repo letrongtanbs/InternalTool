@@ -38,6 +38,7 @@ spring:
 
 file:
   avatar-upload-dir: F:\TVJ\file_upload\avatar\
+  default-avatar-file-name: default_avatar.jpg
 
 date-time-pattern:
   sticky: yyyyMMddhhmmss

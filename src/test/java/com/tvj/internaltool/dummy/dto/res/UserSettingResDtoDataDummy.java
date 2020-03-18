@@ -1,9 +1,9 @@
 package com.tvj.internaltool.dummy.dto.res;
 
+import java.time.LocalDateTime;
+
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.enums.UserStatus;
-
-import java.time.LocalDateTime;
 
 public class UserSettingResDtoDataDummy {
 

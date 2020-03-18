@@ -1,17 +1,17 @@
 package com.tvj.internaltool.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.tvj.internaltool.dto.req.*;
-import com.tvj.internaltool.dto.res.MessageResDto;
-import com.tvj.internaltool.dto.res.UserLoginResDto;
-import com.tvj.internaltool.dto.res.UserSettingResDto;
-import com.tvj.internaltool.dummy.dto.res.UserLoginResDtoDataDummy;
-import com.tvj.internaltool.dummy.dto.res.UserSettingResDtoDataDummy;
-import com.tvj.internaltool.enums.UserStatus;
-import com.tvj.internaltool.service.UserService;
-import com.tvj.internaltool.utils.ResponseCode;
-import com.tvj.internaltool.utils.ResponseMessage;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +27,22 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.tvj.internaltool.dto.req.ForgotPasswordReqDto;
+import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
+import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserLoginReqDto;
+import com.tvj.internaltool.dto.req.UserSettingReqDto;
+import com.tvj.internaltool.dto.res.MessageResDto;
+import com.tvj.internaltool.dto.res.UserLoginResDto;
+import com.tvj.internaltool.dto.res.UserSettingResDto;
+import com.tvj.internaltool.dummy.dto.res.UserLoginResDtoDataDummy;
+import com.tvj.internaltool.dummy.dto.res.UserSettingResDtoDataDummy;
+import com.tvj.internaltool.enums.UserStatus;
+import com.tvj.internaltool.service.UserService;
+import com.tvj.internaltool.utils.ResponseCode;
+import com.tvj.internaltool.utils.ResponseMessage;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {

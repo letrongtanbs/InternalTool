@@ -1,8 +1,8 @@
 package com.tvj.internaltool.dummy.entity;
 
-import com.tvj.internaltool.entity.TeamEntity;
-
 import java.time.LocalDateTime;
+
+import com.tvj.internaltool.entity.TeamEntity;
 
 public class TeamEntityDataDummy {
 

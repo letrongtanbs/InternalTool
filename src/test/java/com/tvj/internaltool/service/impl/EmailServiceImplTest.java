@@ -1,5 +1,10 @@
 package com.tvj.internaltool.service.impl;
 
+import static org.mockito.Mockito.when;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,11 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmailServiceImplTest {

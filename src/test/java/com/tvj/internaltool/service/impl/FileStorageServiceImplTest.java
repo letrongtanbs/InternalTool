@@ -1,7 +1,12 @@
 package com.tvj.internaltool.service.impl;
 
-import com.tvj.internaltool.exception.FileStorageException;
-import com.tvj.internaltool.properties.FileStorageProperties;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,9 +18,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.tvj.internaltool.exception.FileStorageException;
+import com.tvj.internaltool.properties.FileStorageProperties;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FileStorageServiceImplTest {
@@ -26,15 +30,22 @@ public class FileStorageServiceImplTest {
 
     private final static String avatarUploadDir = "F:\\TVJ\\file_upload\\test\\";
 
+    private final static String avatarTestFileName = "test.jpg";
+
+    private final static String defaultAvatarTestFileName = "default_avatar.jpg";
+
     private FileStorageProperties fileStorageProperties = new FileStorageProperties(avatarUploadDir);
 
     @InjectMocks
-    private FileStorageServiceImpl fileStorageService = new FileStorageServiceImpl(fileStorageProperties); // cannot InjectMocks interface
+    private FileStorageServiceImpl fileStorageService = new FileStorageServiceImpl(fileStorageProperties); // cannot
+                                                                                                           // InjectMocks
+                                                                                                           // interface
 
     @Before
     public void setUp() {
         // Initialize value for @Value parameter
         ReflectionTestUtils.setField(fileStorageService, "dateTimePatternSticky", dateTimePatternSticky);
+        ReflectionTestUtils.setField(fileStorageService, "defaultAvatarFileName", defaultAvatarTestFileName);
 
         // Mocking Spring Security Context
         Authentication authentication = mock(Authentication.class);
@@ -48,11 +59,9 @@ public class FileStorageServiceImplTest {
 
     @Test
     public void storeFile_success() {
+
         // Value from client
-        MockMultipartFile image = new MockMultipartFile(
-                "file",
-                "cv.jpg",
-                "image/jpeg",
+        MockMultipartFile image = new MockMultipartFile("file", "cv.jpg", "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         String outputFileName = fileStorageService.storeFile(image);
@@ -65,15 +74,46 @@ public class FileStorageServiceImplTest {
     @Test(expected = FileStorageException.class) // expected throws exception
     public void storeFile_failure() {
         // Value from client
-        MockMultipartFile image = new MockMultipartFile(
-                "file",
-                "../cv.jpg",
-                "image/jpeg",
+        MockMultipartFile image = new MockMultipartFile("file", "../cv.jpg", "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         fileStorageService.storeFile(image);
     }
 
     // ---------- storeFile END ---------
+
+    // ---------- convertAvatarToBase64 START ---------
+
+    @Test
+    public void convertAvatarToBase64_loadUserAvatar_success() {
+        String outputFileName = fileStorageService.convertAvatarToBase64(avatarTestFileName);
+        assertEquals(outputFileName.substring(outputFileName.length() - 1), "=");
+    }
+
+    @Test
+    public void convertAvatarToBase64_loadDefaultAvatar_success() {
+        String outputFileName = fileStorageService.convertAvatarToBase64("/not_exists.jpg");
+        assertEquals(outputFileName.substring(outputFileName.length() - 1), "=");
+    }
+
+    @Test
+    public void convertAvatarToBase64_loadDefaultAvatarFailure() {
+        String absolutePath1 = avatarUploadDir + defaultAvatarTestFileName;
+        String absolutePath2 = avatarUploadDir + "xxx_" + defaultAvatarTestFileName;
+
+        // Change default avatar name
+        File defaultAvatar1 = new File(absolutePath1);
+        File defaultAvatar2 = new File(absolutePath2);
+        defaultAvatar1.renameTo(defaultAvatar2);
+
+        String outputFileName = fileStorageService.convertAvatarToBase64("/not_exists.jpg");
+        assertNull(outputFileName);
+
+        // Rollback default avatar name
+        File defaultAvatar3 = new File(absolutePath2);
+        defaultAvatar3.renameTo(defaultAvatar1);
+    }
+
+    // ---------- convertAvatarToBase64 END ---------
 
 }

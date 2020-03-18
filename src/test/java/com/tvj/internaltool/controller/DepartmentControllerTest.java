@@ -1,9 +1,16 @@
 package com.tvj.internaltool.controller;
 
-import com.google.gson.Gson;
-import com.tvj.internaltool.dto.res.DepartmentListResDto;
-import com.tvj.internaltool.dummy.dto.res.DepartmentResDtoDataDummy;
-import com.tvj.internaltool.service.DepartmentService;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,14 +21,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.google.gson.Gson;
+import com.tvj.internaltool.dto.res.DepartmentListResDto;
+import com.tvj.internaltool.dummy.dto.res.DepartmentResDtoDataDummy;
+import com.tvj.internaltool.service.DepartmentService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DepartmentControllerTest {

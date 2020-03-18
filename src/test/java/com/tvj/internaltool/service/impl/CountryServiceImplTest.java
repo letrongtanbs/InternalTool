@@ -1,21 +1,24 @@
 package com.tvj.internaltool.service.impl;
 
-import com.tvj.internaltool.dto.res.CountryListResDto;
-import com.tvj.internaltool.dummy.entity.CountryEntityDataDummy;
-import com.tvj.internaltool.entity.CountryEntity;
-import com.tvj.internaltool.repository.CountryRepository;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import com.tvj.internaltool.dto.res.CountryListResDto;
+import com.tvj.internaltool.dummy.entity.CountryEntityDataDummy;
+import com.tvj.internaltool.entity.CountryEntity;
+import com.tvj.internaltool.repository.CountryRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CountryServiceImplTest {

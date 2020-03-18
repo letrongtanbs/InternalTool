@@ -1,10 +1,11 @@
 package com.tvj.internaltool.dummy.entity;
 
-import com.tvj.internaltool.entity.UserEntity;
+import java.time.LocalDateTime;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
+import com.tvj.internaltool.entity.UserEntity;
 
 public class UserEntityDataDummy {
 

@@ -1,11 +1,11 @@
 package com.tvj.internaltool.dummy.entity;
 
-import com.tvj.internaltool.entity.RoleEntity;
-import com.tvj.internaltool.entity.RolePermissionEntity;
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.tvj.internaltool.entity.RoleEntity;
+import com.tvj.internaltool.entity.RolePermissionEntity;
 
 public class RoleEntityDataDummy {
 

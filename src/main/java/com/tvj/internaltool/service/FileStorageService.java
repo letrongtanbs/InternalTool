@@ -6,6 +6,6 @@ public interface FileStorageService {
 
     String storeFile(MultipartFile multipartFile);
 
-    String convertImageToBase64(String fileName);
+    String convertAvatarToBase64(String fileName);
 
 }

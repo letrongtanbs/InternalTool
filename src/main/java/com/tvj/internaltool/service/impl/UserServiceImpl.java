@@ -143,7 +143,7 @@ public class UserServiceImpl implements UserService {
         userLoginResDto.setLastName(userEntity.getLastName());
         userLoginResDto.setRoleName(userEntity.getRole().getRoleName());
         userLoginResDto.setFirstTimeLogin(userEntity.isFirstTimeLogin());
-        userLoginResDto.setAvatar(fileStorageService.convertImageToBase64(userEntity.getUserSettingEntity().getAvatar()));
+        userLoginResDto.setAvatar(fileStorageService.convertAvatarToBase64(userEntity.getUserSettingEntity().getAvatar()));
 
         return userLoginResDto;
     }
@@ -389,7 +389,7 @@ public class UserServiceImpl implements UserService {
         userSettingResDto.setTitleName(userEntity.getTitleEntity().getTitleName());
         userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
         userSettingResDto.setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
-        userSettingResDto.setAvatar(fileStorageService.convertImageToBase64(userSettingResDto.getAvatar()));
+        userSettingResDto.setAvatar(fileStorageService.convertAvatarToBase64(userSettingResDto.getAvatar()));
         return userSettingResDto;
     }
 
