@@ -11,11 +11,11 @@ public class UserEntityDataDummy {
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
+    RoleEntityDataDummy roleEntityDataDummy = new RoleEntityDataDummy();
+    TitleEntityDataDummy titleEntityDataDummy = new TitleEntityDataDummy();
+    
     public UserEntity getAdminUser1() {
-        UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
-        RoleEntityDataDummy roleEntityDataDummy = new RoleEntityDataDummy();
-        TitleEntityDataDummy titleEntityDataDummy = new TitleEntityDataDummy();
-
         UserEntity admin = new UserEntity();
         admin.setUserId("1");
         admin.setUserSettingId("1");
@@ -41,10 +41,6 @@ public class UserEntityDataDummy {
     }
 
     public UserEntity getAdminUser2() {
-        UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
-        RoleEntityDataDummy roleEntityDataDummy = new RoleEntityDataDummy();
-        TitleEntityDataDummy titleEntityDataDummy = new TitleEntityDataDummy();
-
         UserEntity admin = new UserEntity();
         admin.setUserId("2");
         admin.setUserSettingId("2");
@@ -70,10 +66,6 @@ public class UserEntityDataDummy {
     }
 
     public UserEntity getNormalUser1() {
-        UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
-        RoleEntityDataDummy roleEntityDataDummy = new RoleEntityDataDummy();
-        TitleEntityDataDummy titleEntityDataDummy = new TitleEntityDataDummy();
-
         UserEntity user = new UserEntity();
         user.setUserId("3");
         user.setUserSettingId("3");

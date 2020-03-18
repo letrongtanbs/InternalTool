@@ -1,12 +1,12 @@
 package com.tvj.internaltool.dto.req;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import com.tvj.internaltool.validation.UserStatusConstraint;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Setter
 @Getter
@@ -24,8 +24,8 @@ public class UserSettingReqDto {
     @NotBlank
     private String languageId;
 
-    @NotNull
+    @NotBlank
     @UserStatusConstraint
-    private int status;
+    private String statusId;
 
 }

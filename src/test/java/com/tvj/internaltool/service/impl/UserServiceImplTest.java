@@ -567,12 +567,12 @@ public class UserServiceImplTest {
     public void updateUserSetting_success() {
         // Value from client
         UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
-        userSettingReqDto.setStatus(UserStatus.BUSY.getStatus());
+        userSettingReqDto.setStatusId(UserStatus.BUSY.getStatus());
         userSettingReqDto.setLanguageId("2");
 
         UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
         UserSettingEntity userSettingEntity = userSettingEntityDataDummy.getAdminUserSetting1();
-        userSettingEntity.setStatus(UserStatus.BUSY.getStatus());
+        userSettingEntity.setStatusId(UserStatus.BUSY.getStatus());
         userSettingEntity.setLanguageId("2");
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
@@ -590,7 +590,7 @@ public class UserServiceImplTest {
         verify(userSettingRepository, times(1)).saveAndFlush(any(UserSettingEntity.class));
         verify(userRepository, times(1)).refresh(admin);
 
-        assertEquals(userSettingResDto.getStatus(), userSettingReqDto.getStatus());
+        assertEquals(userSettingResDto.getStatusId(), userSettingReqDto.getStatusId());
         assertEquals(userSettingResDto.getLanguageId(), userSettingReqDto.getLanguageId());
     }
 
@@ -598,12 +598,12 @@ public class UserServiceImplTest {
     public void updateUserSetting_userDoesNotExist() {
         // Value from client
         UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
-        userSettingReqDto.setStatus(UserStatus.BUSY.getStatus());
+        userSettingReqDto.setStatusId(UserStatus.BUSY.getStatus());
         userSettingReqDto.setLanguageId("2");
 
         UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
         UserSettingEntity userSettingEntity = userSettingEntityDataDummy.getAdminUserSetting1();
-        userSettingEntity.setStatus(UserStatus.BUSY.getStatus());
+        userSettingEntity.setStatusId(UserStatus.BUSY.getStatus());
         userSettingEntity.setLanguageId("2");
 
         when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);

@@ -20,6 +20,8 @@ public class UserSettingResDto {
     private String lastName;
 
     private String email;
+    
+    private String titleName;
 
     private String departmentId;
 
@@ -28,8 +30,6 @@ public class UserSettingResDto {
     private String teamId;
 
     private String teamName;
-
-    private String titleName;
 
     private String address;
 
@@ -45,7 +45,9 @@ public class UserSettingResDto {
 
     private LocalDateTime updatedDate;
 
-    private int status;
+    private String statusId;
+    
+    private String statusName;
 
     private String avatar;
 

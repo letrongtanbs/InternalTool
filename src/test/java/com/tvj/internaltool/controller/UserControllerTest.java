@@ -331,7 +331,7 @@ public class UserControllerTest {
         userSettingReqDto.setPhone("1234567890");
         userSettingReqDto.setCountryId("1");
         userSettingReqDto.setLanguageId("1");
-        userSettingReqDto.setStatus(UserStatus.AVAILABLE.getStatus());
+        userSettingReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
 
         UserSettingResDtoDataDummy userSettingResDtoDataDummy = new UserSettingResDtoDataDummy();
         UserSettingResDto userSettingResDto = userSettingResDtoDataDummy.getAdminUserSettingResDto1();
@@ -357,7 +357,7 @@ public class UserControllerTest {
         userSettingReqDto.setPhone("1234567890");
         userSettingReqDto.setCountryId("1");
         userSettingReqDto.setLanguageId("Vietnamese");
-        userSettingReqDto.setStatus(UserStatus.AVAILABLE.getStatus());
+        userSettingReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
 
         when(userService.updateUserSetting(any(UserSettingReqDto.class))).thenReturn(null);
 

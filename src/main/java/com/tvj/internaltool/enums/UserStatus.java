@@ -2,15 +2,15 @@ package com.tvj.internaltool.enums;
 
 public enum UserStatus {
 
-    AVAILABLE(0), BUSY(1), DO_NOT_DISTURB(2);
+    OFFLINE("0"), AVAILABLE("1"), AWAY("2"), BUSY("3"), DO_NOT_DISTURB("4");
 
-    private int status;
+    private String status;
 
-    UserStatus(int status) {
+    UserStatus(String status) {
         this.status = status;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 

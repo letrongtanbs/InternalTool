@@ -268,7 +268,7 @@ public class UserServiceImpl implements UserService {
             userSettingEntity.setPhone(userSettingReqDto.getPhone());
             userSettingEntity.setCountryId(userSettingReqDto.getCountryId());
             userSettingEntity.setLanguageId(userSettingReqDto.getLanguageId());
-            userSettingEntity.setStatus(userSettingReqDto.getStatus());
+            userSettingEntity.setStatusId(userSettingReqDto.getStatusId());
             userSettingEntity.setUpdatedDate(LocalDateTime.now());
             userSettingEntity.setUpdatedBy(userEntity.getUsername());
 

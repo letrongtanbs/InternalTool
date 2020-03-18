@@ -1,3 +1,11 @@
+INSERT INTO `tbl_user_status` (`status_id`, `status_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
+                           `deleted_by`, `deleted_date`)
+VALUES ('0', 'Offline', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('1', 'Available', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('2', 'Away', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('3', 'Busy', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+       ('4', 'Do not disturb', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
+
 INSERT INTO `tbl_country` (`country_id`, `country_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
                            `deleted_by`, `deleted_date`)
 VALUES ('1', 'Viet Nam', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
@@ -82,7 +90,7 @@ VALUES ('1', 'DEV001', 'Developer level 1', 'Dexx', '2020-02-06 10:10:10', NULL,
 
 
 INSERT INTO `tbl_user_setting` (`user_setting_id`, `team_id`, `address`, `phone`, `country_id`,
-                                `language_id`, `status`, `avatar`, `created_by`, `created_date`, `updated_by`,
+                                `language_id`, `status_id`, `avatar`, `created_by`, `created_date`, `updated_by`,
                                 `updated_date`, `deleted_by`, `deleted_date`)
 VALUES ('1', '1', 'homie', '1234567890', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),

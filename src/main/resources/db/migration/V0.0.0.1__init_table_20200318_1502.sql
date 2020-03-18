@@ -23,6 +23,27 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_role`
     COMMENT = 'Define roles of system';
 
 
+    -- -----------------------------------------------------
+-- Table `tvj_internal_db`.`tbl_user_status`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_status`
+(
+    `status_id`    VARCHAR(36) NOT NULL,
+    `status_name`  VARCHAR(36) NOT NULL,
+    `created_by`   VARCHAR(36) NOT NULL,
+    `created_date` DATETIME    NOT NULL,
+    `updated_by`   VARCHAR(36) NULL DEFAULT NULL,
+    `updated_date` DATETIME    NULL DEFAULT NULL,
+    `deleted_by`   VARCHAR(36) NULL DEFAULT NULL,
+    `deleted_date` DATETIME    NULL DEFAULT NULL,
+    PRIMARY KEY (`status_id`),
+    UNIQUE INDEX `tbl_user_status_status_name_uindex` (`status_name` ASC) VISIBLE
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8
+    COMMENT = 'User Status';
+
+
 -- -----------------------------------------------------
 -- Table `tvj_internal_db`.`tbl_country`
 -- -----------------------------------------------------
@@ -147,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
     `phone`           VARCHAR(15)  NULL DEFAULT NULL,
     `country_id`      VARCHAR(36)  NOT NULL,
     `language_id`     VARCHAR(36)  NOT NULL,
-    `status`          INT(1)       NOT NULL,
+    `status_id`       VARCHAR(36)  NOT NULL,
     `avatar`          VARCHAR(400) NULL DEFAULT NULL,
     `created_by`      VARCHAR(36)  NOT NULL,
     `created_date`    DATETIME     NOT NULL,
@@ -165,7 +186,10 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user_setting`
             REFERENCES `tvj_internal_db`.`tbl_country` (`country_id`),
     CONSTRAINT `tbl_user_setting_language_id_fk`
         FOREIGN KEY (`language_id`)
-            REFERENCES `tvj_internal_db`.`tbl_language` (`language_id`)
+            REFERENCES `tvj_internal_db`.`tbl_language` (`language_id`),
+    CONSTRAINT `tbl_user_setting_status_id_fk`
+        FOREIGN KEY (`status_id`)
+            REFERENCES `tvj_internal_db`.`tbl_user_status` (`status_id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8

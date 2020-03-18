@@ -5,12 +5,13 @@ import java.time.LocalDateTime;
 import com.tvj.internaltool.entity.UserSettingEntity;
 
 public class UserSettingEntityDataDummy {
+    
+    CountryEntityDataDummy countryEntityDataDummy = new CountryEntityDataDummy();
+    LanguageEntityDataDummy languageEntityDataDummy = new LanguageEntityDataDummy();
+    TeamEntityDataDummy teamEntityDataDummy = new TeamEntityDataDummy();
+    UserStatusEntityDataDummy userStatusEntityDataDummy = new UserStatusEntityDataDummy();
 
     public UserSettingEntity getAdminUserSetting1() {
-        CountryEntityDataDummy countryEntityDataDummy = new CountryEntityDataDummy();
-        LanguageEntityDataDummy languageEntityDataDummy = new LanguageEntityDataDummy();
-        TeamEntityDataDummy teamEntityDataDummy = new TeamEntityDataDummy();
-
         UserSettingEntity admin = new UserSettingEntity();
         admin.setUserSettingId("1");
         admin.setTeamId("1");
@@ -18,7 +19,7 @@ public class UserSettingEntityDataDummy {
         admin.setPhone("0987654321");
         admin.setCountryId("1");
         admin.setLanguageId("1");
-        admin.setStatus(1);
+        admin.setStatusId("1");
         admin.setAvatar("This/is/base64/String");
         admin.setCreatedBy("Dex");
         admin.setCreatedDate(LocalDateTime.now());
@@ -29,14 +30,11 @@ public class UserSettingEntityDataDummy {
         admin.setTeamEntity(teamEntityDataDummy.getTeam1());
         admin.setCountryEntity(countryEntityDataDummy.getCountry1());
         admin.setLanguageEntity(languageEntityDataDummy.getLanguage1());
+        admin.setUserStatusEntity(userStatusEntityDataDummy.getAvailable());
         return admin;
     }
 
     public UserSettingEntity getAdminUserSetting2() {
-        CountryEntityDataDummy countryEntityDataDummy = new CountryEntityDataDummy();
-        LanguageEntityDataDummy languageEntityDataDummy = new LanguageEntityDataDummy();
-        TeamEntityDataDummy teamEntityDataDummy = new TeamEntityDataDummy();
-
         UserSettingEntity admin = new UserSettingEntity();
         admin.setUserSettingId("2");
         admin.setTeamId("2");
@@ -44,7 +42,7 @@ public class UserSettingEntityDataDummy {
         admin.setPhone("0987654321");
         admin.setCountryId("2");
         admin.setLanguageId("2");
-        admin.setStatus(1);
+        admin.setStatusId("1");
         admin.setAvatar("This/is/base64/String");
         admin.setCreatedBy("Dex");
         admin.setCreatedDate(LocalDateTime.now());
@@ -55,14 +53,11 @@ public class UserSettingEntityDataDummy {
         admin.setTeamEntity(teamEntityDataDummy.getTeam2());
         admin.setCountryEntity(countryEntityDataDummy.getCountry2());
         admin.setLanguageEntity(languageEntityDataDummy.getLanguage2());
+        admin.setUserStatusEntity(userStatusEntityDataDummy.getAvailable());
         return admin;
     }
 
     public UserSettingEntity getUserUserSetting1() {
-        CountryEntityDataDummy countryEntityDataDummy = new CountryEntityDataDummy();
-        LanguageEntityDataDummy languageEntityDataDummy = new LanguageEntityDataDummy();
-        TeamEntityDataDummy teamEntityDataDummy = new TeamEntityDataDummy();
-
         UserSettingEntity user = new UserSettingEntity();
         user.setUserSettingId("3");
         user.setTeamId("3");
@@ -70,7 +65,7 @@ public class UserSettingEntityDataDummy {
         user.setPhone("0987654321");
         user.setCountryId("1");
         user.setLanguageId("1");
-        user.setStatus(1);
+        user.setStatusId("1");
         user.setAvatar("This/is/base64/String");
         user.setCreatedBy("Dex");
         user.setCreatedDate(LocalDateTime.now());
@@ -81,6 +76,7 @@ public class UserSettingEntityDataDummy {
         user.setTeamEntity(teamEntityDataDummy.getTeam3());
         user.setCountryEntity(countryEntityDataDummy.getCountry1());
         user.setLanguageEntity(languageEntityDataDummy.getLanguage1());
+        user.setUserStatusEntity(userStatusEntityDataDummy.getAvailable());
         return user;
     }
 }

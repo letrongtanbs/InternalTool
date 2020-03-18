@@ -39,8 +39,8 @@ public class UserSettingEntity implements Serializable {
     @Column(name = "language_id")
     private String languageId;
 
-    @Column(name = "status")
-    private int status;
+    @Column(name = "status_id")
+    private String statusId;
 
     @Column(name = "avatar")
     private String avatar;
@@ -77,5 +77,9 @@ public class UserSettingEntity implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "language_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
     private LanguageEntity languageEntity;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table
+    private UserStatusEntity userStatusEntity;
 
 }
