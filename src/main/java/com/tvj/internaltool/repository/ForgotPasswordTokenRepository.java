@@ -15,7 +15,7 @@ public interface ForgotPasswordTokenRepository extends CustomRepository<ForgotPa
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM ForgotPasswordTokenEntity fpte WHERE fpte.tokenExpiredDate < CURRENT_TIMESTAMP")
-    void deleteOutOfDateToken();
+    void deleteExpiredForgotPasswordToken();
 
     ForgotPasswordTokenEntity findByTokenString(String token);
 

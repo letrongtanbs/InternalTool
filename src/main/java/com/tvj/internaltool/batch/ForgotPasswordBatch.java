@@ -15,10 +15,10 @@ public class ForgotPasswordBatch {
         this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
     }
 
-    @Scheduled(cron = "${forgot-password.cron-expression}")
-    public void cronJobSch() {
-        forgotPasswordTokenRepository.deleteOutOfDateToken();
-        System.out.println("Delete all expired tokens at: " + LocalDateTime.now().toString());
+    @Scheduled(cron = "${cron-expression.forgot-password}")
+    public void cronJobDeleteExpiredForgotPasswordToken() {
+        forgotPasswordTokenRepository.deleteExpiredForgotPasswordToken();
+        System.out.println("Delete all expired forgot password tokens at: " + LocalDateTime.now().toString());
     }
 
 }

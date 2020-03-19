@@ -48,16 +48,19 @@ server: ## use for embedded tomcat server port
 
 jwt:
   token:
-    validity: 36000 # 3600 = 1 * 60 * 60 = 1 hours
+    validity-in-second: 3600 # 3600 = 1 * 60 * 60 = 1 hours
     secret: TVJ2019@
 
 forgot-password:
-  token-expired-duration-in-hour: 1
+  token-expired-duration-in-hour: 2
   mail-subject: "Forgot password mail verification"
   mail-template: "This is mail verification for user:<b><font color=''red''> {0} </font></b><br>Please click on <a href=''http://{1}:{2}/password-recover-confirm-token/{3}''>this link</a> to update your password."
-  cron-expression: "0 0/60 * * * ?"
   max-login-failed-count: 5
-
+  
+cron-expression: # (*) means match any, (*/X) means "every X"
+  forgot-password: "0 0/5 * * * ?"
+  validate-last-logout-by-token: "0 0/5 * * * ?"
+  
 account-is-locked:
   mail-subject: "Your account is locked"
   mail-template: "Account <b><font color=''red''>{0}</font></b> is locked at {1}. Please contact administrator to get support or do forgot password process to recover password."
