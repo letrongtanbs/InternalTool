@@ -50,5 +50,5 @@ public class UserSettingResDto {
     private String statusName;
 
     private String avatar;
-
+    
 }

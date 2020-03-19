@@ -14,11 +14,13 @@ public class ResponseCode {
     public static final String UPDATE_USER_SETTING_FAILED = "ERR008";
     public static final String GET_USER_SETTING_FAILED = "ERR009";
     public static final String REMOVE_AVATAR_FAILED = "ERR010";
+    public static final String SAVE_LAST_LOGOUT_FAILED = "ERR011";
 
     // Success code
     public static final String SEND_MAIL_SUCCESS = "SUC001";
     public static final String UPDATE_PASSWORD_SUCCESS = "SUC002";
     public static final String REMOVE_AVATAR_SUCCESS = "SUC003";
     public static final String TOKEN_IS_VALID = "SUC004";
+    public static final String SAVE_LAST_LOGOUT_SUCCESS = "SUC005";
 
 }

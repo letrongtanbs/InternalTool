@@ -1,23 +1,25 @@
 package com.tvj.internaltool.security;
 
-import com.tvj.internaltool.entity.RolePermissionEntity;
-import com.tvj.internaltool.entity.UserEntity;
-import com.tvj.internaltool.service.UserService;
-import com.tvj.internaltool.utils.ErrorResUtils;
-import com.tvj.internaltool.utils.ResponseCode;
-import com.tvj.internaltool.utils.ResponseMessage;
+import java.io.IOException;
+import java.util.Set;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Set;
+import com.tvj.internaltool.entity.RolePermissionEntity;
+import com.tvj.internaltool.entity.UserEntity;
+import com.tvj.internaltool.service.UserService;
+import com.tvj.internaltool.utils.ErrorResUtils;
+import com.tvj.internaltool.utils.ResponseCode;
+import com.tvj.internaltool.utils.ResponseMessage;
 
 // Must declare Filter as @Bean in WebSecurityConfig to join FilterChain
 public class UserRoleFilter extends OncePerRequestFilter {
@@ -26,7 +28,8 @@ public class UserRoleFilter extends OncePerRequestFilter {
     private UserService userService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!(authentication instanceof AnonymousAuthenticationToken)) {

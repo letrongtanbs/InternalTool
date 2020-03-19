@@ -70,14 +70,13 @@ public class UserControllerTest {
         userLoginReqDto.setPassword("12345678");
 
         UserLoginResDtoDataDummy adminResDto = new UserLoginResDtoDataDummy();
-        when(userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword())).thenReturn(adminResDto.getAdminUserResDto1());
+        when(userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword()))
+                .thenReturn(adminResDto.getAdminUserResDto1());
 
-        MvcResult result = mockMvc.perform(post("/user/login")
-                .content(new ObjectMapper().writeValueAsString(userLoginReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(post("/user/login").content(new ObjectMapper().writeValueAsString(userLoginReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         UserLoginResDto userLoginResDto = new Gson().fromJson(jsonString, UserLoginResDto.class);
@@ -97,14 +96,13 @@ public class UserControllerTest {
         userLoginReqDto.setUsername("admin1");
         userLoginReqDto.setPassword("12345678");
 
-        when(userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword())).thenReturn(ResponseCode.UNAUTHORIZED);
+        when(userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword()))
+                .thenReturn(ResponseCode.UNAUTHORIZED);
 
-        MvcResult result = mockMvc.perform(post("/user/login")
-                .content(new ObjectMapper().writeValueAsString(userLoginReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(post("/user/login").content(new ObjectMapper().writeValueAsString(userLoginReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -121,14 +119,13 @@ public class UserControllerTest {
         userLoginReqDto.setUsername("admin1");
         userLoginReqDto.setPassword("12345678");
 
-        when(userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword())).thenReturn(ResponseCode.USER_IS_LOCKED);
+        when(userService.processLogin(userLoginReqDto.getUsername(), userLoginReqDto.getPassword()))
+                .thenReturn(ResponseCode.USER_IS_LOCKED);
 
-        MvcResult result = mockMvc.perform(post("/user/login")
-                .content(new ObjectMapper().writeValueAsString(userLoginReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isLocked())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(post("/user/login").content(new ObjectMapper().writeValueAsString(userLoginReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isLocked()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -150,12 +147,11 @@ public class UserControllerTest {
 
         when(userService.processForgotPassword(forgotPasswordReqDto.getUsername())).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(post("/user/password-recover-send-request")
-                .content(new ObjectMapper().writeValueAsString(forgotPasswordReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(post("/user/password-recover-send-request")
+                        .content(new ObjectMapper().writeValueAsString(forgotPasswordReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -173,12 +169,11 @@ public class UserControllerTest {
 
         when(userService.processForgotPassword(forgotPasswordReqDto.getUsername())).thenReturn(false);
 
-        MvcResult result = mockMvc.perform(post("/user/password-recover-send-request")
-                .content(new ObjectMapper().writeValueAsString(forgotPasswordReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isRequestTimeout())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(post("/user/password-recover-send-request")
+                        .content(new ObjectMapper().writeValueAsString(forgotPasswordReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isRequestTimeout()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -199,10 +194,8 @@ public class UserControllerTest {
 
         when(userService.processConfirmForgotPasswordToken(token)).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(get("/user/password-recover-confirm-token")
-                .param("token", token))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/user/password-recover-confirm-token").param("token", token))
+                .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -219,10 +212,8 @@ public class UserControllerTest {
 
         when(userService.processConfirmForgotPasswordToken(token)).thenReturn(false);
 
-        MvcResult result = mockMvc.perform(get("/user/password-recover-confirm-token")
-                .param("token", token))
-                .andExpect(status().isBadRequest())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/user/password-recover-confirm-token").param("token", token))
+                .andExpect(status().isBadRequest()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -245,12 +236,11 @@ public class UserControllerTest {
 
         when(userService.processRecoverPassword(any(RecoverPasswordReqDto.class))).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(post("/user/password-recover-update-password")
-                .content(new ObjectMapper().writeValueAsString(recoverPasswordReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(post("/user/password-recover-update-password")
+                        .content(new ObjectMapper().writeValueAsString(recoverPasswordReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -269,12 +259,11 @@ public class UserControllerTest {
 
         when(userService.processRecoverPassword(any(RecoverPasswordReqDto.class))).thenReturn(false);
 
-        MvcResult result = mockMvc.perform(post("/user/password-recover-update-password")
-                .content(new ObjectMapper().writeValueAsString(recoverPasswordReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(post("/user/password-recover-update-password")
+                        .content(new ObjectMapper().writeValueAsString(recoverPasswordReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -295,9 +284,7 @@ public class UserControllerTest {
 
         when(userService.getUserSetting()).thenReturn(userSettingResDto);
 
-        mockMvc.perform(get("/user/user-setting-get-info"))
-                .andExpect(status().isOk())
-                .andReturn();
+        mockMvc.perform(get("/user/user-setting-get-info")).andExpect(status().isOk()).andReturn();
 
         verify(userService, times(1)).getUserSetting();
     }
@@ -306,8 +293,7 @@ public class UserControllerTest {
     public void getUserSetting_success_withEmptyData() throws Exception {
         when(userService.getUserSetting()).thenReturn(null);
 
-        MvcResult result = mockMvc.perform(get("/user/user-setting-get-info"))
-                .andExpect(status().isBadRequest())
+        MvcResult result = mockMvc.perform(get("/user/user-setting-get-info")).andExpect(status().isBadRequest())
                 .andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
@@ -338,12 +324,10 @@ public class UserControllerTest {
 
         when(userService.updateUserSetting(any(UserSettingReqDto.class))).thenReturn(userSettingResDto);
 
-        mockMvc.perform(put("/user/user-setting-update-info")
-                .content(new ObjectMapper().writeValueAsString(userSettingReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        mockMvc.perform(
+                put("/user/user-setting-update-info").content(new ObjectMapper().writeValueAsString(userSettingReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
 
         verify(userService, times(1)).updateUserSetting(any(UserSettingReqDto.class));
     }
@@ -361,12 +345,11 @@ public class UserControllerTest {
 
         when(userService.updateUserSetting(any(UserSettingReqDto.class))).thenReturn(null);
 
-        MvcResult result = mockMvc.perform(put("/user/user-setting-update-info")
-                .content(new ObjectMapper().writeValueAsString(userSettingReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(put("/user/user-setting-update-info")
+                        .content(new ObjectMapper().writeValueAsString(userSettingReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -389,12 +372,11 @@ public class UserControllerTest {
 
         when(userService.updatePassword(any(UpdatePasswordReqDto.class))).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(patch("/user/user-setting-update-password")
-                .content(new ObjectMapper().writeValueAsString(updatePasswordReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(patch("/user/user-setting-update-password")
+                        .content(new ObjectMapper().writeValueAsString(updatePasswordReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -413,12 +395,11 @@ public class UserControllerTest {
 
         when(userService.updatePassword(any(UpdatePasswordReqDto.class))).thenReturn(false);
 
-        MvcResult result = mockMvc.perform(patch("/user/user-setting-update-password")
-                .content(new ObjectMapper().writeValueAsString(updatePasswordReqDto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(patch("/user/user-setting-update-password")
+                        .content(new ObjectMapper().writeValueAsString(updatePasswordReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -435,21 +416,14 @@ public class UserControllerTest {
     @Test
     public void uploadAvatar_success() throws Exception {
         // Value from client
-        MockMultipartFile image = new MockMultipartFile(
-                "file",
-                "cv.jpg",
-                "image/jpeg",
+        MockMultipartFile image = new MockMultipartFile("file", "cv.jpg", "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         when(userService.uploadAvatar(any(MultipartFile.class))).thenReturn("output/file/path");
 
-        MockMultipartHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.multipart("/user/upload-avatar");
+        MockMultipartHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/user/upload-avatar");
 
-        mockMvc.perform(builder
-                .file(image))
-                .andExpect(status().isOk())
-                .andReturn();
+        mockMvc.perform(builder.file(image)).andExpect(status().isOk()).andReturn();
 
         verify(userService, times(1)).uploadAvatar(any(MultipartFile.class));
     }
@@ -457,21 +431,14 @@ public class UserControllerTest {
     @Test
     public void uploadAvatar_cannotUploadAvatar() throws Exception {
         // Value from client
-        MockMultipartFile image = new MockMultipartFile(
-                "file",
-                "cv.jpg",
-                "image/jpeg",
+        MockMultipartFile image = new MockMultipartFile("file", "cv.jpg", "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         when(userService.uploadAvatar(any(MultipartFile.class))).thenReturn("");
 
-        MockMultipartHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.multipart("/user/upload-avatar");
+        MockMultipartHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/user/upload-avatar");
 
-        MvcResult result = mockMvc.perform(builder
-                .file(image))
-                .andExpect(status().isBadRequest())
-                .andReturn();
+        MvcResult result = mockMvc.perform(builder.file(image)).andExpect(status().isBadRequest()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -489,9 +456,7 @@ public class UserControllerTest {
     public void removeAvatar_success() throws Exception {
         when(userService.removeAvatar()).thenReturn(true);
 
-        MvcResult result = mockMvc.perform(delete("/user/remove-avatar"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(delete("/user/remove-avatar")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
@@ -505,8 +470,7 @@ public class UserControllerTest {
     public void removeAvatar_cannotRemoveAvatar() throws Exception {
         when(userService.removeAvatar()).thenReturn(false);
 
-        MvcResult result = mockMvc.perform(delete("/user/remove-avatar"))
-                .andExpect(status().isBadRequest())
+        MvcResult result = mockMvc.perform(delete("/user/remove-avatar")).andExpect(status().isBadRequest())
                 .andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
@@ -518,5 +482,37 @@ public class UserControllerTest {
     }
 
     // ---------- /user/remove-avatar END ----------
+
+    // ---------- /user/save-last-logout START ----------
+    
+    @Test
+    public void saveLastLogout_success() throws Exception {
+        when(userService.saveLastLogout()).thenReturn(true);
+
+        MvcResult result = mockMvc.perform(get("/user/save-last-logout")).andExpect(status().isOk()).andReturn();
+
+        String jsonString = result.getResponse().getContentAsString();
+        MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
+
+        verify(userService, times(1)).saveLastLogout();
+        assertEquals(messageResDto.getCode(), ResponseCode.SAVE_LAST_LOGOUT_SUCCESS);
+        assertEquals(messageResDto.getMessage(), ResponseMessage.SAVE_LAST_LOGOUT_SUCCESS);
+    }
+    
+    @Test
+    public void saveLastLogout_failure() throws Exception {
+        when(userService.saveLastLogout()).thenReturn(false);
+
+        MvcResult result = mockMvc.perform(get("/user/save-last-logout")).andExpect(status().isBadRequest()).andReturn();
+
+        String jsonString = result.getResponse().getContentAsString();
+        MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
+
+        verify(userService, times(1)).saveLastLogout();
+        assertEquals(messageResDto.getCode(), ResponseCode.SAVE_LAST_LOGOUT_FAILED);
+        assertEquals(messageResDto.getMessage(), ResponseMessage.SAVE_LAST_LOGOUT_FAILED);
+    }
+
+    // ---------- /user/save-last-logout START ----------
 
 }

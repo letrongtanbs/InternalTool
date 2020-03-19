@@ -31,4 +31,7 @@ public interface UserService {
     String uploadAvatar(MultipartFile file);
 
     boolean removeAvatar();
+    
+    boolean saveLastLogout();
+    
 }

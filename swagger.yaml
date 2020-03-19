@@ -58,6 +58,25 @@ paths:
           schema:
             $ref: "#/definitions/MessageResDto"
               
+  /user/save-last-logout:
+    get:
+      tags:
+      - "User"
+      summary: "Save user last logout"
+      description: "Save user last logout"
+      operationId: "Save user last logout"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Return code: SUC005"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        400:
+          description: "Return code: ERR011"
+          schema:
+            $ref: "#/definitions/MessageResDto" 
+              
   /user/password-recover-send-request:
     post:
       tags:

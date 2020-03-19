@@ -78,7 +78,9 @@ public class UserServiceImpl implements UserService {
     private final EnvironmentUtils environmentUtils;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
 
-    public UserServiceImpl(JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, UserRepository userRepository, UserSettingRepository userSettingRepository, EmailService emailService, EnvironmentUtils environmentUtils, ForgotPasswordTokenRepository forgotPasswordTokenRepository, FileStorageService fileStorageService) {
+    public UserServiceImpl(JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, UserRepository userRepository,
+            UserSettingRepository userSettingRepository, EmailService emailService, EnvironmentUtils environmentUtils,
+            ForgotPasswordTokenRepository forgotPasswordTokenRepository, FileStorageService fileStorageService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
@@ -92,6 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Object processLogin(String username, String password) throws UsernameNotFoundException, DataAccessException {
+        LocalDateTime now = LocalDateTime.now();
 
         // Check if user exists
         UserEntity userEntity = userRepository.findActivatedUserByUsername(username);
@@ -112,11 +115,8 @@ public class UserServiceImpl implements UserService {
             if (userEntity.getLoginFailCount() == forgotPasswordMaxLoginFailedCount) {
                 try {
                     // Send notification email
-                    emailService.sendSimpleMessage(userEntity.getEmail()
-                            , accountIsLockedMailSubject
-                            , MessageFormat.format(accountIsLockedMailTemplate,
-                                    userEntity.getUsername(),
-                                    LocalDateTime.now()));
+                    emailService.sendSimpleMessage(userEntity.getEmail(), accountIsLockedMailSubject, MessageFormat
+                            .format(accountIsLockedMailTemplate, userEntity.getUsername(), now));
                 } catch (MessagingException e) {
                     logger.error(e.getMessage());
                     return false;
@@ -131,6 +131,11 @@ public class UserServiceImpl implements UserService {
             userEntity.setLoginFailCount(0);
             userRepository.save(userEntity);
         }
+        
+        // Save last login and remove last logout
+        userEntity.setLastLogin(now);
+        userEntity.setLastLogout(null);
+        userRepository.save(userEntity);
 
         // Build token
         UserDetails userDetails = buildUserDetails(userEntity);
@@ -179,8 +184,8 @@ public class UserServiceImpl implements UserService {
         forgotPasswordTokenRepository.deleteTokenByUsername(username);
 
         // Generates token
-        RandomStringGenerator generator =
-                new RandomStringGenerator.Builder().withinRange('0', 'z').filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
+        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', 'z')
+                .filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
         String randomLetters = generator.generate(99);
 
         // Save new token
@@ -193,13 +198,8 @@ public class UserServiceImpl implements UserService {
 
         try {
             // Send confirmation email
-            emailService.sendSimpleMessage(userEntity.getEmail()
-                    , forgotPasswordMailSubject
-                    , MessageFormat.format(forgotPasswordMailTemplate,
-                            username,
-                            frontEndHost,
-                            environmentUtils.getPort(),
-                            randomLetters));
+            emailService.sendSimpleMessage(userEntity.getEmail(), forgotPasswordMailSubject, MessageFormat.format(
+                    forgotPasswordMailTemplate, username, frontEndHost, environmentUtils.getPort(), randomLetters));
         } catch (MessagingException e) {
             logger.error(e.getMessage());
             return false;
@@ -218,7 +218,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean processRecoverPassword(RecoverPasswordReqDto recoverPasswordReqDto) {
 
-        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken());
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenRepository
+                .findByTokenString(recoverPasswordReqDto.getToken());
         if (!isTokenValid(forgotPasswordTokenEntity)) {
             return false;
         }
@@ -272,7 +273,8 @@ public class UserServiceImpl implements UserService {
             userSettingEntity.setUpdatedDate(LocalDateTime.now());
             userSettingEntity.setUpdatedBy(userEntity.getUsername());
 
-            // flush data to repository in current transaction, then refresh to get latest data
+            // flush data to repository in current transaction, then refresh to get latest
+            // data
             userSettingRepository.saveAndFlush(userSettingEntity);
             userRepository.refresh(userEntity);
 
@@ -333,6 +335,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Transactional
     @Override
     public boolean removeAvatar() {
         UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
@@ -343,6 +346,21 @@ public class UserServiceImpl implements UserService {
             userSettingEntity.setUpdatedBy(UserUtils.getCurrentUsername());
             userSettingEntity.setUpdatedDate(LocalDateTime.now());
             userSettingRepository.save(userSettingEntity);
+            return true;
+        }
+
+        return false;
+    }
+    
+
+    @Transactional
+    @Override
+    public boolean saveLastLogout() {
+        UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
+
+        if (userEntity != null) {
+            userEntity.setLastLogout(LocalDateTime.now());
+            userRepository.save(userEntity);
             return true;
         }
 
@@ -388,7 +406,8 @@ public class UserServiceImpl implements UserService {
         userSettingResDto.setEmail(userEntity.getEmail());
         userSettingResDto.setTitleName(userEntity.getTitleEntity().getTitleName());
         userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
-        userSettingResDto.setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
+        userSettingResDto
+                .setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
         userSettingResDto.setAvatar(fileStorageService.convertAvatarToBase64(userSettingResDto.getAvatar()));
         return userSettingResDto;
     }
@@ -404,7 +423,8 @@ public class UserServiceImpl implements UserService {
         authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
 
         // By this way, UserEntity does not need to implement UserDetails
-        return new User(user.getUsername(), user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        return new User(user.getUsername(), user.getPassword(), enabled, accountNonExpired, credentialsNonExpired,
+                accountNonLocked, authorities);
     }
 
 }

@@ -74,6 +74,12 @@ public class UserEntity implements Serializable {
 
     @Column(name = "deleted_date")
     private LocalDateTime deletedDate;
+    
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+    
+    @Column(name = "last_logout")
+    private LocalDateTime lastLogout;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="role_id", insertable = false, updatable = false) // avoid insert and update reference table when modify current table

@@ -131,7 +131,7 @@ public class UserServiceImplTest {
             } catch (MessagingException e) {
                 fail("Cannot send email!!");
             }
-            verify(userRepository, times(0)).save(any());
+            verify(userRepository, times(1)).save(any(UserEntity.class));
             verify(jwtTokenUtil, times(1)).generateToken(any(UserDetails.class));
         } else {
             fail("Must return error code!!");
@@ -164,7 +164,7 @@ public class UserServiceImplTest {
             } catch (MessagingException e) {
                 fail("Cannot send email!!");
             }
-            verify(userRepository, times(1)).save(any(UserEntity.class));
+            verify(userRepository, times(2)).save(any(UserEntity.class));
             verify(jwtTokenUtil, times(1)).generateToken(any(UserDetails.class));
         } else {
             fail("Must return error code!!");
@@ -787,5 +787,35 @@ public class UserServiceImplTest {
     }
 
     // ---------- removeAvatar END ---------
+    
 
+    // ---------- saveLastLogout START ---------
+    
+    @Test
+    public void saveLastLogout_success() {
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+        UserEntity admin = userEntityDataDummy.getAdminUser1();
+
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
+
+        boolean result = userService.saveLastLogout();
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+
+        assertTrue(result);
+    }
+    
+    @Test
+    public void saveLastLogout_userDoesNotExist() {
+        when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
+
+        boolean result = userService.saveLastLogout();
+
+        verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
+
+        assertFalse(result);
+    }
+    
+    // ---------- saveLastLogout END ---------
+    
 }

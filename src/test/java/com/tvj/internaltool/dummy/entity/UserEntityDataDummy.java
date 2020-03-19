@@ -37,6 +37,8 @@ public class UserEntityDataDummy {
         admin.setRole(roleEntityDataDummy.getAdminRole());
         admin.setUserSettingEntity(userSettingEntityDataDummy.getAdminUserSetting1());
         admin.setTitleEntity(titleEntityDataDummy.getTitle1());
+        admin.setLastLogin(null);
+        admin.setLastLogout(null);
         return admin;
     }
 
@@ -62,6 +64,8 @@ public class UserEntityDataDummy {
         admin.setRole(roleEntityDataDummy.getAdminRole());
         admin.setUserSettingEntity(userSettingEntityDataDummy.getAdminUserSetting2());
         admin.setTitleEntity(titleEntityDataDummy.getTitle2());
+        admin.setLastLogin(null);
+        admin.setLastLogout(null);
         return admin;
     }
 
@@ -87,6 +91,8 @@ public class UserEntityDataDummy {
         user.setRole(roleEntityDataDummy.getUserRole());
         user.setUserSettingEntity(userSettingEntityDataDummy.getUserUserSetting1());
         user.setTitleEntity(titleEntityDataDummy.getTitle3());
+        user.setLastLogin(null);
+        user.setLastLogout(null);
         return user;
     }
 

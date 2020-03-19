@@ -40,6 +40,48 @@
 			"response": []
 		},
 		{
+			"name": "Logout",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ2MjgxOTIsImlhdCI6MTU4NDU5MjE5Mn0.DASgGeuHTMx9pM_eIGjVXZj8rxkVH5lEIxFscCAJKeWZ2F4ePFLUOILSmq7Z6me9CIbGzlz285ZNrtplQlaFow",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"ngocdc\",\n\t\"password\": \"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user/save-last-logout",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user",
+						"save-last-logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Password recover send request",
 			"request": {
 				"method": "POST",
@@ -162,11 +204,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ1NDgzNjEsImlhdCI6MTU4NDUxMjM2MX0.KAS_q3zFKOCKUZFpMFx4bf30u5M-oQusA3v8MaDEeqeD43ExPtndEBvbMmbfF5EdulGOnZKulD2SwxHZrfaTaQ"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ2Mjc4MzUsImlhdCI6MTU4NDU5MTgzNX0.czjBewhbHrwMge4zBgTj2SSuPQp9JrS2O_1fyoJ4KQxsTjBGpCPRuTrKYkAjJAjmrlHsWiGhbRmzPia1oZuFOQ"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ1NDgzNjEsImlhdCI6MTU4NDUxMjM2MX0.KAS_q3zFKOCKUZFpMFx4bf30u5M-oQusA3v8MaDEeqeD43ExPtndEBvbMmbfF5EdulGOnZKulD2SwxHZrfaTaQ"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ2Mjc4MzUsImlhdCI6MTU4NDU5MTgzNX0.czjBewhbHrwMge4zBgTj2SSuPQp9JrS2O_1fyoJ4KQxsTjBGpCPRuTrKYkAjJAjmrlHsWiGhbRmzPia1oZuFOQ"
 					}
 				],
 				"body": {

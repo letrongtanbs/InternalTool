@@ -219,6 +219,8 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
     `updated_date`        DATETIME     NULL DEFAULT NULL,
     `deleted_by`          VARCHAR(36)  NULL DEFAULT NULL,
     `deleted_date`        DATETIME     NULL DEFAULT NULL,
+    `last_login`          DATETIME     NULL DEFAULT NULL,
+    `last_logout`         DATETIME     NULL DEFAULT NULL,
     PRIMARY KEY (`user_id`),
     UNIQUE INDEX `tbl_user_user_setting_id_uindex` (`user_setting_id` ASC) VISIBLE,
     UNIQUE INDEX `tbl_user_username_uindex` (`username` ASC) VISIBLE,
