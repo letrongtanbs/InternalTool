@@ -113,10 +113,10 @@ public class UserServiceImpl implements UserService {
 
             // Lock user if login failed times more than threshold
             if (userEntity.getLoginFailCount() == forgotPasswordMaxLoginFailedCount) {
+                // Send notification email
                 try {
-                    // Send notification email
-                    emailService.sendSimpleMessage(userEntity.getEmail(), accountIsLockedMailSubject, MessageFormat
-                            .format(accountIsLockedMailTemplate, userEntity.getUsername(), now));
+                    emailService.sendSimpleMessage(userEntity.getEmail(), accountIsLockedMailSubject,
+                            MessageFormat.format(accountIsLockedMailTemplate, userEntity.getUsername(), now));
                 } catch (MessagingException e) {
                     logger.error(e.getMessage());
                     return false;
@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
             userEntity.setLoginFailCount(0);
             userRepository.save(userEntity);
         }
-        
+
         // Save last login and remove last logout
         userEntity.setLastLogin(now);
         userEntity.setLastLogout(null);
@@ -148,7 +148,8 @@ public class UserServiceImpl implements UserService {
         userLoginResDto.setLastName(userEntity.getLastName());
         userLoginResDto.setRoleName(userEntity.getRole().getRoleName());
         userLoginResDto.setFirstTimeLogin(userEntity.isFirstTimeLogin());
-        userLoginResDto.setAvatar(fileStorageService.convertAvatarToBase64(userEntity.getUserSettingEntity().getAvatar()));
+        userLoginResDto
+                .setAvatar(fileStorageService.convertAvatarToBase64(userEntity.getUserSettingEntity().getAvatar()));
 
         return userLoginResDto;
     }
@@ -351,7 +352,6 @@ public class UserServiceImpl implements UserService {
 
         return false;
     }
-    
 
     @Transactional
     @Override
@@ -405,9 +405,11 @@ public class UserServiceImpl implements UserService {
         userSettingResDto.setLastName(userEntity.getLastName());
         userSettingResDto.setEmail(userEntity.getEmail());
         userSettingResDto.setTitleName(userEntity.getTitleEntity().getTitleName());
-        userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
-        userSettingResDto
-                .setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
+        if (userSettingEntity.getTeamEntity() != null) {
+            userSettingResDto.setDepartmentId(userSettingEntity.getTeamEntity().getDepartmentId());
+            userSettingResDto
+                    .setDepartmentName(userSettingEntity.getTeamEntity().getDepartmentEntity().getDepartmentName());
+        }
         userSettingResDto.setAvatar(fileStorageService.convertAvatarToBase64(userSettingResDto.getAvatar()));
         return userSettingResDto;
     }

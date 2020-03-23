@@ -65,7 +65,11 @@ account-is-locked:
   mail-subject: "Your account is locked"
   mail-template: "Account <b><font color=''red''>{0}</font></b> is locked at {1}. Please contact administrator to get support or do forgot password process to recover password."
 
+password-for-new-user:
+  mail-subject: "Password for new user {0} for logging in TVJ Internal System"
+  mail-template: "Your password is <b><font color=''red''>{0}</font></b>. Please change password after logging on at the first time login."
+
 logging:
   config: src/main/resources/logback-production.xml
 
-front-end-host: "192.168.43.189"
+front-end-host: "192.168.1.13"

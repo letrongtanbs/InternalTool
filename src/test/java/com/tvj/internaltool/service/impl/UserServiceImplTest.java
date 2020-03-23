@@ -94,7 +94,7 @@ public class UserServiceImplTest {
         ReflectionTestUtils.setField(userService, "accountIsLockedMailSubject", "Mail Subject 1");
         ReflectionTestUtils.setField(userService, "accountIsLockedMailTemplate", "Mail Template 1");
         ReflectionTestUtils.setField(userService, "forgotPasswordMailSubject", "Mail Subject 2");
-        ReflectionTestUtils.setField(userService, "forgotPasswordMailTemplate", "Mail Template 3");
+        ReflectionTestUtils.setField(userService, "forgotPasswordMailTemplate", "Mail Template 2");
 
         // Mocking Spring Security Context
         Authentication authentication = mock(Authentication.class);

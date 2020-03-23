@@ -413,6 +413,34 @@ paths:
           schema:
             $ref: "#/definitions/MemberListResDto"
             
+  /member-management/add-member:
+    post:
+      tags:
+      - "Member Management"
+      summary: "Add member"
+      description: "Add member"
+      operationId: "addMember"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "MemberAddReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/MemberAddReqDto"
+      responses:
+        200:
+          description: "Error code: SUC006"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        400:
+          description: "Error code: ERR012"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+            
 definitions:
 
   UserLoginReqDto:
@@ -710,6 +738,28 @@ definitions:
       isActivated:
         type: boolean
         description: ""       
+        
+  MemberAddReqDto:
+    type: "object"
+    properties:
+      username:
+        type: string
+        description: "Not Blank, max 20 characters"
+      firstName:
+        type: string
+        description: "Not Blank"
+      lastName:
+        type: string
+        description: "Not Blank"
+      titleId:
+        type: string
+        description: "Not Blank"
+      email:
+        type: string
+        description: "Not Blank"
+      password:
+        type: string
+        description: "Not Blank"
         
   MessageResDto:
     type: "object"

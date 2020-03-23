@@ -208,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
     `password`            VARCHAR(100) NOT NULL,
     `first_name`          VARCHAR(100) NOT NULL,
     `last_name`           VARCHAR(100) NOT NULL,
-    `title_id`            VARCHAR(36)  NULL DEFAULT NULL,
+    `title_id`            VARCHAR(36)  NOT NULL,
     `email`               VARCHAR(75)  NOT NULL,
     `is_activated`        TINYINT(1)   NOT NULL,
     `is_first_time_login` TINYINT(1)   NOT NULL,

@@ -1,7 +1,6 @@
 INSERT INTO `tbl_user_status` (`status_id`, `status_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
                            `deleted_by`, `deleted_date`)
-VALUES ('0', 'Offline', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
-       ('1', 'Available', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
+VALUES ('1', 'Available', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
        ('2', 'Away', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
        ('3', 'Busy', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL),
        ('4', 'Do not disturb', 'System', '2020-02-06 10:10:10', NULL, NULL, NULL, NULL);
@@ -40,7 +39,8 @@ VALUES ('1', 'URL1', '/user/{id}/list/{id}', 'D', '2020-01-01 00:00:00', NULL, N
        ('12', 'URL12', '/title/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('13', 'URL13', '/member-management/search', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('14', 'URL14', '/user-status/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('15', 'URL15', '/user/save-last-logout', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+       ('15', 'URL15', '/user/save-last-logout', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('16', 'URL16', '/member-management/add-member', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
@@ -77,7 +77,8 @@ VALUES ('1', '1'),
        ('1', '14'),
        ('2', '14'),
        ('1', '15'),
-       ('2', '15');
+       ('2', '15'),
+       ('1', '16');
 
 
 INSERT INTO `tbl_team` (`team_id`, `team_code`, `team_name`, `department_id`, `created_by`, `created_date`,
@@ -116,6 +117,4 @@ VALUES ('1', '1', '1', 'ngocdc', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/I
        ('2', '2', '1', 'hunghx', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Hoang', 'Hung', '2',
         'hunghx@tinhvan.com', 1, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
        ('3', '3', '2', 'tamdt', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Do', 'Tam', '3',
-        'tamdt@tinhvan.com', 1, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL),
-       ('4', '4', '2', 'xxx', '$2y$12$ipT2RRvG/HaRxeuaNRGm0eVfg0wdXUFot5CM4/IIstD8u.Qn4vkju', 'Do', 'Tam', '4',
-        'xxx@tinhvan.com', 0, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL);
+        'tamdt@tinhvan.com', 1, 0, 0, 'Dexx', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL);

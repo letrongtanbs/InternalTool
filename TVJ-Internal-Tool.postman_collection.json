@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"ngocdc\",\n\t\"password\": \"12345678\"\n}",
+					"raw": "{\n\t\"username\": \"user001\",\n\t\"password\": \"123456789\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -204,11 +204,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ2Mjc4MzUsImlhdCI6MTU4NDU5MTgzNX0.czjBewhbHrwMge4zBgTj2SSuPQp9JrS2O_1fyoJ4KQxsTjBGpCPRuTrKYkAjJAjmrlHsWiGhbRmzPia1oZuFOQ"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwiZXhwIjoxNTg0OTUxMjUxLCJpYXQiOjE1ODQ5NDc2NTF9.Qfpo_hdPI815VOdjIOfMtedM6prXiml51lgKuksT3agY2PHZpBUr_j0Iq3z1Hyv2wVI-fQwY_SYC-OOVcSMR1g"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ2Mjc4MzUsImlhdCI6MTU4NDU5MTgzNX0.czjBewhbHrwMge4zBgTj2SSuPQp9JrS2O_1fyoJ4KQxsTjBGpCPRuTrKYkAjJAjmrlHsWiGhbRmzPia1oZuFOQ"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwiZXhwIjoxNTg0OTUxMjUxLCJpYXQiOjE1ODQ5NDc2NTF9.Qfpo_hdPI815VOdjIOfMtedM6prXiml51lgKuksT3agY2PHZpBUr_j0Iq3z1Hyv2wVI-fQwY_SYC-OOVcSMR1g"
 					}
 				],
 				"body": {
@@ -242,11 +242,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ1NDgzNjEsImlhdCI6MTU4NDUxMjM2MX0.KAS_q3zFKOCKUZFpMFx4bf30u5M-oQusA3v8MaDEeqeD43ExPtndEBvbMmbfF5EdulGOnZKulD2SwxHZrfaTaQ"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwiZXhwIjoxNTg0OTUxMjUxLCJpYXQiOjE1ODQ5NDc2NTF9.Qfpo_hdPI815VOdjIOfMtedM6prXiml51lgKuksT3agY2PHZpBUr_j0Iq3z1Hyv2wVI-fQwY_SYC-OOVcSMR1g"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ1NDgzNjEsImlhdCI6MTU4NDUxMjM2MX0.KAS_q3zFKOCKUZFpMFx4bf30u5M-oQusA3v8MaDEeqeD43ExPtndEBvbMmbfF5EdulGOnZKulD2SwxHZrfaTaQ"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMDAxIiwiZXhwIjoxNTg0OTUxMjUxLCJpYXQiOjE1ODQ5NDc2NTF9.Qfpo_hdPI815VOdjIOfMtedM6prXiml51lgKuksT3agY2PHZpBUr_j0Iq3z1Hyv2wVI-fQwY_SYC-OOVcSMR1g"
 					}
 				],
 				"body": {
@@ -711,6 +711,44 @@
 							"key": "limit",
 							"value": "3"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Member management add member",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ5NTExOTgsImlhdCI6MTU4NDk0NzU5OH0.lkQbQ7IP0IgyW_gijzcDtV8twhZRxDgbyFmdN0PnQC7lyZyMGomv0Z18CWZ9btFEbIDTupUHEBNFvP2M8MTmDw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODQ5NTExOTgsImlhdCI6MTU4NDk0NzU5OH0.lkQbQ7IP0IgyW_gijzcDtV8twhZRxDgbyFmdN0PnQC7lyZyMGomv0Z18CWZ9btFEbIDTupUHEBNFvP2M8MTmDw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"user001\",\n\t\"firstName\": \"huan\",\n\t\"lastName\": \"rosie\",\n\t\"titleId\": \"1\",\n\t\"email\": \"ngocdc1991@gmail.com\",\n\t\"password\": \"123456789\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/member-management/add-member",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"member-management",
+						"add-member"
 					]
 				}
 			},

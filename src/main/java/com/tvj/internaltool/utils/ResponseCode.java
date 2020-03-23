@@ -15,6 +15,7 @@ public class ResponseCode {
     public static final String GET_USER_SETTING_FAILED = "ERR009";
     public static final String REMOVE_AVATAR_FAILED = "ERR010";
     public static final String SAVE_LAST_LOGOUT_FAILED = "ERR011";
+    public static final String ADD_NEW_MEMBER_FAILED = "ERR012";
 
     // Success code
     public static final String SEND_MAIL_SUCCESS = "SUC001";
@@ -22,5 +23,6 @@ public class ResponseCode {
     public static final String REMOVE_AVATAR_SUCCESS = "SUC003";
     public static final String TOKEN_IS_VALID = "SUC004";
     public static final String SAVE_LAST_LOGOUT_SUCCESS = "SUC005";
+    public static final String ADD_NEW_MEMBER_SUCCESS = "SUC006";
 
 }
