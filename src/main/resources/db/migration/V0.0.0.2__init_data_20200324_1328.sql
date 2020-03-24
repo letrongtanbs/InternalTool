@@ -40,7 +40,8 @@ VALUES ('1', 'URL1', '/user/{id}/list/{id}', 'D', '2020-01-01 00:00:00', NULL, N
        ('13', 'URL13', '/member-management/search', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('14', 'URL14', '/user-status/list', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('15', 'URL15', '/user/save-last-logout', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('16', 'URL16', '/member-management/add-member', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+       ('16', 'URL16', '/member-management/add-member', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('17', 'URL17', '/member-management/update-member', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
@@ -78,7 +79,8 @@ VALUES ('1', '1'),
        ('2', '14'),
        ('1', '15'),
        ('2', '15'),
-       ('1', '16');
+       ('1', '16'),
+       ('1', '17');
 
 
 INSERT INTO `tbl_team` (`team_id`, `team_code`, `team_name`, `department_id`, `created_by`, `created_date`,
@@ -104,8 +106,6 @@ VALUES ('1', '1', 'homie', '1234567890', '1', '1', 1, NULL, 'Dexx', '2020-02-06 
        ('2', '1', 'homie', '0987654321', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL),
        ('3', '1', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
-        NULL),
-       ('4', '1', 'homie', '121142345678', '1', '1', 1, NULL, 'Dexx', '2020-02-06 10:10:10', NULL, NULL, NULL,
         NULL);
 
 

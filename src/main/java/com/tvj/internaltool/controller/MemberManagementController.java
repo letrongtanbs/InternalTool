@@ -6,12 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
+import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.service.MemberManagementService;
@@ -44,6 +46,19 @@ public class MemberManagementController {
         }
         return new ResponseEntity<>(
                 new MessageResDto(ResponseCode.ADD_NEW_MEMBER_FAILED, ResponseMessage.ADD_NEW_MEMBER_FAILED),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping(value = "/update-member")
+    public ResponseEntity<?> updateMember(@Valid @RequestBody MemberUpdateReqDto memberUpdateReqDto) {
+        boolean isMemberUpdated = memberManagementService.updateMember(memberUpdateReqDto);
+        if (isMemberUpdated) {
+            return new ResponseEntity<>(
+                    new MessageResDto(ResponseCode.UPDATE_MEMBER_SUCCESS, ResponseMessage.UPDATE_MEMBER_SUCCESS),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(
+                new MessageResDto(ResponseCode.UPDATE_MEMBER_FAILED, ResponseMessage.UPDATE_MEMBER_FAILED),
                 HttpStatus.BAD_REQUEST);
     }
 

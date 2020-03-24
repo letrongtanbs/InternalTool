@@ -18,7 +18,7 @@ public class SaveLastLogoutByExpiredTokenBatch {
     public SaveLastLogoutByExpiredTokenBatch(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    
+
     @Value("${jwt.token.validity-in-second}")
     private long JWT_TOKEN_VALIDITY_IN_SECOND;
 
@@ -26,9 +26,11 @@ public class SaveLastLogoutByExpiredTokenBatch {
     public void cronJobSaveLastLogout() {
         LocalDateTime now = LocalDateTime.now();
         List<UserEntity> userEntityList = userRepository.getNoneLogoutUserWithExpiredLoginToken(JWT_TOKEN_VALIDITY_IN_SECOND);
-        userEntityList.forEach(u -> u.setLastLogout(now));
-        userRepository.saveAll(userEntityList);
-        
+        if (userEntityList.size() > 0) {
+            userEntityList.forEach(u -> u.setLastLogout(now));
+            userRepository.saveAll(userEntityList);
+        }
+
         System.out.println("Save all last logout for non logout user at: " + now);
     }
 

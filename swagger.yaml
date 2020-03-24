@@ -441,6 +441,35 @@ paths:
           schema:
             $ref: "#/definitions/MessageResDto"
             
+  /member-management/update-member:
+    put:
+      tags:
+      - "Member Management"
+      summary: "Update member"
+      description: "Update member"
+      operationId: "updateMember"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "MemberUpdateReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/MemberUpdateReqDto"
+      responses:
+        200:
+          description: "Error code: SUC007"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        400:
+          description: "Error code: ERR013"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+            
+            
 definitions:
 
   UserLoginReqDto:
@@ -758,6 +787,25 @@ definitions:
         type: string
         description: "Not Blank"
       password:
+        type: string
+        description: "Not Blank"
+        
+  MemberUpdateReqDto:
+    type: "object"
+    properties:
+      username:
+        type: string
+        description: "Not Blank, max 20 characters"
+      firstName:
+        type: string
+        description: "Not Blank"
+      lastName:
+        type: string
+        description: "Not Blank"
+      titleId:
+        type: string
+        description: "Not Blank"
+      email:
         type: string
         description: "Not Blank"
         

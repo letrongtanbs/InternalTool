@@ -16,6 +16,7 @@ public class ResponseMessage {
     public static final String REMOVE_AVATAR_FAILED = "Cannot remove avatar!!";
     public static final String SAVE_LAST_LOGOUT_FAILED = "Cannot save last logout!!";
     public static final String ADD_NEW_MEMBER_FAILED = "Cannot add new member!!";
+    public static final String UPDATE_MEMBER_FAILED = "Cannot update member!!";
 
     // Success message
     public static final String SEND_MAIL_SUCCESS = "Confirmation mail is successfully sent!!";
@@ -24,5 +25,6 @@ public class ResponseMessage {
     public static final String TOKEN_IS_VALID = "Token is valid!!";
     public static final String SAVE_LAST_LOGOUT_SUCCESS = "Save last logout successfully!!";
     public static final String ADD_NEW_MEMBER_SUCCESS = "Add new member successfully!!";
+    public static final String UPDATE_MEMBER_SUCCESS = "Update member successfully!!";
 
 }

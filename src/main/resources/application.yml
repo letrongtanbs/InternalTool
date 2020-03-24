@@ -20,9 +20,8 @@ spring:
     port: 587
     properties:
       mail:
-        smpt:
-          auth: true
         smtp:
+          auth: true
           starttls:
             enable: true
           ssl:
@@ -66,8 +65,8 @@ account-is-locked:
   mail-template: "Account <b><font color=''red''>{0}</font></b> is locked at {1}. Please contact administrator to get support or do forgot password process to recover password."
 
 password-for-new-user:
-  mail-subject: "Password for new user {0} for logging in TVJ Internal System"
-  mail-template: "Your password is <b><font color=''red''>{0}</font></b>. Please change password after logging on at the first time login."
+  mail-subject: "Welcome new member of TVJ Internal System"
+  mail-template: "Your password for account <b>{0}</b> is <b><font color=''red''>{1}</font></b>. Please change password after logging on at the first time login."
 
 logging:
   config: src/main/resources/logback.xml

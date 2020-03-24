@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
+import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
 import com.tvj.internaltool.dto.res.MemberResDto;
 import com.tvj.internaltool.entity.UserEntity;
@@ -53,6 +54,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
         this.emailService = emailService;
     }
 
+    @Transactional
     @Override
     public MemberListResDto searchMember(MemberSearchReqDto memberSearchReqDto) {
         List<UserEntity> userEntityList = userRepository.searchMember(memberSearchReqDto);
@@ -103,13 +105,33 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
         // Send mail including password to new user
         try {
-            emailService.sendSimpleMessage(memberAddReqDto.getEmail(),
-                    MessageFormat.format(passwordForNewUserMailSubject, memberAddReqDto.getUsername()),
-                    MessageFormat.format(passwordForNewUserMailTemplate, memberAddReqDto.getPassword()));
+            emailService.sendSimpleMessage(memberAddReqDto.getEmail(), passwordForNewUserMailSubject,
+                    MessageFormat.format(passwordForNewUserMailTemplate, memberAddReqDto.getUsername(),
+                            memberAddReqDto.getPassword()));
         } catch (MessagingException e) {
             logger.error(e.getMessage());
             return false;
         }
+
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean updateMember(MemberUpdateReqDto memberUpdateReqDto) {
+
+        // check selected member exists
+        UserEntity currentUser = userRepository.findByUsername(memberUpdateReqDto.getUsername());
+        if (currentUser == null) {
+            return false;
+        }
+
+        // Save current user info
+        currentUser.setFirstName(memberUpdateReqDto.getFirstName());
+        currentUser.setLastName(memberUpdateReqDto.getLastName());
+        currentUser.setTitleId(memberUpdateReqDto.getTitleId());
+        currentUser.setEmail(memberUpdateReqDto.getEmail());
+        userRepository.save(currentUser);
 
         return true;
     }

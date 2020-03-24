@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
+import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.dummy.dto.res.MemberResDtoDataDummy;
@@ -178,5 +180,61 @@ public class MemberManagementControllerTest {
     }
 
     // ---------- /member-management/add-member END ----------
+
+    // ---------- /member-management/update-member START ----------
+
+    @Test
+    public void updateMember_success() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        when(memberManagementService.updateMember(any(MemberUpdateReqDto.class))).thenReturn(true);
+
+        MvcResult result = mockMvc
+                .perform(put("/member-management/update-member")
+                        .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+
+        String jsonString = result.getResponse().getContentAsString();
+        MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
+
+        verify(memberManagementService, times(1)).updateMember(any(MemberUpdateReqDto.class));
+        assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_MEMBER_SUCCESS);
+        assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_MEMBER_SUCCESS);
+    }
+
+    @Test
+    public void updateMember_memberDoesNotExist() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        when(memberManagementService.updateMember(any(MemberUpdateReqDto.class))).thenReturn(false);
+
+        MvcResult result = mockMvc
+                .perform(put("/member-management/update-member")
+                        .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        String jsonString = result.getResponse().getContentAsString();
+        MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
+
+        verify(memberManagementService, times(1)).updateMember(any(MemberUpdateReqDto.class));
+        assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_MEMBER_FAILED);
+        assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_MEMBER_FAILED);
+    }
+
+    // ---------- /member-management/update-member END ----------
 
 }

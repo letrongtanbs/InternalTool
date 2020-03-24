@@ -32,6 +32,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
+import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
 import com.tvj.internaltool.dummy.entity.UserEntityDataDummy;
 import com.tvj.internaltool.dummy.entity.UserSettingEntityDataDummy;
@@ -182,5 +183,53 @@ public class MemberManagementServiceImplTest {
     }
 
     // ---------- addMember END ---------
+
+    // ---------- updateMember START ---------
+
+    @Test
+    public void updateMember_success() {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+
+        when(userRepository.findByUsername(memberUpdateReqDto.getUsername()))
+                .thenReturn(userEntityDataDummy.getAdminUser1());
+        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntityDataDummy.getAdminUser1());
+        // Mock void method
+
+        boolean result = memberManagementService.updateMember(memberUpdateReqDto);
+
+        verify(userRepository, times(1)).findByUsername(memberUpdateReqDto.getUsername());
+        verify(userRepository, times(1)).save(any(UserEntity.class));
+        assertTrue(result);
+    }
+
+    @Test
+    public void updateMember_memberDoesNotExist() {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        when(userRepository.findByUsername(memberUpdateReqDto.getUsername())).thenReturn(null);
+        // Mock void method
+
+        boolean result = memberManagementService.updateMember(memberUpdateReqDto);
+
+        verify(userRepository, times(1)).findByUsername(memberUpdateReqDto.getUsername());
+        verify(userRepository, times(0)).save(any(UserEntity.class));
+        assertFalse(result);
+    }
+
+    // ---------- updateMember END ---------
 
 }
