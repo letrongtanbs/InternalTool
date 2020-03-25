@@ -1,12 +1,14 @@
 package com.tvj.internaltool.repository.impl;
 
-import com.tvj.internaltool.repository.CustomRepository;
+import java.io.Serializable;
+
+import javax.persistence.EntityManager;
+
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.io.Serializable;
+import com.tvj.internaltool.repository.CustomRepository;
 
 public class CustomRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements CustomRepository<T, ID> {
 

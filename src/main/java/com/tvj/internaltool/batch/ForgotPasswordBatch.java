@@ -1,10 +1,11 @@
 package com.tvj.internaltool.batch;
 
-import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
+import java.time.LocalDateTime;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
 
 @Component
 public class ForgotPasswordBatch {

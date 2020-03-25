@@ -71,4 +71,4 @@ password-for-new-user:
 logging:
   config: src/main/resources/logback-production.xml
 
-front-end-host: "192.168.1.13"
+front-end-host: "192.168.1.16"

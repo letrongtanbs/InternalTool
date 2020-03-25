@@ -2,6 +2,8 @@ package com.tvj.internaltool.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -34,6 +36,7 @@ import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
+import com.tvj.internaltool.dto.res.MemberResDto;
 import com.tvj.internaltool.dummy.entity.UserEntityDataDummy;
 import com.tvj.internaltool.dummy.entity.UserSettingEntityDataDummy;
 import com.tvj.internaltool.entity.UserEntity;
@@ -231,5 +234,37 @@ public class MemberManagementServiceImplTest {
     }
 
     // ---------- updateMember END ---------
+
+    // ---------- viewMember START ---------
+
+    @Test
+    public void viewMember_success() {
+        // Value from client
+        String username = "ngocdc";
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+
+        when(userRepository.findByUsername(username)).thenReturn(userEntityDataDummy.getAdminUser1());
+
+        MemberResDto memberResDto = memberManagementService.viewMember(username);
+
+        verify(userRepository, times(1)).findByUsername(username);
+        assertNotNull(memberResDto);
+    }
+
+    @Test
+    public void viewMember_userDoesNotExist() {
+        // Value from client
+        String username = "ngocdc";
+
+        when(userRepository.findByUsername(username)).thenReturn(null);
+
+        MemberResDto memberResDto = memberManagementService.viewMember(username);
+
+        verify(userRepository, times(1)).findByUsername(username);
+        assertNull(memberResDto);
+    }
+
+    // ---------- viewMember END ---------
 
 }

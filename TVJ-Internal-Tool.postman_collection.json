@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"user001\",\n\t\"password\": \"123456789\"\n}",
+					"raw": "{\n\t\"username\": \"ngocdc\",\n\t\"password\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -793,6 +793,41 @@
 					"path": [
 						"member-management",
 						"update-member"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Member management view member",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODUxMTg0MjYsImlhdCI6MTU4NTExNDgyNn0.YzHSKtmkF_KW2yIktl0IFeSmGjlRalvfT1dk-MzUrsQuyfwbbAVH2C_McLifUzKFBGHj8jC5Wqk67-rEzSF-nw"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODUxMTg0MjYsImlhdCI6MTU4NTExNDgyNn0.YzHSKtmkF_KW2yIktl0IFeSmGjlRalvfT1dk-MzUrsQuyfwbbAVH2C_McLifUzKFBGHj8jC5Wqk67-rEzSF-nw"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/member-management/view-member?username=ngocdc",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"member-management",
+						"view-member"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "ngocdc"
+						}
 					]
 				}
 			},

@@ -1,10 +1,10 @@
 package com.tvj.internaltool.repository;
 
-import com.tvj.internaltool.entity.UserEntity;
-
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
+
+import com.tvj.internaltool.entity.UserEntity;
 
 public interface UserRepository extends CustomRepository<UserEntity, String>, CustomUserRepository {
 

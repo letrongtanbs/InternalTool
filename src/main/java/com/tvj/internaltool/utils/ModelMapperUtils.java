@@ -1,10 +1,10 @@
 package com.tvj.internaltool.utils;
 
-import org.modelmapper.ModelMapper;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 
 public class ModelMapperUtils {
 

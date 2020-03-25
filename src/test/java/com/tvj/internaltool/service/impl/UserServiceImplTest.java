@@ -71,7 +71,8 @@ public class UserServiceImplTest {
     private UserSettingRepository userSettingRepository; // this will be injected into userService (use for when(...))
 
     @Mock
-    private ForgotPasswordTokenRepository forgotPasswordTokenRepository; // this will be injected into userService (use for when(...))
+    private ForgotPasswordTokenRepository forgotPasswordTokenRepository; // this will be injected into userService (use
+                                                                         // for when(...))
 
     @Mock
     private JwtTokenUtil jwtTokenUtil; // this will be injected into userService (use for when(...))
@@ -389,7 +390,8 @@ public class UserServiceImplTest {
         String token = "Token1";
 
         ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
-        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy
+                .getForgotPasswordTokenEntity();
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().plusHours(1));
 
         when(forgotPasswordTokenRepository.findByTokenString(token)).thenReturn(forgotPasswordTokenEntity);
@@ -419,7 +421,8 @@ public class UserServiceImplTest {
         String token = "Token1";
 
         ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
-        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy
+                .getForgotPasswordTokenEntity();
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().minusHours(1));
 
         when(forgotPasswordTokenRepository.findByTokenString(token)).thenReturn(forgotPasswordTokenEntity);
@@ -442,13 +445,15 @@ public class UserServiceImplTest {
         recoverPasswordReqDto.setNewPassword("newPassword");
 
         ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
-        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy
+                .getForgotPasswordTokenEntity();
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().plusHours(1));
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
         UserEntity admin = userEntityDataDummy.getAdminUser1();
 
-        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(forgotPasswordTokenEntity);
+        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken()))
+                .thenReturn(forgotPasswordTokenEntity);
         when(userRepository.findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername())).thenReturn(admin);
         when(userRepository.save(admin)).thenReturn(null);
 
@@ -461,7 +466,6 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername());
         verify(userRepository, times(1)).save(admin);
         verify(forgotPasswordTokenRepository, times(1)).delete(forgotPasswordTokenEntity);
-
         assertTrue(result);
     }
 
@@ -480,7 +484,6 @@ public class UserServiceImplTest {
         verify(userRepository, times(0)).findById(any());
         verify(userRepository, times(0)).save(any());
         verify(forgotPasswordTokenRepository, times(0)).delete(any());
-
         assertFalse(result);
     }
 
@@ -492,10 +495,12 @@ public class UserServiceImplTest {
         recoverPasswordReqDto.setNewPassword("newPassword");
 
         ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
-        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy
+                .getForgotPasswordTokenEntity();
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().minusHours(1));
 
-        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(forgotPasswordTokenEntity);
+        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken()))
+                .thenReturn(forgotPasswordTokenEntity);
 
         boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
 
@@ -503,7 +508,6 @@ public class UserServiceImplTest {
         verify(userRepository, times(0)).findById(any());
         verify(userRepository, times(0)).save(any());
         verify(forgotPasswordTokenRepository, times(0)).delete(any());
-
         assertFalse(result);
     }
 
@@ -515,10 +519,12 @@ public class UserServiceImplTest {
         recoverPasswordReqDto.setNewPassword("newPassword");
 
         ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
-        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy.getForgotPasswordTokenEntity();
+        ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy
+                .getForgotPasswordTokenEntity();
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().plusHours(1));
 
-        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(forgotPasswordTokenEntity);
+        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken()))
+                .thenReturn(forgotPasswordTokenEntity);
         when(userRepository.findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername())).thenReturn(null);
 
         boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
@@ -527,7 +533,6 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername());
         verify(userRepository, times(0)).save(any());
         verify(forgotPasswordTokenRepository, times(0)).delete(any());
-
         assertFalse(result);
     }
 
@@ -544,7 +549,6 @@ public class UserServiceImplTest {
         UserSettingResDto userSettingResDto = userService.getUserSetting();
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
-
         assertNotNull(userSettingResDto);
     }
 
@@ -555,7 +559,6 @@ public class UserServiceImplTest {
         UserSettingResDto userSettingResDto = userService.getUserSetting();
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
-
         assertNull(userSettingResDto);
     }
 
@@ -589,7 +592,6 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userSettingRepository, times(1)).saveAndFlush(any(UserSettingEntity.class));
         verify(userRepository, times(1)).refresh(admin);
-
         assertEquals(userSettingResDto.getStatusId(), userSettingReqDto.getStatusId());
         assertEquals(userSettingResDto.getLanguageId(), userSettingReqDto.getLanguageId());
     }
@@ -613,7 +615,6 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userSettingRepository, times(0)).saveAndFlush(any(UserSettingEntity.class));
         verify(userRepository, times(0)).refresh(any(UserEntity.class));
-
         assertNull(userSettingResDto);
     }
 
@@ -638,7 +639,6 @@ public class UserServiceImplTest {
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userRepository, times(1)).save(admin);
-
         assertTrue(result);
     }
 
@@ -655,7 +655,6 @@ public class UserServiceImplTest {
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userRepository, times(0)).save(any(UserEntity.class));
-
         assertFalse(result);
     }
 
@@ -675,7 +674,6 @@ public class UserServiceImplTest {
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userRepository, times(0)).save(any(UserEntity.class));
-
         assertFalse(result);
     }
 
@@ -686,16 +684,14 @@ public class UserServiceImplTest {
     @Test
     public void uploadAvatar_success() {
         // Value from client
-        MockMultipartFile image = new MockMultipartFile(
-                "file",
-                "cv.jpg",
-                "image/jpeg",
+        MockMultipartFile image = new MockMultipartFile("file", "cv.jpg", "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         String dateTimePatternSticky = "yyyyMMddhhmmss";
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
-        String newFileName = currentUsername + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTimePatternSticky)) + "_" + fileName;
+        String newFileName = currentUsername + "_"
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTimePatternSticky)) + "_" + fileName;
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
         UserEntity admin = userEntityDataDummy.getAdminUser1();
@@ -715,17 +711,13 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(fileStorageService, times(1)).storeFile(image);
         verify(userSettingRepository, times(1)).save(any(UserSettingEntity.class));
-
         assertEquals(outputFileName, newFileName);
     }
 
     @Test
     public void uploadAvatar_invalidFileType() {
         // Value from client
-        MockMultipartFile image = new MockMultipartFile(
-                "file",
-                "cv.gif",
-                "image/gif",
+        MockMultipartFile image = new MockMultipartFile("file", "cv.gif", "image/gif",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.gif\"}".getBytes());
 
         String outputFileName = userService.uploadAvatar(image);
@@ -733,17 +725,13 @@ public class UserServiceImplTest {
         verify(userRepository, times(0)).findActivatedUserByUsername(anyString());
         verify(fileStorageService, times(0)).storeFile(any(MultipartFile.class));
         verify(userSettingRepository, times(0)).save(any(UserSettingEntity.class));
-
         assertNull(outputFileName);
     }
 
     @Test
     public void uploadAvatar_userDoesNotExist() {
         // Value from client
-        MockMultipartFile image = new MockMultipartFile(
-                "file",
-                "cv.jpg",
-                "image/jpeg",
+        MockMultipartFile image = new MockMultipartFile("file", "cv.jpg", "image/jpeg",
                 "{\"image\": \"F:\\TVJ\\file_upload\\test\\cv.jpg\"}".getBytes());
 
         when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
@@ -753,7 +741,6 @@ public class UserServiceImplTest {
         verify(userRepository, times(1)).findActivatedUserByUsername(anyString());
         verify(fileStorageService, times(0)).storeFile(any(MultipartFile.class));
         verify(userSettingRepository, times(0)).save(any(UserSettingEntity.class));
-
         assertNull(outputFileName);
     }
 
@@ -771,7 +758,6 @@ public class UserServiceImplTest {
         boolean result = userService.removeAvatar();
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
-
         assertTrue(result);
     }
 
@@ -782,15 +768,13 @@ public class UserServiceImplTest {
         boolean result = userService.removeAvatar();
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
-
         assertFalse(result);
     }
 
     // ---------- removeAvatar END ---------
-    
 
     // ---------- saveLastLogout START ---------
-    
+
     @Test
     public void saveLastLogout_success() {
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
@@ -801,10 +785,9 @@ public class UserServiceImplTest {
         boolean result = userService.saveLastLogout();
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
-
         assertTrue(result);
     }
-    
+
     @Test
     public void saveLastLogout_userDoesNotExist() {
         when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
@@ -812,10 +795,9 @@ public class UserServiceImplTest {
         boolean result = userService.saveLastLogout();
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
-
         assertFalse(result);
     }
-    
+
     // ---------- saveLastLogout END ---------
-    
+
 }

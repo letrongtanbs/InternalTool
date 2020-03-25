@@ -1,12 +1,13 @@
 package com.tvj.internaltool.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
 import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
 import com.tvj.internaltool.dto.req.UserSettingReqDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.UserEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 

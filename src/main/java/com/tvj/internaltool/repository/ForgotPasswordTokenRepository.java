@@ -1,9 +1,10 @@
 package com.tvj.internaltool.repository;
 
-import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
 
 public interface ForgotPasswordTokenRepository extends CustomRepository<ForgotPasswordTokenEntity, String> {
 

@@ -136,4 +136,13 @@ public class MemberManagementServiceImpl implements MemberManagementService {
         return true;
     }
 
+    @Override
+    public MemberResDto viewMember(String username) {
+        UserEntity userEntity = userRepository.findByUsername(username);
+        if (userEntity != null) {
+            return ModelMapperUtils.map(userEntity, MemberResDto.class);
+        }
+        return null;
+    }
+
 }

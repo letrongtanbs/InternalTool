@@ -1,14 +1,15 @@
 package com.tvj.internaltool.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.tvj.internaltool.dto.res.DepartmentListResDto;
 import com.tvj.internaltool.dto.res.DepartmentResDto;
 import com.tvj.internaltool.entity.DepartmentEntity;
 import com.tvj.internaltool.repository.DepartmentRepository;
 import com.tvj.internaltool.service.DepartmentService;
 import com.tvj.internaltool.utils.ModelMapperUtils;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {

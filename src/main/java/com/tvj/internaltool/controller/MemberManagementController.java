@@ -1,6 +1,7 @@
 package com.tvj.internaltool.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
+import com.tvj.internaltool.dto.res.MemberResDto;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.service.MemberManagementService;
 import com.tvj.internaltool.utils.ResponseCode;
@@ -59,6 +62,17 @@ public class MemberManagementController {
         }
         return new ResponseEntity<>(
                 new MessageResDto(ResponseCode.UPDATE_MEMBER_FAILED, ResponseMessage.UPDATE_MEMBER_FAILED),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping(value = "/view-member")
+    public ResponseEntity<?> viewMember(@NotBlank @RequestParam("username") String username) {
+        MemberResDto memberResDto = memberManagementService.viewMember(username);
+        if (memberResDto != null) {
+            return new ResponseEntity<>(memberResDto, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(
+                new MessageResDto(ResponseCode.VIEW_MEMBER_FAILED, ResponseMessage.VIEW_MEMBER_FAILED),
                 HttpStatus.BAD_REQUEST);
     }
 

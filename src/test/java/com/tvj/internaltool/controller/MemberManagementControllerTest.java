@@ -237,4 +237,41 @@ public class MemberManagementControllerTest {
 
     // ---------- /member-management/update-member END ----------
 
+    // ---------- /member-management/view-member START ----------
+
+    @Test
+    public void viewMember_success() throws Exception {
+        // Value from client
+        String username = "ngocdc";
+
+        MemberResDtoDataDummy memberResDtoDataDummy = new MemberResDtoDataDummy();
+
+        when(memberManagementService.viewMember(username)).thenReturn(memberResDtoDataDummy.getMember1());
+
+        mockMvc.perform(get("/member-management/view-member").param("username", username)).andExpect(status().isOk())
+                .andReturn();
+
+        verify(memberManagementService, times(1)).viewMember(username);
+    }
+
+    @Test
+    public void viewMember_memberDoesNotExist() throws Exception {
+        // Value from client
+        String username = "ngocdc";
+
+        when(memberManagementService.viewMember(username)).thenReturn(null);
+
+        MvcResult result = mockMvc.perform(get("/member-management/view-member").param("username", username))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        String jsonString = result.getResponse().getContentAsString();
+        MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
+
+        verify(memberManagementService, times(1)).viewMember(username);
+        assertEquals(messageResDto.getCode(), ResponseCode.VIEW_MEMBER_FAILED);
+        assertEquals(messageResDto.getMessage(), ResponseMessage.VIEW_MEMBER_FAILED);
+    }
+
+    // ---------- /member-management/view-member END ----------
+
 }

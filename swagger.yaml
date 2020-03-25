@@ -469,6 +469,31 @@ paths:
           schema:
             $ref: "#/definitions/MessageResDto"
             
+  /member-management/view-member:
+    get:
+      tags:
+      - "Member Management"
+      summary: "View member"
+      description: "View member"
+      operationId: "viewMember"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "search by username"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: ""
+          schema:
+            $ref: "#/definitions/MemberResDto"
+        400:
+          description: "Error code: ERR014"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+            
             
 definitions:
 

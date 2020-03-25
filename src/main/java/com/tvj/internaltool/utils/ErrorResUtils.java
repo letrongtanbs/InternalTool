@@ -1,12 +1,14 @@
 package com.tvj.internaltool.utils;
 
-import com.google.gson.Gson;
-import com.tvj.internaltool.dto.res.MessageResDto;
-import org.springframework.http.MediaType;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.MediaType;
+
+import com.google.gson.Gson;
+import com.tvj.internaltool.dto.res.MessageResDto;
 
 public class ErrorResUtils {
     public void responseError(String errorCode, String errorMessage, HttpServletResponse response) throws IOException {

@@ -17,6 +17,7 @@ public class ResponseMessage {
     public static final String SAVE_LAST_LOGOUT_FAILED = "Cannot save last logout!!";
     public static final String ADD_NEW_MEMBER_FAILED = "Cannot add new member!!";
     public static final String UPDATE_MEMBER_FAILED = "Cannot update member!!";
+    public static final String VIEW_MEMBER_FAILED = "Member does not exist!!";
 
     // Success message
     public static final String SEND_MAIL_SUCCESS = "Confirmation mail is successfully sent!!";
