@@ -395,7 +395,7 @@ paths:
         in: "query"
         description: "search by title"
         type: "string"
-      - name: "isActivated"
+      - name: "activated"
         in: "query"
         description: "search by is activated"
         type: "boolean"
@@ -494,6 +494,33 @@ paths:
           schema:
             $ref: "#/definitions/MessageResDto"
             
+  /member-management/update-member-activate-status:
+    patch:
+      tags:
+      - "Member Management"
+      summary: "Update member activate status"
+      description: "Update member activate status"
+      operationId: "activate status"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "MemberActivateStatusUpdateReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/MemberActivateStatusUpdateReqDto"
+      responses:
+        200:
+          description: "Error code: SUC008"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        400:
+          description: "Error code: ERR015"
+          schema:
+            $ref: "#/definitions/MessageResDto"
             
 definitions:
 
@@ -789,7 +816,7 @@ definitions:
       titleName:
         type: string
         description: ""    
-      isActivated:
+      activated:
         type: boolean
         description: ""       
         
@@ -833,6 +860,16 @@ definitions:
       email:
         type: string
         description: "Not Blank"
+        
+  MemberActivateStatusUpdateReqDto:      
+    type: "object"
+    properties:
+      username:
+        type: string
+        description: "Not Blank, max 20 characters"
+      activated:
+        type: boolean
+        description: "Not Blank"    
         
   MessageResDto:
     type: "object"

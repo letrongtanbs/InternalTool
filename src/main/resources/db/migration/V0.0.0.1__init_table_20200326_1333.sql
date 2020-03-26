@@ -224,7 +224,6 @@ CREATE TABLE IF NOT EXISTS `tvj_internal_db`.`tbl_user`
     PRIMARY KEY (`user_id`),
     UNIQUE INDEX `tbl_user_user_setting_id_uindex` (`user_setting_id` ASC) VISIBLE,
     UNIQUE INDEX `tbl_user_username_uindex` (`username` ASC) VISIBLE,
-    UNIQUE INDEX `tbl_user_email_uindex` (`email` ASC) VISIBLE,
     CONSTRAINT `tbl_user_role_id_fk`
         FOREIGN KEY (`role_id`)
             REFERENCES `tvj_internal_db`.`tbl_role` (`role_id`),

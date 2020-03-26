@@ -17,6 +17,7 @@ public interface UserRepository extends CustomRepository<UserEntity, String>, Cu
             + " AND TIMESTAMPDIFF(SECOND, u.lastLogin, NOW()) > :tokenValidityInSecond ")
     List<UserEntity> getNoneLogoutUserWithExpiredLoginToken(long tokenValidityInSecond);
     
-    UserEntity findByUsername(String username);
+    @Query("SELECT u FROM UserEntity u WHERE u.username = :username AND u.deletedDate IS NULL")
+    UserEntity findNonDeletedUserByUsername(String username);
 
 }

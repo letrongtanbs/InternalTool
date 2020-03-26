@@ -661,11 +661,11 @@
 						"key": "Authorization",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODUwMzkyNzYsImlhdCI6MTU4NTAzNTY3Nn0.N3nbifeaL9iYF6j70jRsAl7hesySIIxVKZNXu6Np0QdgTJNmjq2_zHb7e2A0sVePA0D_LlJjeOHaiycytZVjzA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODUyMDM3MjIsImlhdCI6MTU4NTIwMDEyMn0.AmAHvL9b1-4kZR6MHzMjtyjAoHo8rOQ_7pwO38fSiGoRXh5H1p8iSBDCnBY06N3FVSZTJakxFcQX-QNi8g5STg"
 					},
 					{
 						"key": "Content-Type",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODUwMzkyNzYsImlhdCI6MTU4NTAzNTY3Nn0.N3nbifeaL9iYF6j70jRsAl7hesySIIxVKZNXu6Np0QdgTJNmjq2_zHb7e2A0sVePA0D_LlJjeOHaiycytZVjzA"
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODUyMDM3MjIsImlhdCI6MTU4NTIwMDEyMn0.AmAHvL9b1-4kZR6MHzMjtyjAoHo8rOQ_7pwO38fSiGoRXh5H1p8iSBDCnBY06N3FVSZTJakxFcQX-QNi8g5STg"
 					}
 				],
 				"body": {
@@ -678,7 +678,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/member-management/search",
+					"raw": "{{host}}/member-management/search?offset=0&limit=5",
 					"host": [
 						"{{host}}"
 					],
@@ -709,13 +709,11 @@
 						},
 						{
 							"key": "offset",
-							"value": "0",
-							"disabled": true
+							"value": "0"
 						},
 						{
 							"key": "limit",
-							"value": "3",
-							"disabled": true
+							"value": "5"
 						}
 					]
 				}
@@ -793,6 +791,44 @@
 					"path": [
 						"member-management",
 						"update-member"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Member management update member activate status",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODUyMDM3MjIsImlhdCI6MTU4NTIwMDEyMn0.AmAHvL9b1-4kZR6MHzMjtyjAoHo8rOQ_7pwO38fSiGoRXh5H1p8iSBDCnBY06N3FVSZTJakxFcQX-QNi8g5STg"
+					},
+					{
+						"key": "Content-Type",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuZ29jZGMiLCJleHAiOjE1ODUyMDM3MjIsImlhdCI6MTU4NTIwMDEyMn0.AmAHvL9b1-4kZR6MHzMjtyjAoHo8rOQ_7pwO38fSiGoRXh5H1p8iSBDCnBY06N3FVSZTJakxFcQX-QNi8g5STg"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"tamdt\",\n\t\"activated\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/member-management/update-member-activate-status",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"member-management",
+						"update-member-activate-status"
 					]
 				}
 			},

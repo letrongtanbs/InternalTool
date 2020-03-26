@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tvj.internaltool.dto.req.MemberActivateStatusUpdateReqDto;
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
@@ -68,7 +69,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
     public boolean addMember(MemberAddReqDto memberAddReqDto) {
 
         // check old member exists
-        UserEntity oldUser = userRepository.findByUsername(memberAddReqDto.getUsername());
+        UserEntity oldUser = userRepository.findNonDeletedUserByUsername(memberAddReqDto.getUsername());
         if (oldUser != null) {
             return false;
         }
@@ -121,7 +122,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
     public boolean updateMember(MemberUpdateReqDto memberUpdateReqDto) {
 
         // check selected member exists
-        UserEntity currentUser = userRepository.findByUsername(memberUpdateReqDto.getUsername());
+        UserEntity currentUser = userRepository.findNonDeletedUserByUsername(memberUpdateReqDto.getUsername());
         if (currentUser == null) {
             return false;
         }
@@ -131,6 +132,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
         currentUser.setLastName(memberUpdateReqDto.getLastName());
         currentUser.setTitleId(memberUpdateReqDto.getTitleId());
         currentUser.setEmail(memberUpdateReqDto.getEmail());
+        currentUser.setUpdatedBy(UserUtils.getCurrentUsername());
+        currentUser.setUpdatedDate(LocalDateTime.now());
         userRepository.save(currentUser);
 
         return true;
@@ -138,11 +141,30 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 
     @Override
     public MemberResDto viewMember(String username) {
-        UserEntity userEntity = userRepository.findByUsername(username);
+        UserEntity userEntity = userRepository.findNonDeletedUserByUsername(username);
         if (userEntity != null) {
             return ModelMapperUtils.map(userEntity, MemberResDto.class);
         }
         return null;
+    }
+
+    @Transactional
+    @Override
+    public boolean updateMemberActivateStatus(MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto) {
+        // check selected member exists
+        UserEntity currentUser = userRepository
+                .findNonDeletedUserByUsername(memberActivateStatusUpdateReqDto.getUsername());
+        if (currentUser == null) {
+            return false;
+        }
+
+        // Save current user info
+        currentUser.setActivated(memberActivateStatusUpdateReqDto.isActivated());
+        currentUser.setUpdatedBy(UserUtils.getCurrentUsername());
+        currentUser.setUpdatedDate(LocalDateTime.now());
+        userRepository.save(currentUser);
+
+        return true;
     }
 
 }

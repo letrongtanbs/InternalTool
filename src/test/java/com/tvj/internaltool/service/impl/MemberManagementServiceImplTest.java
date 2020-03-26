@@ -32,6 +32,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import com.tvj.internaltool.dto.req.MemberActivateStatusUpdateReqDto;
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
@@ -144,7 +145,7 @@ public class MemberManagementServiceImplTest {
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
         UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
 
-        when(userRepository.findByUsername(memberAddReqDto.getUsername())).thenReturn(null);
+        when(userRepository.findNonDeletedUserByUsername(memberAddReqDto.getUsername())).thenReturn(null);
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntityDataDummy.getAdminUser1());
         when(userSettingRepository.save(any(UserSettingEntity.class)))
                 .thenReturn(userSettingEntityDataDummy.getAdminUserSetting1());
@@ -153,7 +154,7 @@ public class MemberManagementServiceImplTest {
 
         boolean result = memberManagementService.addMember(memberAddReqDto);
 
-        verify(userRepository, times(1)).findByUsername(memberAddReqDto.getUsername());
+        verify(userRepository, times(1)).findNonDeletedUserByUsername(memberAddReqDto.getUsername());
         verify(userRepository, times(1)).save(any(UserEntity.class));
         verify(userSettingRepository, times(1)).save(any(UserSettingEntity.class));
         verify(emailService, times(1)).sendSimpleMessage(any(), any(), any());
@@ -173,12 +174,12 @@ public class MemberManagementServiceImplTest {
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
 
-        when(userRepository.findByUsername(memberAddReqDto.getUsername()))
+        when(userRepository.findNonDeletedUserByUsername(memberAddReqDto.getUsername()))
                 .thenReturn(userEntityDataDummy.getAdminUser1());
 
         boolean result = memberManagementService.addMember(memberAddReqDto);
 
-        verify(userRepository, times(1)).findByUsername(memberAddReqDto.getUsername());
+        verify(userRepository, times(1)).findNonDeletedUserByUsername(memberAddReqDto.getUsername());
         verify(userRepository, times(0)).save(any(UserEntity.class));
         verify(userSettingRepository, times(0)).save(any(UserSettingEntity.class));
         verify(emailService, times(0)).sendSimpleMessage(any(), any(), any());
@@ -201,14 +202,13 @@ public class MemberManagementServiceImplTest {
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
 
-        when(userRepository.findByUsername(memberUpdateReqDto.getUsername()))
+        when(userRepository.findNonDeletedUserByUsername(memberUpdateReqDto.getUsername()))
                 .thenReturn(userEntityDataDummy.getAdminUser1());
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntityDataDummy.getAdminUser1());
-        // Mock void method
 
         boolean result = memberManagementService.updateMember(memberUpdateReqDto);
 
-        verify(userRepository, times(1)).findByUsername(memberUpdateReqDto.getUsername());
+        verify(userRepository, times(1)).findNonDeletedUserByUsername(memberUpdateReqDto.getUsername());
         verify(userRepository, times(1)).save(any(UserEntity.class));
         assertTrue(result);
     }
@@ -223,12 +223,11 @@ public class MemberManagementServiceImplTest {
         memberUpdateReqDto.setTitleId("1");
         memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
 
-        when(userRepository.findByUsername(memberUpdateReqDto.getUsername())).thenReturn(null);
-        // Mock void method
+        when(userRepository.findNonDeletedUserByUsername(memberUpdateReqDto.getUsername())).thenReturn(null);
 
         boolean result = memberManagementService.updateMember(memberUpdateReqDto);
 
-        verify(userRepository, times(1)).findByUsername(memberUpdateReqDto.getUsername());
+        verify(userRepository, times(1)).findNonDeletedUserByUsername(memberUpdateReqDto.getUsername());
         verify(userRepository, times(0)).save(any(UserEntity.class));
         assertFalse(result);
     }
@@ -244,11 +243,11 @@ public class MemberManagementServiceImplTest {
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
 
-        when(userRepository.findByUsername(username)).thenReturn(userEntityDataDummy.getAdminUser1());
+        when(userRepository.findNonDeletedUserByUsername(username)).thenReturn(userEntityDataDummy.getAdminUser1());
 
         MemberResDto memberResDto = memberManagementService.viewMember(username);
 
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findNonDeletedUserByUsername(username);
         assertNotNull(memberResDto);
     }
 
@@ -257,14 +256,55 @@ public class MemberManagementServiceImplTest {
         // Value from client
         String username = "ngocdc";
 
-        when(userRepository.findByUsername(username)).thenReturn(null);
+        when(userRepository.findNonDeletedUserByUsername(username)).thenReturn(null);
 
         MemberResDto memberResDto = memberManagementService.viewMember(username);
 
-        verify(userRepository, times(1)).findByUsername(username);
+        verify(userRepository, times(1)).findNonDeletedUserByUsername(username);
         assertNull(memberResDto);
     }
 
     // ---------- viewMember END ---------
+
+    // ---------- updateMemberActivateStatus START ---------
+
+    @Test
+    public void updateMemberActivateStatus_success() {
+        // Value from client
+        MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto = new MemberActivateStatusUpdateReqDto();
+        memberActivateStatusUpdateReqDto.setUsername("ngocdc");
+        memberActivateStatusUpdateReqDto.setActivated(true);
+
+        UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
+
+        when(userRepository.findNonDeletedUserByUsername(memberActivateStatusUpdateReqDto.getUsername()))
+                .thenReturn(userEntityDataDummy.getAdminUser1());
+        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntityDataDummy.getAdminUser1());
+
+        boolean result = memberManagementService.updateMemberActivateStatus(memberActivateStatusUpdateReqDto);
+
+        verify(userRepository, times(1)).findNonDeletedUserByUsername(memberActivateStatusUpdateReqDto.getUsername());
+        verify(userRepository, times(1)).save(any(UserEntity.class));
+        assertTrue(result);
+    }
+
+    @Test
+    public void updateMemberActivateStatus_memberDoesNotExist() {
+        // Value from client
+        MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto = new MemberActivateStatusUpdateReqDto();
+        memberActivateStatusUpdateReqDto.setUsername("ngocdc");
+        memberActivateStatusUpdateReqDto.setActivated(true);
+
+        when(userRepository.findNonDeletedUserByUsername(memberActivateStatusUpdateReqDto.getUsername()))
+                .thenReturn(null);
+
+        boolean result = memberManagementService.updateMemberActivateStatus(memberActivateStatusUpdateReqDto);
+
+        verify(userRepository, times(1)).findNonDeletedUserByUsername(memberActivateStatusUpdateReqDto.getUsername());
+        verify(userRepository, times(0)).save(any(UserEntity.class));
+        assertFalse(result);
+    }
+
+    // ---------- updateMemberActivateStatus END ---------
 
 }

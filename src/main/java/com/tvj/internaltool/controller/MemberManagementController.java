@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tvj.internaltool.dto.req.MemberActivateStatusUpdateReqDto;
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
@@ -74,6 +76,17 @@ public class MemberManagementController {
         return new ResponseEntity<>(
                 new MessageResDto(ResponseCode.VIEW_MEMBER_FAILED, ResponseMessage.VIEW_MEMBER_FAILED),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @PatchMapping(value = "/update-member-activate-status")
+    public ResponseEntity<?> updateMemberActivateStatus(@Valid @RequestBody MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto) {
+        boolean isMemberActivateStatusUpdated = memberManagementService.updateMemberActivateStatus(memberActivateStatusUpdateReqDto);
+        if (isMemberActivateStatusUpdated) {
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS,
+                    ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_FAILED,
+                ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_FAILED), HttpStatus.BAD_REQUEST);
     }
 
 }

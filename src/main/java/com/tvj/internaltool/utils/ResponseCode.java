@@ -18,6 +18,7 @@ public class ResponseCode {
     public static final String ADD_NEW_MEMBER_FAILED = "ERR012";
     public static final String UPDATE_MEMBER_FAILED = "ERR013";
     public static final String VIEW_MEMBER_FAILED = "ERR014";
+    public static final String UPDATE_MEMBER_ACTIVATED_STATUS_FAILED = "ERR015";
 
     // Success code
     public static final String SEND_MAIL_SUCCESS = "SUC001";
@@ -27,5 +28,6 @@ public class ResponseCode {
     public static final String SAVE_LAST_LOGOUT_SUCCESS = "SUC005";
     public static final String ADD_NEW_MEMBER_SUCCESS = "SUC006";
     public static final String UPDATE_MEMBER_SUCCESS = "SUC007";
+    public static final String UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS = "SUC008";
 
 }

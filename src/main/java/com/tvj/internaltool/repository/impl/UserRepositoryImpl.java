@@ -26,7 +26,7 @@ public class UserRepositoryImpl implements CustomUserRepository {
 
         StringBuilder queryStr = new StringBuilder();
         queryStr.append(" SELECT u FROM UserEntity u ");
-        queryStr.append(" WHERE 1 = 1 ");
+        queryStr.append(" WHERE u.deletedDate IS NULL ");
 
         if (StringUtils.isNotBlank(memberSearchReqDto.getName())) {
             queryStr.append(" AND ((LOWER(u.firstName) LIKE LOWER(CONCAT('%',:name,'%'))) OR (LOWER(u.lastName) LIKE LOWER(CONCAT('%',:name,'%')))) ");
@@ -74,7 +74,7 @@ public class UserRepositoryImpl implements CustomUserRepository {
     public long searchMemberTotal(MemberSearchReqDto memberSearchReqDto) {
         StringBuilder queryStr = new StringBuilder();
         queryStr.append(" SELECT COUNT(u) FROM UserEntity u ");
-        queryStr.append(" WHERE 1 = 1 ");
+        queryStr.append(" WHERE u.deletedDate IS NULL ");
 
         if (StringUtils.isNotBlank(memberSearchReqDto.getName())) {
             queryStr.append(" AND ((LOWER(u.firstName) LIKE LOWER(CONCAT('%',:name,'%'))) OR (LOWER(u.lastName) LIKE LOWER(CONCAT('%',:name,'%')))) ");

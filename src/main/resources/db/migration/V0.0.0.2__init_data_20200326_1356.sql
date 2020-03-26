@@ -42,7 +42,8 @@ VALUES ('1', 'URL1', '/user/{id}/list/{id}', 'D', '2020-01-01 00:00:00', NULL, N
        ('15', 'URL15', '/user/save-last-logout', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('16', 'URL16', '/member-management/add-member', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
        ('17', 'URL17', '/member-management/update-member', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
-       ('18', 'URL18', '/member-management/view-member', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
+       ('18', 'URL18', '/member-management/view-member', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL),
+       ('19', 'URL19', '/member-management/update-member-activate-status', 'D', '2020-01-01 00:00:00', NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `tbl_role` (`role_id`, `role_name`, `created_by`, `created_date`, `updated_by`, `updated_date`,
@@ -82,7 +83,8 @@ VALUES ('1', '1'),
        ('2', '15'),
        ('1', '16'),
        ('1', '17'),
-       ('1', '18');
+       ('1', '18'),
+       ('1', '19');
 
 
 INSERT INTO `tbl_team` (`team_id`, `team_code`, `team_name`, `department_id`, `created_by`, `created_date`,
