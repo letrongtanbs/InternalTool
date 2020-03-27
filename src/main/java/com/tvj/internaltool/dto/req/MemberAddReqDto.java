@@ -3,6 +3,8 @@ package com.tvj.internaltool.dto.req;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.tvj.internaltool.validation.UserEmailConstraint;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +26,7 @@ public class MemberAddReqDto {
     private String titleId;
     
     @NotBlank
+    @UserEmailConstraint
     private String email;
     
     @NotBlank
