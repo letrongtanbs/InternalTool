@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.tvj.internaltool.dto.req.MemberActivateStatusUpdateReqDto;
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
+import com.tvj.internaltool.dto.req.MemberDeleteReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
@@ -302,7 +304,7 @@ public class MemberManagementControllerTest {
         assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS);
     }
-    
+
     @Test
     public void updateMemberActivateStatus_memberDoesNotExist() throws Exception {
         // Value from client
@@ -329,5 +331,53 @@ public class MemberManagementControllerTest {
     }
 
     // ---------- /member-management/update-member-activate-status END ----------
+
+    // ---------- /member-management/delete-member START ----------
+
+    @Test
+    public void deleteMember_success() throws Exception {
+        // Value from client
+        MemberDeleteReqDto memberDeleteReqDto = new MemberDeleteReqDto();
+        memberDeleteReqDto.setUsername("ngocdc");
+
+        when(memberManagementService.deleteMember(any(MemberDeleteReqDto.class))).thenReturn(true);
+
+        MvcResult result = mockMvc
+                .perform(delete("/member-management/delete-member")
+                        .content(new ObjectMapper().writeValueAsString(memberDeleteReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+
+        String jsonString = result.getResponse().getContentAsString();
+        MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
+
+        verify(memberManagementService, times(1)).deleteMember(any(MemberDeleteReqDto.class));
+        assertEquals(messageResDto.getCode(), ResponseCode.DELETE_MEMBER_SUCCESS);
+        assertEquals(messageResDto.getMessage(), ResponseMessage.DELETE_MEMBER_SUCCESS);
+    }
+
+    @Test
+    public void deleteMember_memberDoesNotExist() throws Exception {
+        // Value from client
+        MemberDeleteReqDto memberDeleteReqDto = new MemberDeleteReqDto();
+        memberDeleteReqDto.setUsername("ngocdc");
+
+        when(memberManagementService.deleteMember(any(MemberDeleteReqDto.class))).thenReturn(false);
+
+        MvcResult result = mockMvc
+                .perform(delete("/member-management/delete-member")
+                        .content(new ObjectMapper().writeValueAsString(memberDeleteReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        String jsonString = result.getResponse().getContentAsString();
+        MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
+
+        verify(memberManagementService, times(1)).deleteMember(any(MemberDeleteReqDto.class));
+        assertEquals(messageResDto.getCode(), ResponseCode.DELETE_MEMBER_FAILED);
+        assertEquals(messageResDto.getMessage(), ResponseMessage.DELETE_MEMBER_FAILED);
+    }
+
+    // ---------- /member-management/delete-member END ----------
 
 }

@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getUserByUsername(String username) {
+    public UserEntity findActivatedUserByUsername(String username) {
         return userRepository.findActivatedUserByUsername(username);
     }
 

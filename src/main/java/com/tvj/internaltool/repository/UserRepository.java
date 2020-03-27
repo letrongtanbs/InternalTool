@@ -8,7 +8,7 @@ import com.tvj.internaltool.entity.UserEntity;
 
 public interface UserRepository extends CustomRepository<UserEntity, String>, CustomUserRepository {
 
-    @Query("SELECT u FROM UserEntity u WHERE u.username = :username AND u.isActivated = true")
+    @Query("SELECT u FROM UserEntity u WHERE u.username = :username AND u.isActivated = true AND u.deletedDate IS NULL")
     UserEntity findActivatedUserByUsername(String username);
     
     @Query("SELECT u FROM UserEntity u WHERE "

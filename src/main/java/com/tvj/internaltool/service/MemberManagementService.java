@@ -2,6 +2,7 @@ package com.tvj.internaltool.service;
 
 import com.tvj.internaltool.dto.req.MemberActivateStatusUpdateReqDto;
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
+import com.tvj.internaltool.dto.req.MemberDeleteReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
@@ -18,5 +19,7 @@ public interface MemberManagementService {
     MemberResDto viewMember(String username);
 
     boolean updateMemberActivateStatus(MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto);
+
+    boolean deleteMember(MemberDeleteReqDto memberDeleteReqDto);
 
 }

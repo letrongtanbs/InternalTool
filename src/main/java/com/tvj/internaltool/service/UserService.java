@@ -15,7 +15,7 @@ public interface UserService {
 
     UserDetails getUserDetails(String username);
 
-    UserEntity getUserByUsername(String username);
+    UserEntity findActivatedUserByUsername(String username);
 
     boolean processForgotPassword(String forgotPasswordReqDto);
 

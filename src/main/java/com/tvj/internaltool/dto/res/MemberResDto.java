@@ -18,6 +18,8 @@ public class MemberResDto {
     private String lastName;
 
     private String email;
+    
+    private String titleId;
 
     private String titleName;
 

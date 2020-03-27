@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tvj.internaltool.dto.req.MemberActivateStatusUpdateReqDto;
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
+import com.tvj.internaltool.dto.req.MemberDeleteReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
@@ -79,14 +81,29 @@ public class MemberManagementController {
     }
 
     @PatchMapping(value = "/update-member-activate-status")
-    public ResponseEntity<?> updateMemberActivateStatus(@Valid @RequestBody MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto) {
-        boolean isMemberActivateStatusUpdated = memberManagementService.updateMemberActivateStatus(memberActivateStatusUpdateReqDto);
+    public ResponseEntity<?> updateMemberActivateStatus(
+            @Valid @RequestBody MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto) {
+        boolean isMemberActivateStatusUpdated = memberManagementService
+                .updateMemberActivateStatus(memberActivateStatusUpdateReqDto);
         if (isMemberActivateStatusUpdated) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS,
                     ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_FAILED,
                 ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_FAILED), HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping(value = "/delete-member")
+    public ResponseEntity<?> deleteMember(@Valid @RequestBody MemberDeleteReqDto memberDeleteReqDto) {
+        boolean isMemberDeleted = memberManagementService.deleteMember(memberDeleteReqDto);
+        if (isMemberDeleted) {
+            return new ResponseEntity<>(
+                    new MessageResDto(ResponseCode.DELETE_MEMBER_SUCCESS, ResponseMessage.DELETE_MEMBER_SUCCESS),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(
+                new MessageResDto(ResponseCode.DELETE_MEMBER_FAILED, ResponseMessage.DELETE_MEMBER_FAILED),
+                HttpStatus.BAD_REQUEST);
     }
 
 }

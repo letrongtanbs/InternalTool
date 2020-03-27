@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tvj.internaltool.dto.req.MemberActivateStatusUpdateReqDto;
 import com.tvj.internaltool.dto.req.MemberAddReqDto;
+import com.tvj.internaltool.dto.req.MemberDeleteReqDto;
 import com.tvj.internaltool.dto.req.MemberSearchReqDto;
 import com.tvj.internaltool.dto.req.MemberUpdateReqDto;
 import com.tvj.internaltool.dto.res.MemberListResDto;
@@ -151,6 +152,7 @@ public class MemberManagementServiceImpl implements MemberManagementService {
     @Transactional
     @Override
     public boolean updateMemberActivateStatus(MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto) {
+        
         // check selected member exists
         UserEntity currentUser = userRepository
                 .findNonDeletedUserByUsername(memberActivateStatusUpdateReqDto.getUsername());
@@ -158,10 +160,42 @@ public class MemberManagementServiceImpl implements MemberManagementService {
             return false;
         }
 
+        String currentUsername = UserUtils.getCurrentUsername();
+
+        // Prevent admins deactivate themselves
+        if (memberActivateStatusUpdateReqDto.getUsername().equals(currentUsername)) {
+            return false;
+        }
+
         // Save current user info
         currentUser.setActivated(memberActivateStatusUpdateReqDto.isActivated());
-        currentUser.setUpdatedBy(UserUtils.getCurrentUsername());
+        currentUser.setUpdatedBy(currentUsername);
         currentUser.setUpdatedDate(LocalDateTime.now());
+        userRepository.save(currentUser);
+
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteMember(MemberDeleteReqDto memberDeleteReqDto) {
+        
+        // check selected member exists
+        UserEntity currentUser = userRepository.findNonDeletedUserByUsername(memberDeleteReqDto.getUsername());
+        if (currentUser == null) {
+            return false;
+        }
+
+        String currentUsername = UserUtils.getCurrentUsername();
+
+        // Prevent admins delete themselves
+        if (memberDeleteReqDto.getUsername().equals(currentUsername)) {
+            return false;
+        }
+
+        // Save current user info
+        currentUser.setDeletedBy(currentUsername);
+        currentUser.setDeletedDate(LocalDateTime.now());
         userRepository.save(currentUser);
 
         return true;

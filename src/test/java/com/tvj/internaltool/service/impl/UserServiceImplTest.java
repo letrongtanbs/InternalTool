@@ -318,7 +318,7 @@ public class UserServiceImplTest {
         UserEntity admin = userEntityDataDummy.getAdminUser1();
         when(userRepository.findActivatedUserByUsername(username)).thenReturn(admin);
 
-        UserEntity userEntity = userService.getUserByUsername(username);
+        UserEntity userEntity = userService.findActivatedUserByUsername(username);
 
         verify(userRepository, times(1)).findActivatedUserByUsername(username);
         assertEquals(userEntity.getUsername(), username);
@@ -331,7 +331,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findActivatedUserByUsername(username)).thenReturn(null);
 
-        UserEntity userEntity = userService.getUserByUsername(username);
+        UserEntity userEntity = userService.findActivatedUserByUsername(username);
 
         verify(userRepository, times(1)).findActivatedUserByUsername(username);
         assertNull(userEntity);

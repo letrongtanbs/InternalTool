@@ -395,7 +395,7 @@ paths:
         in: "query"
         description: "search by title"
         type: "string"
-      - name: "activated"
+      - name: "isActivated"
         in: "query"
         description: "search by is activated"
         type: "boolean"
@@ -500,7 +500,7 @@ paths:
       - "Member Management"
       summary: "Update member activate status"
       description: "Update member activate status"
-      operationId: "activate status"
+      operationId: "updateMemberActivateStatus"
       consumes:
       - "application/json"
       produces:
@@ -519,6 +519,34 @@ paths:
             $ref: "#/definitions/MessageResDto"
         400:
           description: "Error code: ERR015"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+            
+  /member-management/delete-member:
+    delete:
+      tags:
+      - "Member Management"
+      summary: "Delete member"
+      description: "Delete member"
+      operationId: "deleteMember"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "MemberDeleteReqDto"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/MemberDeleteReqDto"
+      responses:
+        200:
+          description: "Error code: SUC009"
+          schema:
+            $ref: "#/definitions/MessageResDto"
+        400:
+          description: "Error code: ERR016"
           schema:
             $ref: "#/definitions/MessageResDto"
             
@@ -813,6 +841,9 @@ definitions:
       email:
         type: string
         description: ""   
+      titleId:
+        type: string
+        description: ""    
       titleName:
         type: string
         description: ""    
@@ -870,6 +901,13 @@ definitions:
       activated:
         type: boolean
         description: "Not Blank"    
+        
+  MemberDeleteReqDto:      
+    type: "object"
+    properties:
+      username:
+        type: string
+        description: "Not Blank, max 20 characters"
         
   MessageResDto:
     type: "object"

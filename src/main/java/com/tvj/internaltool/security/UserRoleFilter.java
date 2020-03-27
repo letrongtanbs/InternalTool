@@ -36,7 +36,7 @@ public class UserRoleFilter extends OncePerRequestFilter {
             final String url = request.getRequestURI();
 
             String username = authentication.getName();
-            UserEntity user = userService.getUserByUsername(username);
+            UserEntity user = userService.findActivatedUserByUsername(username);
             Set<RolePermissionEntity> rolePermissionSet = user.getRole().getRolePermission();
 
             String[] urlParts = url.split("/");
