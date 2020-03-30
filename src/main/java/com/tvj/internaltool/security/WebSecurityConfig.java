@@ -2,6 +2,7 @@ package com.tvj.internaltool.security;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,6 +21,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    
+    @Value("${front-end-host}")
+    private String FRONT_END_HOST;
 
     @Bean
     public CustomAccessDeniedHandler customAccessDeniedHandler() {
@@ -38,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new UserRoleFilter();
     }
 
+    // Set password encoder using BCryptPasswordEncoder globally
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList(FRONT_END_HOST));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -63,7 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Ignore CSRF protection
         httpSecurity.csrf().ignoringAntMatchers("/**");
 
-        // Make sure we use stateless session; session won't be used to store user's state.
+        // Make sure we use stateless session; session won't be used to store user's
+        // state.
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Permit specific requests

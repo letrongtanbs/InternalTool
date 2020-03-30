@@ -43,15 +43,15 @@ date-time-pattern:
   sticky: yyyyMMddhhmmss
 
 server: ## use for embedded tomcat server port
-  port: 8082
+  port: 8081
 
 jwt:
   token:
-    validity-in-second: 7200 # 3600 = 1 * 60 * 60 = 1 hours
+    validity-in-second: 3600 # 3600 = 1 * 60 * 60 = 1 hours
     secret: TVJ2019@
 
 cron-expression: # (*) means match any, (*/X) means "every X"
-  forgot-password: "0 0/60 * * * ?"
+  forgot-password: "0 0/5 * * * ?"
   validate-last-logout-by-token: "0 0/5 * * * ?"
   
 forgot-password:
@@ -69,6 +69,6 @@ password-for-new-user:
   mail-template: "Your password for account <b>{0}</b> is <b><font color=''red''>{1}</font></b>. Please change password after logging on at the first time login."
 
 logging:
-  config: src/main/resources/logback-production.xml
+  config: src/main/resources/logback-stagging.xml
 
 front-end-host: "http://192.168.1.16"

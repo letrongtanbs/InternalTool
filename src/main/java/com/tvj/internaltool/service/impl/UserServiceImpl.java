@@ -40,7 +40,6 @@ import com.tvj.internaltool.security.JwtTokenUtil;
 import com.tvj.internaltool.service.EmailService;
 import com.tvj.internaltool.service.FileStorageService;
 import com.tvj.internaltool.service.UserService;
-import com.tvj.internaltool.utils.EnvironmentUtils;
 import com.tvj.internaltool.utils.ModelMapperUtils;
 import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.UserUtils;
@@ -77,11 +76,10 @@ public class UserServiceImpl implements UserService {
     private final UserSettingRepository userSettingRepository;
     private final EmailService emailService;
     private final FileStorageService fileStorageService;
-    private final EnvironmentUtils environmentUtils;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
 
     public UserServiceImpl(JwtTokenUtil jwtTokenUtil, PasswordEncoder passwordEncoder, UserRepository userRepository,
-            UserSettingRepository userSettingRepository, EmailService emailService, EnvironmentUtils environmentUtils,
+            UserSettingRepository userSettingRepository, EmailService emailService,
             ForgotPasswordTokenRepository forgotPasswordTokenRepository, FileStorageService fileStorageService) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.passwordEncoder = passwordEncoder;
@@ -89,7 +87,6 @@ public class UserServiceImpl implements UserService {
         this.userSettingRepository = userSettingRepository;
         this.emailService = emailService;
         this.fileStorageService = fileStorageService;
-        this.environmentUtils = environmentUtils;
         this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
     }
 
@@ -201,8 +198,8 @@ public class UserServiceImpl implements UserService {
 
         try {
             // Send confirmation email
-            emailService.sendSimpleMessage(userEntity.getEmail(), forgotPasswordMailSubject, MessageFormat.format(
-                    forgotPasswordMailTemplate, username, frontEndHost, environmentUtils.getPort(), randomLetters));
+            emailService.sendSimpleMessage(userEntity.getEmail(), forgotPasswordMailSubject,
+                    MessageFormat.format(forgotPasswordMailTemplate, username, frontEndHost, randomLetters));
         } catch (MessagingException e) {
             logger.error(e.getMessage());
             return false;
