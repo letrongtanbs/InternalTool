@@ -52,7 +52,6 @@ import com.tvj.internaltool.repository.ForgotPasswordTokenRepository;
 import com.tvj.internaltool.repository.UserRepository;
 import com.tvj.internaltool.repository.UserSettingRepository;
 import com.tvj.internaltool.security.JwtTokenUtil;
-import com.tvj.internaltool.utils.EnvironmentUtils;
 import com.tvj.internaltool.utils.ResponseCode;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,15 +72,11 @@ public class UserServiceImplTest {
     @Mock
     private ForgotPasswordTokenRepository forgotPasswordTokenRepository; // this will be injected into userService (use
                                                                          // for when(...))
-
     @Mock
     private JwtTokenUtil jwtTokenUtil; // this will be injected into userService (use for when(...))
 
     @Mock
     private FileStorageServiceImpl fileStorageService; // this will be injected into userService (use for when(...))
-
-    @Mock
-    private EnvironmentUtils environmentUtils; // this will be injected into userService (use for when(...))
 
     private final static String currentUsername = "admin1";
 
