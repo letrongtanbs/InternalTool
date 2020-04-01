@@ -36,9 +36,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
-import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
-import com.tvj.internaltool.dto.req.UserSettingReqDto;
+import com.tvj.internaltool.dto.req.PasswordRecoverUpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdateReqDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.dummy.entity.ForgotPasswordTokenEntityDataDummy;
@@ -435,9 +435,9 @@ public class UserServiceImplTest {
     @Test
     public void processRecoverPassword_success() {
         // Value from client
-        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
-        recoverPasswordReqDto.setToken("Token1");
-        recoverPasswordReqDto.setNewPassword("newPassword");
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("Token1");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("newPassword");
 
         ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
         ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy
@@ -447,7 +447,7 @@ public class UserServiceImplTest {
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
         UserEntity admin = userEntityDataDummy.getAdminUser1();
 
-        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken()))
+        when(forgotPasswordTokenRepository.findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken()))
                 .thenReturn(forgotPasswordTokenEntity);
         when(userRepository.findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername())).thenReturn(admin);
         when(userRepository.save(admin)).thenReturn(null);
@@ -455,9 +455,9 @@ public class UserServiceImplTest {
         // Mock void method
         doNothing().when(forgotPasswordTokenRepository).delete(forgotPasswordTokenEntity);
 
-        boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
+        boolean result = userService.processRecoverPassword(passwordRecoverUpdatePasswordReqDto);
 
-        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken());
         verify(userRepository, times(1)).findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername());
         verify(userRepository, times(1)).save(admin);
         verify(forgotPasswordTokenRepository, times(1)).delete(forgotPasswordTokenEntity);
@@ -467,15 +467,15 @@ public class UserServiceImplTest {
     @Test
     public void processRecoverPassword_tokenIsEmpty() {
         // Value from client
-        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
-        recoverPasswordReqDto.setToken("Token1");
-        recoverPasswordReqDto.setNewPassword("newPassword");
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("Token1");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("newPassword");
 
-        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken())).thenReturn(null);
+        when(forgotPasswordTokenRepository.findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken())).thenReturn(null);
 
-        boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
+        boolean result = userService.processRecoverPassword(passwordRecoverUpdatePasswordReqDto);
 
-        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken());
         verify(userRepository, times(0)).findById(any());
         verify(userRepository, times(0)).save(any());
         verify(forgotPasswordTokenRepository, times(0)).delete(any());
@@ -485,21 +485,21 @@ public class UserServiceImplTest {
     @Test
     public void processRecoverPassword_tokenIsExpired() {
         // Value from client
-        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
-        recoverPasswordReqDto.setToken("Token1");
-        recoverPasswordReqDto.setNewPassword("newPassword");
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("Token1");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("newPassword");
 
         ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
         ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy
                 .getForgotPasswordTokenEntity();
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().minusHours(1));
 
-        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken()))
+        when(forgotPasswordTokenRepository.findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken()))
                 .thenReturn(forgotPasswordTokenEntity);
 
-        boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
+        boolean result = userService.processRecoverPassword(passwordRecoverUpdatePasswordReqDto);
 
-        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken());
         verify(userRepository, times(0)).findById(any());
         verify(userRepository, times(0)).save(any());
         verify(forgotPasswordTokenRepository, times(0)).delete(any());
@@ -509,22 +509,22 @@ public class UserServiceImplTest {
     @Test
     public void processRecoverPassword_userDoesNotExist() {
         // Value from client
-        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
-        recoverPasswordReqDto.setToken("Token1");
-        recoverPasswordReqDto.setNewPassword("newPassword");
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("Token1");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("newPassword");
 
         ForgotPasswordTokenEntityDataDummy forgotPasswordTokenEntityDataDummy = new ForgotPasswordTokenEntityDataDummy();
         ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenEntityDataDummy
                 .getForgotPasswordTokenEntity();
         forgotPasswordTokenEntity.setTokenExpiredDate(LocalDateTime.now().plusHours(1));
 
-        when(forgotPasswordTokenRepository.findByTokenString(recoverPasswordReqDto.getToken()))
+        when(forgotPasswordTokenRepository.findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken()))
                 .thenReturn(forgotPasswordTokenEntity);
         when(userRepository.findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername())).thenReturn(null);
 
-        boolean result = userService.processRecoverPassword(recoverPasswordReqDto);
+        boolean result = userService.processRecoverPassword(passwordRecoverUpdatePasswordReqDto);
 
-        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(recoverPasswordReqDto.getToken());
+        verify(forgotPasswordTokenRepository, times(1)).findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken());
         verify(userRepository, times(1)).findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername());
         verify(userRepository, times(0)).save(any());
         verify(forgotPasswordTokenRepository, times(0)).delete(any());
@@ -564,9 +564,9 @@ public class UserServiceImplTest {
     @Test
     public void updateUserSetting_success() {
         // Value from client
-        UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
-        userSettingReqDto.setStatusId(UserStatus.BUSY.getStatus());
-        userSettingReqDto.setLanguageId("2");
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setStatusId(UserStatus.BUSY.getStatus());
+        userSettingUpdateReqDto.setLanguageId("2");
 
         UserSettingEntityDataDummy userSettingEntityDataDummy = new UserSettingEntityDataDummy();
         UserSettingEntity userSettingEntity = userSettingEntityDataDummy.getAdminUserSetting1();
@@ -582,19 +582,19 @@ public class UserServiceImplTest {
         // Mock void method
         doNothing().when(userRepository).refresh(admin);
 
-        UserSettingResDto userSettingResDto = userService.updateUserSetting(userSettingReqDto);
+        UserSettingResDto userSettingResDto = userService.updateUserSetting(userSettingUpdateReqDto);
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userSettingRepository, times(1)).saveAndFlush(any(UserSettingEntity.class));
         verify(userRepository, times(1)).refresh(admin);
-        assertEquals(userSettingResDto.getStatusId(), userSettingReqDto.getStatusId());
-        assertEquals(userSettingResDto.getLanguageId(), userSettingReqDto.getLanguageId());
+        assertEquals(userSettingResDto.getStatusId(), userSettingUpdateReqDto.getStatusId());
+        assertEquals(userSettingResDto.getLanguageId(), userSettingUpdateReqDto.getLanguageId());
     }
 
     @Test
     public void updateUserSetting_userDoesNotExist() {
         // Value from client
-        UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
+        UserSettingUpdateReqDto userSettingReqDto = new UserSettingUpdateReqDto();
         userSettingReqDto.setStatusId(UserStatus.BUSY.getStatus());
         userSettingReqDto.setLanguageId("2");
 
@@ -620,9 +620,9 @@ public class UserServiceImplTest {
     @Test
     public void updatePassword_success() {
         // Value from client
-        UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
-        updatePasswordReqDto.setOldPassword("12345678");
-        updatePasswordReqDto.setNewPassword("123456789");
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("12345678");
+        userSettingUpdatePasswordReqDto.setNewPassword("123456789");
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
         UserEntity admin = userEntityDataDummy.getAdminUser1();
@@ -630,7 +630,7 @@ public class UserServiceImplTest {
         when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
         when(userRepository.save(admin)).thenReturn(admin);
 
-        boolean result = userService.updatePassword(updatePasswordReqDto);
+        boolean result = userService.updatePassword(userSettingUpdatePasswordReqDto);
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userRepository, times(1)).save(admin);
@@ -640,13 +640,13 @@ public class UserServiceImplTest {
     @Test
     public void updatePassword_userDoesNotExist() {
         // Value from client
-        UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
-        updatePasswordReqDto.setOldPassword("12345678");
-        updatePasswordReqDto.setNewPassword("123456789");
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("12345678");
+        userSettingUpdatePasswordReqDto.setNewPassword("123456789");
 
         when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(null);
 
-        boolean result = userService.updatePassword(updatePasswordReqDto);
+        boolean result = userService.updatePassword(userSettingUpdatePasswordReqDto);
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userRepository, times(0)).save(any(UserEntity.class));
@@ -656,16 +656,16 @@ public class UserServiceImplTest {
     @Test
     public void updatePassword_passwordDoesNotMatched() {
         // Value from client
-        UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
-        updatePasswordReqDto.setOldPassword("123456789");
-        updatePasswordReqDto.setNewPassword("123456789");
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("123456789");
+        userSettingUpdatePasswordReqDto.setNewPassword("123456789");
 
         UserEntityDataDummy userEntityDataDummy = new UserEntityDataDummy();
         UserEntity admin = userEntityDataDummy.getAdminUser1();
 
         when(userRepository.findActivatedUserByUsername(currentUsername)).thenReturn(admin);
 
-        boolean result = userService.updatePassword(updatePasswordReqDto);
+        boolean result = userService.updatePassword(userSettingUpdatePasswordReqDto);
 
         verify(userRepository, times(1)).findActivatedUserByUsername(currentUsername);
         verify(userRepository, times(0)).save(any(UserEntity.class));

@@ -1,9 +1,11 @@
 package com.tvj.internaltool.controller;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,7 @@ import com.tvj.internaltool.service.TeamService;
 
 @RestController
 @RequestMapping("/team")
+@Validated // Enable validation for both request parameters and path variables
 public class TeamController {
 
     private final TeamService teamService;
@@ -23,7 +26,8 @@ public class TeamController {
     }
 
     @GetMapping(value = "/list-by-department")
-    public ResponseEntity<?> getTeamByDepartment(@NotBlank @RequestParam("departmentId") String departmentId) {
+    public ResponseEntity<?> getTeamByDepartment(
+            @NotBlank @Size(min = 1, max = 40) @RequestParam("departmentId") String departmentId) {
         TeamListResDto teamListResDto = teamService.getTeamByDepartment(departmentId);
         return new ResponseEntity<>(teamListResDto, HttpStatus.OK);
     }

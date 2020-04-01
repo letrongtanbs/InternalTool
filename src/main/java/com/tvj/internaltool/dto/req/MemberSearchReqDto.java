@@ -10,11 +10,13 @@ import lombok.Setter;
 @Getter
 public class MemberSearchReqDto {
 
+    @Size(min = 0, max = 40)
     private String name;
 
-    @Size(max = 20)
+    @Size(min = 0, max = 20)
     private String username;
 
+    @Size(min = 0, max = 40)
     private String titleId;
 
     private Boolean isActivated;
@@ -22,7 +24,7 @@ public class MemberSearchReqDto {
     @Min(0)
     private int offset;
 
-    @Min(0)
+    @Min(1)
     private int limit;
 
 }

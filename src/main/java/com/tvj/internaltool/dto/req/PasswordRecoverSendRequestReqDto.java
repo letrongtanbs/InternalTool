@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ForgotPasswordReqDto {
+public class PasswordRecoverSendRequestReqDto {
 
     @NotBlank
     @Size(max = 20)

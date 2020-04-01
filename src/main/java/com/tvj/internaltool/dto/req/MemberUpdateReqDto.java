@@ -23,6 +23,7 @@ public class MemberUpdateReqDto {
     private String lastName;
     
     @NotBlank
+    @Size(max = 40)
     private String titleId;
     
     @NotBlank

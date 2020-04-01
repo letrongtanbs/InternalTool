@@ -44,7 +44,7 @@ public class UserRepositoryImpl implements CustomUserRepository {
             queryStr.append(" AND u.isActivated = :isActivated ");
         }
 
-        queryStr.append(" ORDER BY u.username ASC ");
+        queryStr.append(" ORDER BY u.updatedDate DESC, u.username ASC ");
 
         TypedQuery<UserEntity> query = entityManager.createQuery(queryStr.toString(), UserEntity.class);
 

@@ -24,9 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
-import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
-import com.tvj.internaltool.dto.req.UserSettingReqDto;
+import com.tvj.internaltool.dto.req.PasswordRecoverUpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdateReqDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.ForgotPasswordTokenEntity;
@@ -183,7 +183,7 @@ public class UserServiceImpl implements UserService {
         // Remove old token
         forgotPasswordTokenRepository.deleteTokenByUsername(username);
 
-        // Generates token
+        // Generates random-99-character token
         RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', 'z')
                 .filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS).build();
         String randomLetters = generator.generate(99);
@@ -216,17 +216,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean processRecoverPassword(RecoverPasswordReqDto recoverPasswordReqDto) {
+    public boolean processRecoverPassword(PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto) {
 
         ForgotPasswordTokenEntity forgotPasswordTokenEntity = forgotPasswordTokenRepository
-                .findByTokenString(recoverPasswordReqDto.getToken());
+                .findByTokenString(passwordRecoverUpdatePasswordReqDto.getToken());
         if (!isTokenValid(forgotPasswordTokenEntity)) {
             return false;
         }
 
         UserEntity userEntity = userRepository.findActivatedUserByUsername(forgotPasswordTokenEntity.getUsername());
         if (userEntity != null) {
-            userEntity.setPassword(passwordEncoder.encode(recoverPasswordReqDto.getNewPassword()));
+            userEntity.setPassword(passwordEncoder.encode(passwordRecoverUpdatePasswordReqDto.getNewPassword()));
             userEntity.setLoginFailCount(0);
             userEntity.setUpdatedBy(forgotPasswordTokenEntity.getUsername());
             userEntity.setUpdatedDate(LocalDateTime.now());
@@ -258,18 +258,18 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserSettingResDto updateUserSetting(UserSettingReqDto userSettingReqDto) {
+    public UserSettingResDto updateUserSetting(UserSettingUpdateReqDto userSettingUpdateReqDto) {
 
         UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
             UserSettingEntity userSettingEntity = userEntity.getUserSettingEntity();
-            userSettingEntity.setTeamId(userSettingReqDto.getTeamId());
-            userSettingEntity.setAddress(userSettingReqDto.getAddress());
-            userSettingEntity.setPhone(userSettingReqDto.getPhone());
-            userSettingEntity.setCountryId(userSettingReqDto.getCountryId());
-            userSettingEntity.setLanguageId(userSettingReqDto.getLanguageId());
-            userSettingEntity.setStatusId(userSettingReqDto.getStatusId());
+            userSettingEntity.setTeamId(userSettingUpdateReqDto.getTeamId());
+            userSettingEntity.setAddress(userSettingUpdateReqDto.getAddress());
+            userSettingEntity.setPhone(userSettingUpdateReqDto.getPhone());
+            userSettingEntity.setCountryId(userSettingUpdateReqDto.getCountryId());
+            userSettingEntity.setLanguageId(userSettingUpdateReqDto.getLanguageId());
+            userSettingEntity.setStatusId(userSettingUpdateReqDto.getStatusId());
             userSettingEntity.setUpdatedDate(LocalDateTime.now());
             userSettingEntity.setUpdatedBy(userEntity.getUsername());
 
@@ -286,14 +286,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean updatePassword(UpdatePasswordReqDto updatePasswordReqDto) {
+    public boolean updatePassword(UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto) {
 
         UserEntity userEntity = userRepository.findActivatedUserByUsername(UserUtils.getCurrentUsername());
 
         if (userEntity != null) {
 
-            // Compare current password with inputted password
-            if (!passwordEncoder.matches(updatePasswordReqDto.getOldPassword(), userEntity.getPassword())) {
+            // Compare current password with inputed password
+            if (!passwordEncoder.matches(userSettingUpdatePasswordReqDto.getOldPassword(), userEntity.getPassword())) {
                 return false;
             }
 
@@ -302,7 +302,7 @@ public class UserServiceImpl implements UserService {
                 userEntity.setFirstTimeLogin(false);
             }
 
-            userEntity.setPassword(passwordEncoder.encode(updatePasswordReqDto.getNewPassword()));
+            userEntity.setPassword(passwordEncoder.encode(userSettingUpdatePasswordReqDto.getNewPassword()));
             userEntity.setUpdatedBy(UserUtils.getCurrentUsername());
             userEntity.setUpdatedDate(LocalDateTime.now());
             userRepository.save(userEntity);

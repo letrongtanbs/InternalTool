@@ -2,9 +2,11 @@ package com.tvj.internaltool.controller;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,6 +31,7 @@ import com.tvj.internaltool.utils.ResponseMessage;
 
 @RestController
 @RequestMapping("/member-management")
+@Validated // Enable validation for both request parameters and path variables
 public class MemberManagementController {
 
     private final MemberManagementService memberManagementService;
@@ -70,7 +73,7 @@ public class MemberManagementController {
     }
 
     @GetMapping(value = "/view-member")
-    public ResponseEntity<?> viewMember(@NotBlank @RequestParam("username") String username) {
+    public ResponseEntity<?> viewMember(@NotBlank @Size(max = 20) @RequestParam("username") String username) {
         MemberResDto memberResDto = memberManagementService.viewMember(username);
         if (memberResDto != null) {
             return new ResponseEntity<>(memberResDto, HttpStatus.OK);

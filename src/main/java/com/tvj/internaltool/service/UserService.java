@@ -3,9 +3,9 @@ package com.tvj.internaltool.service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
-import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
-import com.tvj.internaltool.dto.req.UserSettingReqDto;
+import com.tvj.internaltool.dto.req.PasswordRecoverUpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdateReqDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
 import com.tvj.internaltool.entity.UserEntity;
 
@@ -17,17 +17,17 @@ public interface UserService {
 
     UserEntity findActivatedUserByUsername(String username);
 
-    boolean processForgotPassword(String forgotPasswordReqDto);
+    boolean processForgotPassword(String username);
 
     boolean processConfirmForgotPasswordToken(String token);
 
-    boolean processRecoverPassword(RecoverPasswordReqDto recoverPasswordReqDto);
+    boolean processRecoverPassword(PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto);
 
     UserSettingResDto getUserSetting();
 
-    UserSettingResDto updateUserSetting(UserSettingReqDto userSettingReqDto);
+    UserSettingResDto updateUserSetting(UserSettingUpdateReqDto userSettingUpdateReqDto);
 
-    boolean updatePassword(UpdatePasswordReqDto updatePasswordReqDto);
+    boolean updatePassword(UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto);
 
     String uploadAvatar(MultipartFile file);
 

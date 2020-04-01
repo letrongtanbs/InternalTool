@@ -90,11 +90,11 @@ paths:
       - "application/json"
       parameters:
         - in: "body"
-          name: "ForgotPasswordReqDto"
+          name: "PasswordRecoverSendRequestReqDto"
           description: ""
           required: true
           schema:
-            $ref: "#/definitions/ForgotPasswordReqDto"
+            $ref: "#/definitions/PasswordRecoverSendRequestReqDto"
       responses:
         200:
           description: "Return code: SUC001"
@@ -117,7 +117,7 @@ paths:
       parameters:
       - name: "token"
         in: "query"
-        description: "Inputted token"
+        description: "less than 100 characters"
         required: true
         type: "string"
       responses:
@@ -143,11 +143,11 @@ paths:
       - "application/json"
       parameters:
         - in: "body"
-          name: "RecoverPasswordReqDto"
+          name: "PasswordRecoverUpdatePasswordReqDto"
           description: ""
           required: true
           schema:
-            $ref: "#/definitions/RecoverPasswordReqDto"
+            $ref: "#/definitions/PasswordRecoverUpdatePasswordReqDto"
       responses:
         200:
           description: "Return code: SUC002"
@@ -209,12 +209,12 @@ paths:
           description: ""
           required: true
           schema:
-            $ref: "#/definitions/UserSettingReqDto"
+            $ref: "#/definitions/UserSettingUpdateReqDto"
       responses:
         200:
           description: ""
           schema:
-            $ref: "#/definitions/UserSettingResDto"
+            $ref: "#/definitions/UserSettingUpdateReqDto"
         400:
           description: "Return code: ERR009"
           schema:
@@ -233,11 +233,11 @@ paths:
       - "application/json"
       parameters:
         - in: "body"
-          name: "UpdatePasswordReqDto"
+          name: "UserSettingUpdatePasswordReqDto"
           description: ""
           required: true
           schema:
-            $ref: "#/definitions/UpdatePasswordReqDto"
+            $ref: "#/definitions/UserSettingUpdatePasswordReqDto"
       responses:
         200:
           description: "Return code: SUC002"
@@ -334,7 +334,7 @@ paths:
       parameters:
       - name: "departmentId"
         in: "query"
-        description: "department id"
+        description: "between 1 and 40 character"
         required: true
         type: "string"
       responses:
@@ -385,15 +385,15 @@ paths:
       parameters:
       - name: "name"
         in: "query"
-        description: "search by name"
+        description: "search by name, between 0 and 40 characters"
         type: "string"
       - name: "username"
         in: "query"
-        description: "search by username"
+        description: "search by username, between 0 and 20 characters"
         type: "string"
       - name: "titleId"
         in: "query"
-        description: "search by title"
+        description: "search by title, between 0 and 40 characters"
         type: "string"
       - name: "isActivated"
         in: "query"
@@ -401,11 +401,11 @@ paths:
         type: "boolean"
       - name: "limit"
         in: "query"
-        description: "paging limit"
+        description: "paging limit, min = 0"
         type: "integer"
       - name: "offset"
         in: "query"
-        description: "paging offset"
+        description: "paging offset, min = 1"
         type: "integer"
       responses:
         200:
@@ -481,7 +481,7 @@ paths:
       parameters:
       - name: "username"
         in: "query"
-        description: "search by username"
+        description: "search by username, less than 20 characters"
         type: "string"
         required: true
       responses:
@@ -557,7 +557,7 @@ definitions:
     properties:
       username:
         type: string
-        description: "Not Blank, max 20 characters"
+        description: "Not Blank, less than 20 characters"
       password:
         type: string
         description: "Not Blank, between 8 and 20 characters"
@@ -584,12 +584,12 @@ definitions:
         type: string
         description: ""
         
-  ForgotPasswordReqDto:
+  PasswordRecoverSendRequestReqDto:
     type: "object"
     properties:
       username:
         type: string
-        description: "max 20 characters" 
+        description: "less than 20 characters" 
         
   UserSettingResDto:    
     type: "object"
@@ -652,7 +652,7 @@ definitions:
         type: string
         description: ""
         
-  RecoverPasswordReqDto:
+  PasswordRecoverUpdatePasswordReqDto:
     type: "object"
     properties:
       token:
@@ -662,29 +662,29 @@ definitions:
         type: string
         description: "Not Blank, between 8 and 20 characters"
         
-  UserSettingReqDto:
+  UserSettingUpdateReqDto:
     type: "object"
     properties:
       teamId:
         type: string
-        description: ""  
+        description: "between 1 and 40 characters"  
       address:
         type: string
-        description: ""
+        description: "less than 400 characters"
       phone:
         type: string
         description: "between 8 and 20 characters"
       countryId:
         type: string
-        description: ""
+        description: "between 1 and 40 characters"  
       languageId:
         type: boolean
-        description: "Not Blank"
+        description: "Not Blank, between 1 and 40 characters"
       statusId:
         type: string
-        description: "Not Blank"
+        description: "Not Blank, '1'-AVAILABLE, '2'-AWAY, '3'-BUSY, '4'-DO_NOT_DISTURB"
         
-  UpdatePasswordReqDto:
+  UserSettingUpdatePasswordReqDto:
     type: "object"
     properties:
       oldPassword:
@@ -856,7 +856,7 @@ definitions:
     properties:
       username:
         type: string
-        description: "Not Blank, max 20 characters"
+        description: "Not Blank, less than 20 characters"
       firstName:
         type: string
         description: "Not Blank"
@@ -865,10 +865,10 @@ definitions:
         description: "Not Blank"
       titleId:
         type: string
-        description: "Not Blank"
+        description: "Not Blank, less than 40 characters"
       email:
         type: string
-        description: "Not Blank"
+        description: "Not Blank, must have domain tinhvan.com"
       password:
         type: string
         description: "Not Blank"
@@ -878,7 +878,7 @@ definitions:
     properties:
       username:
         type: string
-        description: "Not Blank, max 20 characters"
+        description: "Not Blank, less than 20 characters"
       firstName:
         type: string
         description: "Not Blank"
@@ -887,17 +887,17 @@ definitions:
         description: "Not Blank"
       titleId:
         type: string
-        description: "Not Blank"
+        description: "Not Blank, less than 40 characters"
       email:
         type: string
-        description: "Not Blank"
+        description: "Not Blank, must have domain tinhvan.com"
         
   MemberActivateStatusUpdateReqDto:      
     type: "object"
     properties:
       username:
         type: string
-        description: "Not Blank, max 20 characters"
+        description: "Not Blank, less than 20 characters"
       activated:
         type: boolean
         description: "Not Blank"    
@@ -907,7 +907,7 @@ definitions:
     properties:
       username:
         type: string
-        description: "Not Blank, max 20 characters"
+        description: "Not Blank, less than 20 characters"
         
   MessageResDto:
     type: "object"

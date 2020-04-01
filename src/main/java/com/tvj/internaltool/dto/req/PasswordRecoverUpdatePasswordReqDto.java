@@ -8,15 +8,13 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UpdatePasswordReqDto {
+public class PasswordRecoverUpdatePasswordReqDto {
 
     @NotBlank
-    @Size(min = 8, max = 20)
-    private String oldPassword;
+    private String token;
 
     @NotBlank
     @Size(min = 8, max = 20)
     private String newPassword;
-
 
 }

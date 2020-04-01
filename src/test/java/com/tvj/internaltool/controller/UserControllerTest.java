@@ -29,11 +29,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.tvj.internaltool.dto.req.ForgotPasswordReqDto;
-import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
-import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.PasswordRecoverSendRequestReqDto;
+import com.tvj.internaltool.dto.req.PasswordRecoverUpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdatePasswordReqDto;
 import com.tvj.internaltool.dto.req.UserLoginReqDto;
-import com.tvj.internaltool.dto.req.UserSettingReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdateReqDto;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
 import com.tvj.internaltool.dto.res.UserSettingResDto;
@@ -142,21 +142,21 @@ public class UserControllerTest {
     @Test
     public void forgotPasswordSendRequest_success() throws Exception {
         // Value from client
-        ForgotPasswordReqDto forgotPasswordReqDto = new ForgotPasswordReqDto();
-        forgotPasswordReqDto.setUsername("admin1");
+        PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto = new PasswordRecoverSendRequestReqDto();
+        passwordRecoverSendRequestReqDto.setUsername("admin1");
 
-        when(userService.processForgotPassword(forgotPasswordReqDto.getUsername())).thenReturn(true);
+        when(userService.processForgotPassword(passwordRecoverSendRequestReqDto.getUsername())).thenReturn(true);
 
         MvcResult result = mockMvc
                 .perform(post("/user/password-recover-send-request")
-                        .content(new ObjectMapper().writeValueAsString(forgotPasswordReqDto))
+                        .content(new ObjectMapper().writeValueAsString(passwordRecoverSendRequestReqDto))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
 
-        verify(userService, times(1)).processForgotPassword(forgotPasswordReqDto.getUsername());
+        verify(userService, times(1)).processForgotPassword(passwordRecoverSendRequestReqDto.getUsername());
         assertEquals(messageResDto.getCode(), ResponseCode.SEND_MAIL_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.SEND_MAIL_SUCCESS);
     }
@@ -164,21 +164,21 @@ public class UserControllerTest {
     @Test
     public void forgotPasswordSendRequest_cannotSendRequest() throws Exception {
         // Value from client
-        ForgotPasswordReqDto forgotPasswordReqDto = new ForgotPasswordReqDto();
-        forgotPasswordReqDto.setUsername("admin1");
+        PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto = new PasswordRecoverSendRequestReqDto();
+        passwordRecoverSendRequestReqDto.setUsername("admin1");
 
-        when(userService.processForgotPassword(forgotPasswordReqDto.getUsername())).thenReturn(false);
+        when(userService.processForgotPassword(passwordRecoverSendRequestReqDto.getUsername())).thenReturn(false);
 
         MvcResult result = mockMvc
                 .perform(post("/user/password-recover-send-request")
-                        .content(new ObjectMapper().writeValueAsString(forgotPasswordReqDto))
+                        .content(new ObjectMapper().writeValueAsString(passwordRecoverSendRequestReqDto))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isRequestTimeout()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
 
-        verify(userService, times(1)).processForgotPassword(forgotPasswordReqDto.getUsername());
+        verify(userService, times(1)).processForgotPassword(passwordRecoverSendRequestReqDto.getUsername());
         assertEquals(messageResDto.getCode(), ResponseCode.SEND_MAIL_FAILED);
         assertEquals(messageResDto.getMessage(), ResponseMessage.SEND_MAIL_FAILED);
     }
@@ -230,22 +230,22 @@ public class UserControllerTest {
     @Test
     public void recoverPasswordUpdatePassword_success() throws Exception {
         // Value from client
-        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
-        recoverPasswordReqDto.setToken("Token");
-        recoverPasswordReqDto.setNewPassword("newpassword");
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("Token");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("newpassword");
 
-        when(userService.processRecoverPassword(any(RecoverPasswordReqDto.class))).thenReturn(true);
+        when(userService.processRecoverPassword(any(PasswordRecoverUpdatePasswordReqDto.class))).thenReturn(true);
 
         MvcResult result = mockMvc
                 .perform(post("/user/password-recover-update-password")
-                        .content(new ObjectMapper().writeValueAsString(recoverPasswordReqDto))
+                        .content(new ObjectMapper().writeValueAsString(passwordRecoverUpdatePasswordReqDto))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
 
-        verify(userService, times(1)).processRecoverPassword(any(RecoverPasswordReqDto.class));
+        verify(userService, times(1)).processRecoverPassword(any(PasswordRecoverUpdatePasswordReqDto.class));
         assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_PASSWORD_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_PASSWORD_SUCCESS);
     }
@@ -253,22 +253,22 @@ public class UserControllerTest {
     @Test
     public void recoverPasswordUpdatePassword_cannotUpdatePassword() throws Exception {
         // Value from client
-        RecoverPasswordReqDto recoverPasswordReqDto = new RecoverPasswordReqDto();
-        recoverPasswordReqDto.setToken("Token");
-        recoverPasswordReqDto.setNewPassword("newpassword");
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("Token");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("newpassword");
 
-        when(userService.processRecoverPassword(any(RecoverPasswordReqDto.class))).thenReturn(false);
+        when(userService.processRecoverPassword(any(PasswordRecoverUpdatePasswordReqDto.class))).thenReturn(false);
 
         MvcResult result = mockMvc
                 .perform(post("/user/password-recover-update-password")
-                        .content(new ObjectMapper().writeValueAsString(recoverPasswordReqDto))
+                        .content(new ObjectMapper().writeValueAsString(passwordRecoverUpdatePasswordReqDto))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
 
-        verify(userService, times(1)).processRecoverPassword(any(RecoverPasswordReqDto.class));
+        verify(userService, times(1)).processRecoverPassword(any(PasswordRecoverUpdatePasswordReqDto.class));
         assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_PASSWORD_FAILED);
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_PASSWORD_FAILED);
     }
@@ -311,50 +311,50 @@ public class UserControllerTest {
     @Test
     public void updateUserSetting_success() throws Exception {
         // Value from client
-        UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
-        userSettingReqDto.setTeamId("1");
-        userSettingReqDto.setAddress("1 Some Where");
-        userSettingReqDto.setPhone("1234567890");
-        userSettingReqDto.setCountryId("1");
-        userSettingReqDto.setLanguageId("1");
-        userSettingReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("1234567890");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("1");
+        userSettingUpdateReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
 
         UserSettingResDtoDataDummy userSettingResDtoDataDummy = new UserSettingResDtoDataDummy();
         UserSettingResDto userSettingResDto = userSettingResDtoDataDummy.getAdminUserSettingResDto1();
 
-        when(userService.updateUserSetting(any(UserSettingReqDto.class))).thenReturn(userSettingResDto);
+        when(userService.updateUserSetting(any(UserSettingUpdateReqDto.class))).thenReturn(userSettingResDto);
 
         mockMvc.perform(
-                put("/user/user-setting-update-info").content(new ObjectMapper().writeValueAsString(userSettingReqDto))
+                put("/user/user-setting-update-info").content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
-        verify(userService, times(1)).updateUserSetting(any(UserSettingReqDto.class));
+        verify(userService, times(1)).updateUserSetting(any(UserSettingUpdateReqDto.class));
     }
 
     @Test
     public void updateUserSetting_cannotUpdateUserSetting() throws Exception {
         // Value from client
-        UserSettingReqDto userSettingReqDto = new UserSettingReqDto();
-        userSettingReqDto.setTeamId("1");
-        userSettingReqDto.setAddress("1 Some Where");
-        userSettingReqDto.setPhone("1234567890");
-        userSettingReqDto.setCountryId("1");
-        userSettingReqDto.setLanguageId("Vietnamese");
-        userSettingReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("1234567890");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("Vietnamese");
+        userSettingUpdateReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
 
-        when(userService.updateUserSetting(any(UserSettingReqDto.class))).thenReturn(null);
+        when(userService.updateUserSetting(any(UserSettingUpdateReqDto.class))).thenReturn(null);
 
         MvcResult result = mockMvc
                 .perform(put("/user/user-setting-update-info")
-                        .content(new ObjectMapper().writeValueAsString(userSettingReqDto))
+                        .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
 
-        verify(userService, times(1)).updateUserSetting(any(UserSettingReqDto.class));
+        verify(userService, times(1)).updateUserSetting(any(UserSettingUpdateReqDto.class));
         assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_USER_SETTING_FAILED);
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_USER_SETTING_FAILED);
     }
@@ -366,22 +366,22 @@ public class UserControllerTest {
     @Test
     public void updatePassword_success() throws Exception {
         // Value from client
-        UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
-        updatePasswordReqDto.setOldPassword("12345678");
-        updatePasswordReqDto.setNewPassword("87654321");
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("12345678");
+        userSettingUpdatePasswordReqDto.setNewPassword("87654321");
 
-        when(userService.updatePassword(any(UpdatePasswordReqDto.class))).thenReturn(true);
+        when(userService.updatePassword(any(UserSettingUpdatePasswordReqDto.class))).thenReturn(true);
 
         MvcResult result = mockMvc
                 .perform(patch("/user/user-setting-update-password")
-                        .content(new ObjectMapper().writeValueAsString(updatePasswordReqDto))
+                        .content(new ObjectMapper().writeValueAsString(userSettingUpdatePasswordReqDto))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
 
-        verify(userService, times(1)).updatePassword(any(UpdatePasswordReqDto.class));
+        verify(userService, times(1)).updatePassword(any(UserSettingUpdatePasswordReqDto.class));
         assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_PASSWORD_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_PASSWORD_SUCCESS);
     }
@@ -389,22 +389,22 @@ public class UserControllerTest {
     @Test
     public void updatePassword_cannotUpdatePassword() throws Exception {
         // Value from client
-        UpdatePasswordReqDto updatePasswordReqDto = new UpdatePasswordReqDto();
-        updatePasswordReqDto.setOldPassword("12345678");
-        updatePasswordReqDto.setNewPassword("87654321");
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("12345678");
+        userSettingUpdatePasswordReqDto.setNewPassword("87654321");
 
-        when(userService.updatePassword(any(UpdatePasswordReqDto.class))).thenReturn(false);
+        when(userService.updatePassword(any(UserSettingUpdatePasswordReqDto.class))).thenReturn(false);
 
         MvcResult result = mockMvc
                 .perform(patch("/user/user-setting-update-password")
-                        .content(new ObjectMapper().writeValueAsString(updatePasswordReqDto))
+                        .content(new ObjectMapper().writeValueAsString(userSettingUpdatePasswordReqDto))
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);
 
-        verify(userService, times(1)).updatePassword(any(UpdatePasswordReqDto.class));
+        verify(userService, times(1)).updatePassword(any(UserSettingUpdatePasswordReqDto.class));
         assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_PASSWORD_FAILED);
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_PASSWORD_FAILED);
     }

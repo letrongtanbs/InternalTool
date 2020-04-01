@@ -2,10 +2,12 @@ package com.tvj.internaltool.controller;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.tvj.internaltool.dto.req.ForgotPasswordReqDto;
-import com.tvj.internaltool.dto.req.RecoverPasswordReqDto;
-import com.tvj.internaltool.dto.req.UpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.PasswordRecoverSendRequestReqDto;
+import com.tvj.internaltool.dto.req.PasswordRecoverUpdatePasswordReqDto;
 import com.tvj.internaltool.dto.req.UserLoginReqDto;
-import com.tvj.internaltool.dto.req.UserSettingReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdatePasswordReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdateReqDto;
 import com.tvj.internaltool.dto.res.FileResDto;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
@@ -32,6 +34,7 @@ import com.tvj.internaltool.utils.ResponseMessage;
 
 @RestController
 @RequestMapping("/user")
+@Validated // Enable validation for both request parameters and path variables
 public class UserController {
 
     private final UserService userService;
@@ -55,8 +58,9 @@ public class UserController {
     }
 
     @PostMapping(value = "/password-recover-send-request")
-    public ResponseEntity<?> forgotPasswordSendRequest(@Valid @RequestBody ForgotPasswordReqDto forgotPasswordReqDto) {
-        boolean isMailSent = userService.processForgotPassword(forgotPasswordReqDto.getUsername());
+    public ResponseEntity<?> forgotPasswordSendRequest(
+            @Valid @RequestBody PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto) {
+        boolean isMailSent = userService.processForgotPassword(passwordRecoverSendRequestReqDto.getUsername());
         if (isMailSent) {
             return new ResponseEntity<>(
                     new MessageResDto(ResponseCode.SEND_MAIL_SUCCESS, ResponseMessage.SEND_MAIL_SUCCESS),
@@ -67,7 +71,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/password-recover-confirm-token")
-    public ResponseEntity<?> forgotPasswordConfirmToken(@NotBlank @RequestParam("token") String token) {
+    public ResponseEntity<?> forgotPasswordConfirmToken(
+            @NotBlank @Size(max = 100) @RequestParam("token") String token) {
         boolean isTokenValid = userService.processConfirmForgotPasswordToken(token);
         if (isTokenValid) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.TOKEN_IS_VALID, ResponseMessage.TOKEN_IS_VALID),
@@ -80,8 +85,8 @@ public class UserController {
 
     @PostMapping(value = "/password-recover-update-password")
     public ResponseEntity<?> recoverPasswordUpdatePassword(
-            @Valid @RequestBody RecoverPasswordReqDto recoverPasswordReqDto) {
-        boolean isPasswordUpdated = userService.processRecoverPassword(recoverPasswordReqDto);
+            @Valid @RequestBody PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto) {
+        boolean isPasswordUpdated = userService.processRecoverPassword(passwordRecoverUpdatePasswordReqDto);
         if (isPasswordUpdated) {
             return new ResponseEntity<>(
                     new MessageResDto(ResponseCode.UPDATE_PASSWORD_SUCCESS, ResponseMessage.UPDATE_PASSWORD_SUCCESS),
@@ -104,8 +109,8 @@ public class UserController {
     }
 
     @PutMapping(value = "/user-setting-update-info")
-    public ResponseEntity<?> updateUserSetting(@Valid @RequestBody UserSettingReqDto userSettingReqDto) {
-        UserSettingResDto userSettingResDto = userService.updateUserSetting(userSettingReqDto);
+    public ResponseEntity<?> updateUserSetting(@Valid @RequestBody UserSettingUpdateReqDto userSettingUpdateReqDto) {
+        UserSettingResDto userSettingResDto = userService.updateUserSetting(userSettingUpdateReqDto);
         if (userSettingResDto != null) {
             return new ResponseEntity<>(userSettingResDto, HttpStatus.OK);
         }
@@ -115,8 +120,9 @@ public class UserController {
     }
 
     @PatchMapping(value = "/user-setting-update-password")
-    public ResponseEntity<?> updatePassword(@Valid @RequestBody UpdatePasswordReqDto updatePasswordReqDto) {
-        boolean isPasswordUpdated = userService.updatePassword(updatePasswordReqDto);
+    public ResponseEntity<?> updatePassword(
+            @Valid @RequestBody UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto) {
+        boolean isPasswordUpdated = userService.updatePassword(userSettingUpdatePasswordReqDto);
         if (isPasswordUpdated) {
             return new ResponseEntity<>(
                     new MessageResDto(ResponseCode.UPDATE_PASSWORD_SUCCESS, ResponseMessage.UPDATE_PASSWORD_SUCCESS),
