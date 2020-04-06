@@ -10,11 +10,11 @@ import lombok.Setter;
 @Getter
 public class PasswordRecoverUpdatePasswordReqDto {
 
-    @NotBlank
+    @NotBlank(message = "token must not be blank!!")
     private String token;
 
-    @NotBlank
-    @Size(min = 8, max = 20)
+    @NotBlank(message = "new password must not be blank!!")
+    @Size(min = 8, max = 20, message = "size of new password must between 8 and 20!!")
     private String newPassword;
 
 }

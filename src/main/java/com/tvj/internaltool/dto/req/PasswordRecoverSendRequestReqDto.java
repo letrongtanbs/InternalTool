@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 public class PasswordRecoverSendRequestReqDto {
 
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "username must not be blank!!")
+    @Size(max = 20, message = "maximum size of username id is 20!!")
     private String username;
 
 }

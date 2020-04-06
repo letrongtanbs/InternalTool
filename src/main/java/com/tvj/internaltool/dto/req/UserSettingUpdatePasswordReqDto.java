@@ -10,13 +10,12 @@ import lombok.Setter;
 @Getter
 public class UserSettingUpdatePasswordReqDto {
 
-    @NotBlank
-    @Size(min = 8, max = 20)
+    @NotBlank(message = "old password must not be blank!!")
+    @Size(min = 8, max = 20, message = "size of old password must between 8 and 20!!")
     private String oldPassword;
 
-    @NotBlank
-    @Size(min = 8, max = 20)
+    @NotBlank(message = "new password must not be blank!!")
+    @Size(min = 8, max = 20, message = "size of new password must between 8 and 20!!")
     private String newPassword;
-
 
 }

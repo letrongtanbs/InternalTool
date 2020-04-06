@@ -12,21 +12,21 @@ import lombok.Setter;
 @Getter
 public class MemberUpdateReqDto {
     
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "username must not be blank!!")
+    @Size(max = 20, message = "maximum size of username id is 20!!")
     private String username;
     
-    @NotBlank
+    @NotBlank(message = "first name must not be blank!!")
     private String firstName;
     
-    @NotBlank
+    @NotBlank(message = "last name must not be blank!!")
     private String lastName;
     
-    @NotBlank
-    @Size(max = 40)
+    @NotBlank(message = "title id must not be blank!!")
+    @Size(max = 40, message = "maximum size of title id is 40!!")
     private String titleId;
     
-    @NotBlank
+    @NotBlank(message = "email must not be blank!!")
     @UserEmailConstraint
     private String email;
     

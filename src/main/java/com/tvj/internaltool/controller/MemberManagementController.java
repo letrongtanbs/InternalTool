@@ -73,7 +73,10 @@ public class MemberManagementController {
     }
 
     @GetMapping(value = "/view-member")
-    public ResponseEntity<?> viewMember(@NotBlank @Size(max = 20) @RequestParam("username") String username) {
+    public ResponseEntity<?> viewMember(
+            @NotBlank(message = "username must not be blank!!") 
+            @Size(max = 20, message = "maximum size of username id is 20!!") 
+            @RequestParam("username") String username) {
         MemberResDto memberResDto = memberManagementService.viewMember(username);
         if (memberResDto != null) {
             return new ResponseEntity<>(memberResDto, HttpStatus.OK);

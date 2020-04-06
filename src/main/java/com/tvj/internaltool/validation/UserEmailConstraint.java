@@ -16,7 +16,7 @@ import com.tvj.internaltool.validation.validator.UserEmailValidator;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UserEmailConstraint {
-    String message() default "Invalid User Email!!";
+    String message() default "user email is invalid!!";
 
     Class<?>[] groups() default {};
 

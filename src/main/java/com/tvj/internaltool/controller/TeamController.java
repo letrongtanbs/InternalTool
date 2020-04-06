@@ -27,7 +27,9 @@ public class TeamController {
 
     @GetMapping(value = "/list-by-department")
     public ResponseEntity<?> getTeamByDepartment(
-            @NotBlank @Size(min = 1, max = 40) @RequestParam("departmentId") String departmentId) {
+            @NotBlank(message = "department id must not be blank!!") 
+            @Size(min = 1, max = 40, message = "size of department id must between 1 and 40!!") 
+            @RequestParam("departmentId") String departmentId) {
         TeamListResDto teamListResDto = teamService.getTeamByDepartment(departmentId);
         return new ResponseEntity<>(teamListResDto, HttpStatus.OK);
     }

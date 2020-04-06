@@ -16,7 +16,7 @@ import com.tvj.internaltool.validation.validator.UserStatusValidator;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UserStatusConstraint {
-    String message() default "Invalid User Status!!";
+    String message() default "user status is invalid!!";
 
     Class<?>[] groups() default {};
 

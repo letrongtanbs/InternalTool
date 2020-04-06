@@ -72,7 +72,7 @@ public class UserController {
 
     @GetMapping(value = "/password-recover-confirm-token")
     public ResponseEntity<?> forgotPasswordConfirmToken(
-            @NotBlank @Size(max = 100) @RequestParam("token") String token) {
+            @NotBlank(message = "token must not be blank!!") @Size(max = 100, message = "maximum size of token id is 100!!") @RequestParam("token") String token) {
         boolean isTokenValid = userService.processConfirmForgotPasswordToken(token);
         if (isTokenValid) {
             return new ResponseEntity<>(new MessageResDto(ResponseCode.TOKEN_IS_VALID, ResponseMessage.TOKEN_IS_VALID),

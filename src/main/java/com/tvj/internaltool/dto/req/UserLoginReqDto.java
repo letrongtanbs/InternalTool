@@ -10,12 +10,12 @@ import lombok.Setter;
 @Getter
 public class UserLoginReqDto {
 
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "username must not be blank!!")
+    @Size(max = 20, message = "maximum size of username id is 20!!")
     private String username;
 
-    @NotBlank
-    @Size(min = 8, max = 20)
+    @NotBlank(message = "password must not be blank!!")
+    @Size(min = 8, max = 20, message = "size of password must between 8 and 20!!")
     private String password;
 
 }
