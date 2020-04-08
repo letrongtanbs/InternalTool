@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.tvj.internaltool.dto.res.LanguageListResDto;
 import com.tvj.internaltool.dummy.dto.res.LanguageResDtoDataDummy;
 import com.tvj.internaltool.service.LanguageService;
+import com.tvj.internaltool.utils.CustomRestExceptionHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LanguageControllerTest {
@@ -37,9 +38,11 @@ public class LanguageControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @Before // Execute before each test method
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(languageController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(languageController)
+                .setControllerAdvice(new CustomRestExceptionHandler()) // add ControllerAdvice to controller test
+                .build();
     }
 
     // ---------- /language/list START ----------
@@ -48,9 +51,7 @@ public class LanguageControllerTest {
     public void getAllLanguage_success_returnZeroRecord() throws Exception {
         when(languageService.getAllLanguage()).thenReturn(new LanguageListResDto());
 
-        MvcResult result = mockMvc.perform(get("/language/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/language/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         LanguageListResDto languageListResDto = new Gson().fromJson(jsonString, LanguageListResDto.class);
@@ -63,14 +64,12 @@ public class LanguageControllerTest {
     public void getAllLanguage_success_returnOneRecord() throws Exception {
         LanguageResDtoDataDummy languageResDtoDataDummy = new LanguageResDtoDataDummy();
         LanguageListResDto languageListResDtoDummy = new LanguageListResDto();
-        languageListResDtoDummy.setLanguageResDtoList(Collections.singletonList(
-                languageResDtoDataDummy.getLanguage1()));
+        languageListResDtoDummy
+                .setLanguageResDtoList(Collections.singletonList(languageResDtoDataDummy.getLanguage1()));
 
         when(languageService.getAllLanguage()).thenReturn(languageListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/language/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/language/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         LanguageListResDto languageListResDto = new Gson().fromJson(jsonString, LanguageListResDto.class);
@@ -83,15 +82,12 @@ public class LanguageControllerTest {
     public void getAllLanguage_success_returnTwoRecords() throws Exception {
         LanguageResDtoDataDummy languageResDtoDataDummy = new LanguageResDtoDataDummy();
         LanguageListResDto languageListResDtoDummy = new LanguageListResDto();
-        languageListResDtoDummy.setLanguageResDtoList(Arrays.asList(
-                languageResDtoDataDummy.getLanguage1(),
-                languageResDtoDataDummy.getLanguage2()));
+        languageListResDtoDummy.setLanguageResDtoList(
+                Arrays.asList(languageResDtoDataDummy.getLanguage1(), languageResDtoDataDummy.getLanguage2()));
 
         when(languageService.getAllLanguage()).thenReturn(languageListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/language/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/language/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         LanguageListResDto languageListResDto = new Gson().fromJson(jsonString, LanguageListResDto.class);

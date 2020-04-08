@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.tvj.internaltool.dto.res.DepartmentListResDto;
 import com.tvj.internaltool.dummy.dto.res.DepartmentResDtoDataDummy;
 import com.tvj.internaltool.service.DepartmentService;
+import com.tvj.internaltool.utils.CustomRestExceptionHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DepartmentControllerTest {
@@ -37,9 +38,11 @@ public class DepartmentControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @Before // Execute before each test method
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(departmentController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(departmentController)
+                .setControllerAdvice(new CustomRestExceptionHandler()) // add ControllerAdvice to controller test
+                .build();
     }
 
     // ---------- /department/list START ----------
@@ -48,9 +51,7 @@ public class DepartmentControllerTest {
     public void getAllDepartment_success_returnZeroRecord() throws Exception {
         when(departmentService.getAllDepartment()).thenReturn(new DepartmentListResDto());
 
-        MvcResult result = mockMvc.perform(get("/department/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/department/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         DepartmentListResDto departmentListResDto = new Gson().fromJson(jsonString, DepartmentListResDto.class);
@@ -63,14 +64,12 @@ public class DepartmentControllerTest {
     public void getAllDepartment_success_returnOneRecord() throws Exception {
         DepartmentResDtoDataDummy departmentResDtoDataDummy = new DepartmentResDtoDataDummy();
         DepartmentListResDto departmentListResDtoDummy = new DepartmentListResDto();
-        departmentListResDtoDummy.setDepartmentResDtoList(Collections.singletonList(
-                departmentResDtoDataDummy.getDepartment1()));
+        departmentListResDtoDummy
+                .setDepartmentResDtoList(Collections.singletonList(departmentResDtoDataDummy.getDepartment1()));
 
         when(departmentService.getAllDepartment()).thenReturn(departmentListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/department/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/department/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         DepartmentListResDto departmentListResDto = new Gson().fromJson(jsonString, DepartmentListResDto.class);
@@ -83,15 +82,12 @@ public class DepartmentControllerTest {
     public void getAllDepartment_success_returnTwoRecords() throws Exception {
         DepartmentResDtoDataDummy departmentResDtoDataDummy = new DepartmentResDtoDataDummy();
         DepartmentListResDto departmentListResDtoDummy = new DepartmentListResDto();
-        departmentListResDtoDummy.setDepartmentResDtoList(Arrays.asList(
-                departmentResDtoDataDummy.getDepartment1(),
-                departmentResDtoDataDummy.getDepartment2()));
+        departmentListResDtoDummy.setDepartmentResDtoList(
+                Arrays.asList(departmentResDtoDataDummy.getDepartment1(), departmentResDtoDataDummy.getDepartment2()));
 
         when(departmentService.getAllDepartment()).thenReturn(departmentListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/department/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/department/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         DepartmentListResDto departmentListResDto = new Gson().fromJson(jsonString, DepartmentListResDto.class);

@@ -83,7 +83,7 @@ paths:
       - "User"
       summary: "Recover password send request"
       description: "Recover password send request"
-      operationId: "forgotPasswordSendRequest"
+      operationId: "passwordRecoverSendRequest"
       consumes:
       - "application/json"
       produces:
@@ -111,7 +111,7 @@ paths:
       - "User"
       summary: "Recover password confirm token"
       description: "Recover password confirm token"
-      operationId: "forgotPasswordConfirmToken"
+      operationId: "passwordRecoverConfirmToken"
       produces:
       - "application/json"
       parameters:
@@ -385,15 +385,15 @@ paths:
       parameters:
       - name: "name"
         in: "query"
-        description: "search by name, between 0 and 40 characters"
+        description: "search by name, less than 40 characters"
         type: "string"
       - name: "username"
         in: "query"
-        description: "search by username, between 0 and 20 characters"
+        description: "search by username, less than 20 characters"
         type: "string"
       - name: "titleId"
         in: "query"
-        description: "search by title, between 0 and 40 characters"
+        description: "search by title, less than 40 characters"
         type: "string"
       - name: "isActivated"
         in: "query"
@@ -871,7 +871,7 @@ definitions:
         description: "Not Blank, must have domain tinhvan.com"
       password:
         type: string
-        description: "Not Blank"
+        description: "Not Blank, between 8 and 20 characters"
         
   MemberUpdateReqDto:
     type: "object"

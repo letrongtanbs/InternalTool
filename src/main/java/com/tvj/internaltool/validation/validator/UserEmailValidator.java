@@ -4,14 +4,12 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 
 import com.tvj.internaltool.validation.UserEmailConstraint;
 
 public class UserEmailValidator implements ConstraintValidator<UserEmailConstraint, String> {
 
-    @Value("${tinhvan-email-domain}")
-    private String emailDomain;
+    private final static String EMAIL_DOMAIN = "tinhvan.com";
 
     @Override
     public void initialize(UserEmailConstraint constraint) {
@@ -26,7 +24,7 @@ public class UserEmailValidator implements ConstraintValidator<UserEmailConstrai
 
         String inputedEmailDomain = email.substring(email.indexOf("@") + 1);
 
-        if (inputedEmailDomain.equals(emailDomain)) {
+        if (inputedEmailDomain.equals(EMAIL_DOMAIN)) {
             return true;
         }
 

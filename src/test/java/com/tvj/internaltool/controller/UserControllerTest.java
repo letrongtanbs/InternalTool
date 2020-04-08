@@ -31,8 +31,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.tvj.internaltool.dto.req.PasswordRecoverSendRequestReqDto;
 import com.tvj.internaltool.dto.req.PasswordRecoverUpdatePasswordReqDto;
-import com.tvj.internaltool.dto.req.UserSettingUpdatePasswordReqDto;
 import com.tvj.internaltool.dto.req.UserLoginReqDto;
+import com.tvj.internaltool.dto.req.UserSettingUpdatePasswordReqDto;
 import com.tvj.internaltool.dto.req.UserSettingUpdateReqDto;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.dto.res.UserLoginResDto;
@@ -41,6 +41,7 @@ import com.tvj.internaltool.dummy.dto.res.UserLoginResDtoDataDummy;
 import com.tvj.internaltool.dummy.dto.res.UserSettingResDtoDataDummy;
 import com.tvj.internaltool.enums.UserStatus;
 import com.tvj.internaltool.service.UserService;
+import com.tvj.internaltool.utils.CustomRestExceptionHandler;
 import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.ResponseMessage;
 
@@ -55,9 +56,11 @@ public class UserControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @Before // Execute before each test method
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(userController)
+                .setControllerAdvice(new CustomRestExceptionHandler()) // add ControllerAdvice to controller test
+                .build();
     }
 
     // ---------- /user/login START ----------
@@ -87,6 +90,74 @@ public class UserControllerTest {
         assertEquals(userLoginResDto.getLastName(), adminResDto.getAdminUserResDto1().getLastName());
         assertEquals(userLoginResDto.getRoleName(), adminResDto.getAdminUserResDto1().getRoleName());
         assertEquals(userLoginResDto.isFirstTimeLogin(), adminResDto.getAdminUserResDto1().isFirstTimeLogin());
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void generateAuthenticationToken_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/user/login")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void generateAuthenticationToken_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/login")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void generateAuthenticationToken_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/login")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void generateAuthenticationToken_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/login")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void generateAuthenticationToken_usernameIsBlank() throws Exception {
+        // Value from client
+        UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
+        userLoginReqDto.setUsername("");
+        userLoginReqDto.setPassword("12345678");
+
+        mockMvc.perform(post("/user/login").content(new ObjectMapper().writeValueAsString(userLoginReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void generateAuthenticationToken_usernameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
+        userLoginReqDto.setUsername("a12345678901234567890");
+        userLoginReqDto.setPassword("12345678");
+
+        mockMvc.perform(post("/user/login").content(new ObjectMapper().writeValueAsString(userLoginReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void generateAuthenticationToken_passwordIsBlank() throws Exception {
+        // Value from client
+        UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
+        userLoginReqDto.setUsername("admin1");
+        userLoginReqDto.setPassword("");
+
+        mockMvc.perform(post("/user/login").content(new ObjectMapper().writeValueAsString(userLoginReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void generateAuthenticationToken_passwordSizeOutOfBounds() throws Exception {
+        // Value from client
+        UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
+        userLoginReqDto.setUsername("admin1");
+        userLoginReqDto.setPassword("1234567");
+
+        mockMvc.perform(post("/user/login").content(new ObjectMapper().writeValueAsString(userLoginReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test // Do not use org.junit.jupiter.api
@@ -140,7 +211,7 @@ public class UserControllerTest {
     // ---------- /user/password-recover-send-request START ----------
 
     @Test
-    public void forgotPasswordSendRequest_success() throws Exception {
+    public void passwordRecoverSendRequest_success() throws Exception {
         // Value from client
         PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto = new PasswordRecoverSendRequestReqDto();
         passwordRecoverSendRequestReqDto.setUsername("admin1");
@@ -161,8 +232,56 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.SEND_MAIL_SUCCESS);
     }
 
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverSendRequest_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/user/password-recover-send-request")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverSendRequest_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/password-recover-send-request")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverSendRequest_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/password-recover-send-request")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverSendRequest_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/password-recover-send-request")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverSendRequest_usernameIsBlank() throws Exception {
+        // Value from client
+        PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto = new PasswordRecoverSendRequestReqDto();
+        passwordRecoverSendRequestReqDto.setUsername("");
+
+        mockMvc.perform(post("/user/password-recover-send-request")
+                .content(new ObjectMapper().writeValueAsString(passwordRecoverSendRequestReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverSendRequest_usernameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto = new PasswordRecoverSendRequestReqDto();
+        passwordRecoverSendRequestReqDto.setUsername("a12345678901234567890");
+
+        mockMvc.perform(post("/user/password-recover-send-request")
+                .content(new ObjectMapper().writeValueAsString(passwordRecoverSendRequestReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
     @Test
-    public void forgotPasswordSendRequest_cannotSendRequest() throws Exception {
+    public void passwordRecoverSendRequest_cannotSendRequest() throws Exception {
         // Value from client
         PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto = new PasswordRecoverSendRequestReqDto();
         passwordRecoverSendRequestReqDto.setUsername("admin1");
@@ -188,7 +307,7 @@ public class UserControllerTest {
     // ---------- /user/password-recover-confirm-token START ----------
 
     @Test
-    public void forgotPasswordConfirmToken_success() throws Exception {
+    public void passwordRecoverConfirmToken_success() throws Exception {
         // Value from client
         String token = "token";
 
@@ -205,8 +324,41 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.TOKEN_IS_VALID);
     }
 
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverConfirmToken_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/user/password-recover-confirm-token")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverConfirmToken_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/password-recover-confirm-token")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverConfirmToken_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/password-recover-confirm-token")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverConfirmToken_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/password-recover-confirm-token")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
     @Test
-    public void forgotPasswordConfirmToken_verifyTokenFailed() throws Exception {
+    public void passwordRecoverConfirmToken_tokenIsBlank() throws Exception {
+        // Value from client
+        String token = "";
+
+        mockMvc.perform(get("/user/password-recover-confirm-token").param("token", token))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void passwordRecoverConfirmToken_verifyTokenFailed() throws Exception {
         // Value from client
         String token = "token";
 
@@ -228,7 +380,7 @@ public class UserControllerTest {
     // ---------- /user/password-recover-update-password START ----------
 
     @Test
-    public void recoverPasswordUpdatePassword_success() throws Exception {
+    public void passwordRecoverUpdatePassword_success() throws Exception {
         // Value from client
         PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
         passwordRecoverUpdatePasswordReqDto.setToken("Token");
@@ -250,8 +402,71 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_PASSWORD_SUCCESS);
     }
 
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverUpdatePassword_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/user/password-recover-update-password")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverUpdatePassword_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/password-recover-update-password")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverUpdatePassword_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/password-recover-update-password")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void passwordRecoverUpdatePassword_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/password-recover-update-password")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
     @Test
-    public void recoverPasswordUpdatePassword_cannotUpdatePassword() throws Exception {
+    public void passwordRecoverUpdatePassword_tokenIsBlank() throws Exception {
+        // Value from client
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("newpassword");
+
+        mockMvc.perform(post("/user/password-recover-update-password")
+                .content(new ObjectMapper().writeValueAsString(passwordRecoverUpdatePasswordReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void passwordRecoverUpdatePassword_newPasswordIsBlank() throws Exception {
+        // Value from client
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("Token");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("");
+
+        mockMvc.perform(post("/user/password-recover-update-password")
+                .content(new ObjectMapper().writeValueAsString(passwordRecoverUpdatePasswordReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void passwordRecoverUpdatePassword_newPasswordSizeOutOfBounds() throws Exception {
+        // Value from client
+        PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
+        passwordRecoverUpdatePasswordReqDto.setToken("Token");
+        passwordRecoverUpdatePasswordReqDto.setNewPassword("1234567");
+
+        mockMvc.perform(post("/user/password-recover-update-password")
+                .content(new ObjectMapper().writeValueAsString(passwordRecoverUpdatePasswordReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void passwordRecoverUpdatePassword_cannotUpdatePassword() throws Exception {
         // Value from client
         PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto = new PasswordRecoverUpdatePasswordReqDto();
         passwordRecoverUpdatePasswordReqDto.setToken("Token");
@@ -324,10 +539,10 @@ public class UserControllerTest {
 
         when(userService.updateUserSetting(any(UserSettingUpdateReqDto.class))).thenReturn(userSettingResDto);
 
-        mockMvc.perform(
-                put("/user/user-setting-update-info").content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andReturn();
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andReturn();
 
         verify(userService, times(1)).updateUserSetting(any(UserSettingUpdateReqDto.class));
     }
@@ -484,7 +699,7 @@ public class UserControllerTest {
     // ---------- /user/remove-avatar END ----------
 
     // ---------- /user/save-last-logout START ----------
-    
+
     @Test
     public void saveLastLogout_success() throws Exception {
         when(userService.saveLastLogout()).thenReturn(true);
@@ -498,12 +713,33 @@ public class UserControllerTest {
         assertEquals(messageResDto.getCode(), ResponseCode.SAVE_LAST_LOGOUT_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.SAVE_LAST_LOGOUT_SUCCESS);
     }
-    
+
+    @Test // Do not use org.junit.jupiter.api
+    public void saveLastLogout_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/user/save-last-logout")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void saveLastLogout_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/save-last-logout")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void saveLastLogout_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/save-last-logout")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void saveLastLogout_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/save-last-logout")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
     @Test
     public void saveLastLogout_failure() throws Exception {
         when(userService.saveLastLogout()).thenReturn(false);
 
-        MvcResult result = mockMvc.perform(get("/user/save-last-logout")).andExpect(status().isBadRequest()).andReturn();
+        MvcResult result = mockMvc.perform(get("/user/save-last-logout")).andExpect(status().isBadRequest())
+                .andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MessageResDto messageResDto = new Gson().fromJson(jsonString, MessageResDto.class);

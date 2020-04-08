@@ -38,6 +38,7 @@ import com.tvj.internaltool.dto.res.MemberListResDto;
 import com.tvj.internaltool.dto.res.MessageResDto;
 import com.tvj.internaltool.dummy.dto.res.MemberResDtoDataDummy;
 import com.tvj.internaltool.service.MemberManagementService;
+import com.tvj.internaltool.utils.CustomRestExceptionHandler;
 import com.tvj.internaltool.utils.ResponseCode;
 import com.tvj.internaltool.utils.ResponseMessage;
 
@@ -52,9 +53,11 @@ public class MemberManagementControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @Before // Execute before each test method
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(memberManagementController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(memberManagementController)
+                .setControllerAdvice(new CustomRestExceptionHandler()) // add ControllerAdvice to controller test
+                .build();
     }
 
     // ---------- /member-management/search START ----------
@@ -63,20 +66,26 @@ public class MemberManagementControllerTest {
     public void searchMember_success_returnZeroRecord() throws Exception {
         MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
         memberSearchReqDto.setUsername("ngocdc");
+        memberSearchReqDto.setOffset(0);
+        memberSearchReqDto.setLimit(10);
 
         MemberListResDto memberListResDtoDummy = new MemberListResDto();
         memberListResDtoDummy.setMemberResDtoList(new ArrayList<>());
+        memberListResDtoDummy.setTotal(0);
 
         when(memberManagementService.searchMember(any(MemberSearchReqDto.class))).thenReturn(memberListResDtoDummy);
 
         MvcResult result = mockMvc
-                .perform(get("/member-management/search").param("username", memberSearchReqDto.getUsername()))
+                .perform(get("/member-management/search").param("username", memberSearchReqDto.getUsername())
+                        .param("offset", String.valueOf(memberSearchReqDto.getOffset()))
+                        .param("limit", String.valueOf(memberSearchReqDto.getLimit())))
                 .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MemberListResDto memberListResDto = new Gson().fromJson(jsonString, MemberListResDto.class);
 
         verify(memberManagementService, times(1)).searchMember(any(MemberSearchReqDto.class));
+        assertEquals(memberListResDto.getTotal(), 0);
         assertEquals(memberListResDto.getMemberResDtoList().size(), 0);
     }
 
@@ -84,21 +93,27 @@ public class MemberManagementControllerTest {
     public void searchMember_success_returnOneRecord() throws Exception {
         MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
         memberSearchReqDto.setUsername("admin");
+        memberSearchReqDto.setOffset(0);
+        memberSearchReqDto.setLimit(10);
 
         MemberListResDto memberListResDtoDummy = new MemberListResDto();
         MemberResDtoDataDummy memberResDtoDataDummy = new MemberResDtoDataDummy();
         memberListResDtoDummy.setMemberResDtoList(Collections.singletonList(memberResDtoDataDummy.getMember1()));
+        memberListResDtoDummy.setTotal(1);
 
         when(memberManagementService.searchMember(any(MemberSearchReqDto.class))).thenReturn(memberListResDtoDummy);
 
         MvcResult result = mockMvc
-                .perform(get("/member-management/search").param("username", memberSearchReqDto.getUsername()))
+                .perform(get("/member-management/search").param("username", memberSearchReqDto.getUsername())
+                        .param("offset", String.valueOf(memberSearchReqDto.getOffset()))
+                        .param("limit", String.valueOf(memberSearchReqDto.getLimit())))
                 .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MemberListResDto memberListResDto = new Gson().fromJson(jsonString, MemberListResDto.class);
 
         verify(memberManagementService, times(1)).searchMember(any(MemberSearchReqDto.class));
+        assertEquals(memberListResDto.getTotal(), 1);
         assertEquals(memberListResDto.getMemberResDtoList().size(), 1);
     }
 
@@ -106,23 +121,115 @@ public class MemberManagementControllerTest {
     public void searchMember_success_returnTwoRecords() throws Exception {
         MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
         memberSearchReqDto.setUsername("admin");
+        memberSearchReqDto.setOffset(0);
+        memberSearchReqDto.setLimit(10);
 
         MemberListResDto memberListResDtoDummy = new MemberListResDto();
         MemberResDtoDataDummy memberResDtoDataDummy = new MemberResDtoDataDummy();
         memberListResDtoDummy.setMemberResDtoList(
                 Arrays.asList(memberResDtoDataDummy.getMember1(), memberResDtoDataDummy.getMember2()));
+        memberListResDtoDummy.setTotal(2);
 
         when(memberManagementService.searchMember(any(MemberSearchReqDto.class))).thenReturn(memberListResDtoDummy);
 
         MvcResult result = mockMvc
-                .perform(get("/member-management/search").param("username", memberSearchReqDto.getUsername()))
+                .perform(get("/member-management/search").param("username", memberSearchReqDto.getUsername())
+                        .param("offset", String.valueOf(memberSearchReqDto.getOffset()))
+                        .param("limit", String.valueOf(memberSearchReqDto.getLimit())))
                 .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         MemberListResDto memberListResDto = new Gson().fromJson(jsonString, MemberListResDto.class);
 
         verify(memberManagementService, times(1)).searchMember(any(MemberSearchReqDto.class));
+        assertEquals(memberListResDto.getTotal(), 2);
         assertEquals(memberListResDto.getMemberResDtoList().size(), 2);
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/member-management/search")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/member-management/search")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/member-management/search")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/member-management/search")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_nameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
+        memberSearchReqDto.setName("12345678901234567890123456789012345678901");
+        memberSearchReqDto.setOffset(0);
+        memberSearchReqDto.setLimit(10);
+
+        mockMvc.perform(get("/member-management/search").param("name", memberSearchReqDto.getName())
+                .param("offset", String.valueOf(memberSearchReqDto.getOffset()))
+                .param("limit", String.valueOf(memberSearchReqDto.getLimit()))).andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_usernameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
+        memberSearchReqDto.setUsername("123456789012345678901");
+        memberSearchReqDto.setOffset(0);
+        memberSearchReqDto.setLimit(10);
+
+        mockMvc.perform(get("/member-management/search").param("username", memberSearchReqDto.getUsername())
+                .param("offset", String.valueOf(memberSearchReqDto.getOffset()))
+                .param("limit", String.valueOf(memberSearchReqDto.getLimit()))).andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_titleIdSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
+        memberSearchReqDto.setTitleId("12345678901234567890123456789012345678901");
+        memberSearchReqDto.setOffset(0);
+        memberSearchReqDto.setLimit(10);
+
+        mockMvc.perform(get("/member-management/search").param("titleId", memberSearchReqDto.getTitleId())
+                .param("offset", String.valueOf(memberSearchReqDto.getOffset()))
+                .param("limit", String.valueOf(memberSearchReqDto.getLimit()))).andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_offsetSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
+        memberSearchReqDto.setOffset(-1);
+        memberSearchReqDto.setLimit(10);
+
+        mockMvc.perform(get("/member-management/search").param("offset", String.valueOf(memberSearchReqDto.getOffset()))
+                .param("limit", String.valueOf(memberSearchReqDto.getLimit()))).andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void searchMember_limitSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
+        memberSearchReqDto.setOffset(0);
+        memberSearchReqDto.setLimit(0);
+
+        mockMvc.perform(get("/member-management/search").param("offset", String.valueOf(memberSearchReqDto.getOffset()))
+                .param("limit", String.valueOf(memberSearchReqDto.getLimit()))).andExpect(status().isBadRequest())
+                .andReturn();
     }
 
     // ---------- /member-management/search END ----------
@@ -154,6 +261,196 @@ public class MemberManagementControllerTest {
         verify(memberManagementService, times(1)).addMember(any(MemberAddReqDto.class));
         assertEquals(messageResDto.getCode(), ResponseCode.ADD_NEW_MEMBER_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.ADD_NEW_MEMBER_SUCCESS);
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/member-management/add-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/member-management/add-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/member-management/add-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/member-management/add-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_usernameIsBlank() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("1");
+        memberAddReqDto.setEmail("ngocdc@tinhvan.com");
+        memberAddReqDto.setPassword("12345678");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_usernameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("a12345678901234567890");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("1");
+        memberAddReqDto.setEmail("ngocdc@tinhvan.com");
+        memberAddReqDto.setPassword("12345678");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_firstNameIsBlank() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("ngocdc");
+        memberAddReqDto.setFirstName("");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("1");
+        memberAddReqDto.setEmail("ngocdc@tinhvan.com");
+        memberAddReqDto.setPassword("12345678");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_lastNameIsBlank() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("ngocdc");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("");
+        memberAddReqDto.setTitleId("1");
+        memberAddReqDto.setEmail("ngocdc@tinhvan.com");
+        memberAddReqDto.setPassword("12345678");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_titleIdIsBlank() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("ngocdc");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("");
+        memberAddReqDto.setEmail("ngocdc@tinhvan.com");
+        memberAddReqDto.setPassword("12345678");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_titleIdSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("ngocdc");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("a12345678901234567890");
+        memberAddReqDto.setEmail("ngocdc@tinhvan.com");
+        memberAddReqDto.setPassword("12345678");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_emailIsBlank() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("ngocdc");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("1");
+        memberAddReqDto.setEmail("");
+        memberAddReqDto.setPassword("12345678");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_emailIsInvalid() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("ngocdc");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("1");
+        memberAddReqDto.setEmail("ngocdc@@tinhvan.com");
+        memberAddReqDto.setPassword("12345678");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_passwordIsBlank() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("ngocdc");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("1");
+        memberAddReqDto.setEmail("ngocdc@tinhvan.com");
+        memberAddReqDto.setPassword("");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void addMember_passwordSizeOutOfBounds() throws Exception {
+        // Value from client
+        MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
+        memberAddReqDto.setUsername("ngocdc");
+        memberAddReqDto.setFirstName("Dinh");
+        memberAddReqDto.setLastName("Ngoc");
+        memberAddReqDto.setTitleId("1");
+        memberAddReqDto.setEmail("ngocdc@tinhvan.com");
+        memberAddReqDto.setPassword("123456789012345678901");
+
+        mockMvc.perform(
+                post("/member-management/add-member").content(new ObjectMapper().writeValueAsString(memberAddReqDto))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test
@@ -213,6 +510,155 @@ public class MemberManagementControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_MEMBER_SUCCESS);
     }
 
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/member-management/update-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/member-management/update-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/member-management/update-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/member-management/update-member")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_usernameIsBlank() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        mockMvc.perform(put("/member-management/update-member")
+                .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_usernameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("a12345678901234567890");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        mockMvc.perform(put("/member-management/update-member")
+                .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_firstNameIsBlank() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        mockMvc.perform(put("/member-management/update-member")
+                .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_lastNameIsBlank() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        mockMvc.perform(put("/member-management/update-member")
+                .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_titleIdIsBlank() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        mockMvc.perform(put("/member-management/update-member")
+                .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_titleIdSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("12345678901234567890123456789012345678901");
+        memberUpdateReqDto.setEmail("ngocdc@tinhvan.com");
+
+        mockMvc.perform(put("/member-management/update-member")
+                .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_emailIdIsBlank() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("");
+
+        mockMvc.perform(put("/member-management/update-member")
+                .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMember_emailIdIsInvalid() throws Exception {
+        // Value from client
+        MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
+        memberUpdateReqDto.setUsername("ngocdc");
+        memberUpdateReqDto.setFirstName("Dinh");
+        memberUpdateReqDto.setLastName("Ngoc");
+        memberUpdateReqDto.setTitleId("1");
+        memberUpdateReqDto.setEmail("ngocdc@@tinhvan.com");
+
+        mockMvc.perform(put("/member-management/update-member")
+                .content(new ObjectMapper().writeValueAsString(memberUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
     @Test
     public void updateMember_memberDoesNotExist() throws Exception {
         // Value from client
@@ -256,6 +702,44 @@ public class MemberManagementControllerTest {
                 .andReturn();
 
         verify(memberManagementService, times(1)).viewMember(username);
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void viewMember_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/member-management/view-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void viewMember_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/member-management/view-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void viewMember_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/member-management/view-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void viewMember_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/member-management/view-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void viewMember_usernameIsBlank() throws Exception {
+        // Value from client
+        String username = "";
+
+        mockMvc.perform(get("/member-management/view-member").param("username", username))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void viewMember_usernameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        String username = "a12345678901234567890";
+
+        mockMvc.perform(get("/member-management/view-member").param("username", username))
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test
@@ -303,6 +787,56 @@ public class MemberManagementControllerTest {
                 .updateMemberActivateStatus(any(MemberActivateStatusUpdateReqDto.class));
         assertEquals(messageResDto.getCode(), ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS);
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMemberActivateStatus_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/member-management/update-member-activate-status"))
+                .andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMemberActivateStatus_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/member-management/update-member-activate-status"))
+                .andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void vupdateMemberActivateStatus_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/member-management/update-member-activate-status"))
+                .andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMemberActivateStatus_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/member-management/update-member-activate-status"))
+                .andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMemberActivateStatus_usernameIsBlank() throws Exception {
+        // Value from client
+        MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto = new MemberActivateStatusUpdateReqDto();
+        memberActivateStatusUpdateReqDto.setUsername("");
+        memberActivateStatusUpdateReqDto.setActivated(true);
+
+        mockMvc.perform(patch("/member-management/update-member-activate-status")
+                .content(new ObjectMapper().writeValueAsString(memberActivateStatusUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void updateMemberActivateStatus_usernameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto = new MemberActivateStatusUpdateReqDto();
+        memberActivateStatusUpdateReqDto.setUsername("a12345678901234567890");
+        memberActivateStatusUpdateReqDto.setActivated(true);
+
+        mockMvc.perform(patch("/member-management/update-member-activate-status")
+                .content(new ObjectMapper().writeValueAsString(memberActivateStatusUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test
@@ -354,6 +888,50 @@ public class MemberManagementControllerTest {
         verify(memberManagementService, times(1)).deleteMember(any(MemberDeleteReqDto.class));
         assertEquals(messageResDto.getCode(), ResponseCode.DELETE_MEMBER_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.DELETE_MEMBER_SUCCESS);
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void deleteMember_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/member-management/delete-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void deleteMember_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/member-management/delete-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void deleteMember_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/member-management/delete-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void deleteMember_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/member-management/delete-member")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void deleteMember_usernameIsBlank() throws Exception {
+        // Value from client
+        MemberDeleteReqDto memberDeleteReqDto = new MemberDeleteReqDto();
+        memberDeleteReqDto.setUsername("");
+
+        mockMvc.perform(delete("/member-management/delete-member")
+                .content(new ObjectMapper().writeValueAsString(memberDeleteReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test // Do not use org.junit.jupiter.api
+    public void deleteMember_usernameSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        MemberDeleteReqDto memberDeleteReqDto = new MemberDeleteReqDto();
+        memberDeleteReqDto.setUsername("a12345678901234567890");
+
+        mockMvc.perform(delete("/member-management/delete-member")
+                .content(new ObjectMapper().writeValueAsString(memberDeleteReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test

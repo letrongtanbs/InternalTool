@@ -10,13 +10,13 @@ import lombok.Setter;
 @Getter
 public class MemberSearchReqDto {
 
-    @Size(min = 0, max = 40, message = "size of name must between 0 and 40!!")
+    @Size(max = 40, message = "maximum size of name is 40!!")
     private String name;
 
-    @Size(min = 0, max = 20, message = "size of username must between 0 and 20!!")
+    @Size(max = 20, message = "maximum size of username is 20!!")
     private String username;
 
-    @Size(min = 0, max = 40, message = "size of title id must between 0 and 40!!")
+    @Size(max = 40, message = "maximum size of title id is 40!!")
     private String titleId;
 
     private Boolean isActivated;

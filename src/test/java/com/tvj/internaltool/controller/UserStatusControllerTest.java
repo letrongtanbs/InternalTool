@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.tvj.internaltool.dto.res.UserStatusListResDto;
 import com.tvj.internaltool.dummy.dto.res.UserStatusResDtoDataDummy;
 import com.tvj.internaltool.service.UserStatusService;
+import com.tvj.internaltool.utils.CustomRestExceptionHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserStatusControllerTest {
@@ -37,9 +38,11 @@ public class UserStatusControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @Before // Execute before each test method
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userStatusController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(userStatusController)
+                .setControllerAdvice(new CustomRestExceptionHandler()) // add ControllerAdvice to controller test
+                .build();
     }
 
     // ---------- /user-status/list START ----------
@@ -48,9 +51,7 @@ public class UserStatusControllerTest {
     public void getAllUserStatus_success_returnZeroRecord() throws Exception {
         when(userStatusService.getAllUserStatus()).thenReturn(new UserStatusListResDto());
 
-        MvcResult result = mockMvc.perform(get("/user-status/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/user-status/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         UserStatusListResDto userStatusListResDto = new Gson().fromJson(jsonString, UserStatusListResDto.class);
@@ -63,14 +64,12 @@ public class UserStatusControllerTest {
     public void getAllUserStatus_success_returnOneRecord() throws Exception {
         UserStatusResDtoDataDummy userStatusResDtoDataDummy = new UserStatusResDtoDataDummy();
         UserStatusListResDto userStatusListResDtoDummy = new UserStatusListResDto();
-        userStatusListResDtoDummy.setUserStatusResDtoList(Collections.singletonList(
-                userStatusResDtoDataDummy.getAvailable()));
+        userStatusListResDtoDummy
+                .setUserStatusResDtoList(Collections.singletonList(userStatusResDtoDataDummy.getAvailable()));
 
         when(userStatusService.getAllUserStatus()).thenReturn(userStatusListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/user-status/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/user-status/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         UserStatusListResDto userStatusListResDto = new Gson().fromJson(jsonString, UserStatusListResDto.class);
@@ -83,15 +82,12 @@ public class UserStatusControllerTest {
     public void getAllUserStatus_success_returnTwoRecords() throws Exception {
         UserStatusResDtoDataDummy userStatusResDtoDataDummy = new UserStatusResDtoDataDummy();
         UserStatusListResDto userStatusListResDtoDummy = new UserStatusListResDto();
-        userStatusListResDtoDummy.setUserStatusResDtoList(Arrays.asList(
-                userStatusResDtoDataDummy.getAvailable(),
-                userStatusResDtoDataDummy.getAway()));
+        userStatusListResDtoDummy.setUserStatusResDtoList(
+                Arrays.asList(userStatusResDtoDataDummy.getAvailable(), userStatusResDtoDataDummy.getAway()));
 
         when(userStatusService.getAllUserStatus()).thenReturn(userStatusListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/user-status/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/user-status/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         UserStatusListResDto userStatusListResDto = new Gson().fromJson(jsonString, UserStatusListResDto.class);

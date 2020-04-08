@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.tvj.internaltool.dto.res.TitleListResDto;
 import com.tvj.internaltool.dummy.dto.res.TitleResDtoDataDummy;
 import com.tvj.internaltool.service.TitleService;
+import com.tvj.internaltool.utils.CustomRestExceptionHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TitleControllerTest {
@@ -37,9 +38,11 @@ public class TitleControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @Before // Execute before each test method
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(titleController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(titleController)
+                .setControllerAdvice(new CustomRestExceptionHandler()) // add ControllerAdvice to controller test
+                .build();
     }
 
     // ---------- /title/list START ----------
@@ -48,9 +51,7 @@ public class TitleControllerTest {
     public void getAllTitle_success_returnZeroRecord() throws Exception {
         when(titleService.getAllTitle()).thenReturn(new TitleListResDto());
 
-        MvcResult result = mockMvc.perform(get("/title/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/title/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         TitleListResDto titleListResDto = new Gson().fromJson(jsonString, TitleListResDto.class);
@@ -63,14 +64,11 @@ public class TitleControllerTest {
     public void getAllTitle_success_returnOneRecord() throws Exception {
         TitleResDtoDataDummy titleResDtoDataDummy = new TitleResDtoDataDummy();
         TitleListResDto titleListResDtoDummy = new TitleListResDto();
-        titleListResDtoDummy.setTitleResDtoList(Collections.singletonList(
-                titleResDtoDataDummy.getTitle1()));
+        titleListResDtoDummy.setTitleResDtoList(Collections.singletonList(titleResDtoDataDummy.getTitle1()));
 
         when(titleService.getAllTitle()).thenReturn(titleListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/title/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/title/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         TitleListResDto titleListResDto = new Gson().fromJson(jsonString, TitleListResDto.class);
@@ -83,15 +81,12 @@ public class TitleControllerTest {
     public void getAllTitle_success_returnTwoRecords() throws Exception {
         TitleResDtoDataDummy titleResDtoDataDummy = new TitleResDtoDataDummy();
         TitleListResDto titleListResDtoDummy = new TitleListResDto();
-        titleListResDtoDummy.setTitleResDtoList(Arrays.asList(
-                titleResDtoDataDummy.getTitle1(),
-                titleResDtoDataDummy.getTitle2()));
+        titleListResDtoDummy
+                .setTitleResDtoList(Arrays.asList(titleResDtoDataDummy.getTitle1(), titleResDtoDataDummy.getTitle2()));
 
         when(titleService.getAllTitle()).thenReturn(titleListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/title/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/title/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         TitleListResDto titleListResDto = new Gson().fromJson(jsonString, TitleListResDto.class);

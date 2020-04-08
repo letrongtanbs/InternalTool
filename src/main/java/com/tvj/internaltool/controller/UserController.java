@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/password-recover-send-request")
-    public ResponseEntity<?> forgotPasswordSendRequest(
+    public ResponseEntity<?> passwordRecoverSendRequest(
             @Valid @RequestBody PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto) {
         boolean isMailSent = userService.processForgotPassword(passwordRecoverSendRequestReqDto.getUsername());
         if (isMailSent) {
@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/password-recover-confirm-token")
-    public ResponseEntity<?> forgotPasswordConfirmToken(
+    public ResponseEntity<?> passwordRecoverConfirmToken(
             @NotBlank(message = "token must not be blank!!") @Size(max = 100, message = "maximum size of token id is 100!!") @RequestParam("token") String token) {
         boolean isTokenValid = userService.processConfirmForgotPasswordToken(token);
         if (isTokenValid) {
@@ -84,7 +84,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/password-recover-update-password")
-    public ResponseEntity<?> recoverPasswordUpdatePassword(
+    public ResponseEntity<?> passwordRecoverUpdatePassword(
             @Valid @RequestBody PasswordRecoverUpdatePasswordReqDto passwordRecoverUpdatePasswordReqDto) {
         boolean isPasswordUpdated = userService.processRecoverPassword(passwordRecoverUpdatePasswordReqDto);
         if (isPasswordUpdated) {

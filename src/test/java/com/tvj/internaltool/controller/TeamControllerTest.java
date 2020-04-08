@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.tvj.internaltool.dto.res.TeamListResDto;
 import com.tvj.internaltool.dummy.dto.res.TeamResDtoDataDummy;
 import com.tvj.internaltool.service.TeamService;
+import com.tvj.internaltool.utils.CustomRestExceptionHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TeamControllerTest {
@@ -37,9 +38,11 @@ public class TeamControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @Before // Execute before each test method
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(teamController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(teamController)
+                .setControllerAdvice(new CustomRestExceptionHandler()) // add ControllerAdvice to controller test
+                .build();
     }
 
     // ---------- /team/list-by-department START ----------
@@ -51,10 +54,8 @@ public class TeamControllerTest {
 
         when(teamService.getTeamByDepartment(departmentId)).thenReturn(new TeamListResDto());
 
-        MvcResult result = mockMvc.perform(get("/team/list-by-department")
-                .param("departmentId", departmentId))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/team/list-by-department").param("departmentId", departmentId))
+                .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         TeamListResDto teamListResDto = new Gson().fromJson(jsonString, TeamListResDto.class);
@@ -70,15 +71,12 @@ public class TeamControllerTest {
 
         TeamResDtoDataDummy teamResDtoDataDummy = new TeamResDtoDataDummy();
         TeamListResDto teamListResDtoDummy = new TeamListResDto();
-        teamListResDtoDummy.setTeamResDtoList(Collections.singletonList(
-                teamResDtoDataDummy.getTeam1()));
+        teamListResDtoDummy.setTeamResDtoList(Collections.singletonList(teamResDtoDataDummy.getTeam1()));
 
         when(teamService.getTeamByDepartment(departmentId)).thenReturn(teamListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/team/list-by-department")
-                .param("departmentId", departmentId))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/team/list-by-department").param("departmentId", departmentId))
+                .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         TeamListResDto teamListResDto = new Gson().fromJson(jsonString, TeamListResDto.class);
@@ -94,16 +92,13 @@ public class TeamControllerTest {
 
         TeamResDtoDataDummy teamResDtoDataDummy = new TeamResDtoDataDummy();
         TeamListResDto teamListResDtoDummy = new TeamListResDto();
-        teamListResDtoDummy.setTeamResDtoList(Arrays.asList(
-                teamResDtoDataDummy.getTeam1(),
-                teamResDtoDataDummy.getTeam2()));
+        teamListResDtoDummy
+                .setTeamResDtoList(Arrays.asList(teamResDtoDataDummy.getTeam1(), teamResDtoDataDummy.getTeam2()));
 
         when(teamService.getTeamByDepartment(departmentId)).thenReturn(teamListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/team/list-by-department")
-                .param("departmentId", departmentId))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/team/list-by-department").param("departmentId", departmentId))
+                .andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         TeamListResDto teamListResDto = new Gson().fromJson(jsonString, TeamListResDto.class);

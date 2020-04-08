@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.tvj.internaltool.dto.res.CountryListResDto;
 import com.tvj.internaltool.dummy.dto.res.CountryResDtoDataDummy;
 import com.tvj.internaltool.service.CountryService;
+import com.tvj.internaltool.utils.CustomRestExceptionHandler;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CountryControllerTest {
@@ -37,9 +38,11 @@ public class CountryControllerTest {
 
     private MockMvc mockMvc;
 
-    @Before
+    @Before // Execute before each test method
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(countryController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(countryController)
+                .setControllerAdvice(new CustomRestExceptionHandler()) // add ControllerAdvice to controller test
+                .build();
     }
 
     // ---------- /country/list START ----------
@@ -48,9 +51,7 @@ public class CountryControllerTest {
     public void getAllCountry_success_returnZeroRecord() throws Exception {
         when(countryService.getAllCountry()).thenReturn(new CountryListResDto());
 
-        MvcResult result = mockMvc.perform(get("/country/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/country/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         CountryListResDto countryListResDto = new Gson().fromJson(jsonString, CountryListResDto.class);
@@ -63,14 +64,11 @@ public class CountryControllerTest {
     public void getAllCountry_success_returnOneRecord() throws Exception {
         CountryResDtoDataDummy countryResDtoDataDummy = new CountryResDtoDataDummy();
         CountryListResDto countryListResDtoDummy = new CountryListResDto();
-        countryListResDtoDummy.setCountryResDtoList(Collections.singletonList(
-                countryResDtoDataDummy.getCountry1()));
+        countryListResDtoDummy.setCountryResDtoList(Collections.singletonList(countryResDtoDataDummy.getCountry1()));
 
         when(countryService.getAllCountry()).thenReturn(countryListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/country/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/country/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         CountryListResDto countryListResDto = new Gson().fromJson(jsonString, CountryListResDto.class);
@@ -83,15 +81,12 @@ public class CountryControllerTest {
     public void getAllCountry_success_returnTwoRecords() throws Exception {
         CountryResDtoDataDummy countryResDtoDataDummy = new CountryResDtoDataDummy();
         CountryListResDto countryListResDtoDummy = new CountryListResDto();
-        countryListResDtoDummy.setCountryResDtoList(Arrays.asList(
-                countryResDtoDataDummy.getCountry1(),
-                countryResDtoDataDummy.getCountry2()));
+        countryListResDtoDummy.setCountryResDtoList(
+                Arrays.asList(countryResDtoDataDummy.getCountry1(), countryResDtoDataDummy.getCountry2()));
 
         when(countryService.getAllCountry()).thenReturn(countryListResDtoDummy);
 
-        MvcResult result = mockMvc.perform(get("/country/list"))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc.perform(get("/country/list")).andExpect(status().isOk()).andReturn();
 
         String jsonString = result.getResponse().getContentAsString();
         CountryListResDto countryListResDto = new Gson().fromJson(jsonString, CountryListResDto.class);

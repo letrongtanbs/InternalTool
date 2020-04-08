@@ -42,8 +42,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         logger.error(ex.getMessage());
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.INTERNAL_SERVER_ERROR, "Server error",
-                "Unexpected error occurred!!");
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+                "Server error", "Unexpected error occurred!!");
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -57,7 +57,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             message.append(violation.getMessage());
         }
 
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.BAD_REQUEST, "Request param error", message.toString());
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                "Request param error", message.toString());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -67,7 +68,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add("parameter " + ex.getParameterName() + " is missing!!");
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.BAD_REQUEST, "Request param error", details);
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                "Request param error", details);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -79,7 +81,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         for (ObjectError error : ex.getBindingResult().getAllErrors()) {
             details.add(error.getDefaultMessage());
         }
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.BAD_REQUEST, "Request param dto error", details);
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                "Request param dto error", details);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -91,7 +94,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         for (ObjectError error : ex.getBindingResult().getAllErrors()) {
             details.add(error.getDefaultMessage());
         }
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.BAD_REQUEST, "Request body error", details);
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                "Request body error", details);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -99,34 +103,34 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.BAD_REQUEST, "Request error",
-                "Http request method: '" + ex.getMethod() + "' is not supported!!");
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.METHOD_NOT_ALLOWED.value()),
+                "Request error", "Http request method: '" + ex.getMethod() + "' is not supported!!");
+        return new ResponseEntity<>(error, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     // Handle media type not supported
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.BAD_REQUEST, "Request error",
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()), "Request error",
                 "Media type: '" + ex.getContentType().getType() + "' is not supported!!");
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
     }
 
     // Handle media type not acceptable
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.BAD_REQUEST, "Request error",
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()), "Request error",
                 "Media type is not acceptable!!");
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
     }
 
     // Handle missing path variable
     @Override
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers,
             HttpStatus status, WebRequest request) {
-        ApiErrorResUtil error = new ApiErrorResUtil(HttpStatus.BAD_REQUEST, "Request error",
+        ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.BAD_REQUEST.value()), "Request error",
                 "Missing path variable " + ex.getVariableName() + "!!");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
@@ -134,63 +138,54 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----ServletRequestBindingException", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleConversionNotSupported(ConversionNotSupportedException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----ConversionNotSupportedException", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
             HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----TypeMismatchException", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----HttpMessageNotReadableException", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----HttpMessageNotWritableException", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestPart(MissingServletRequestPartException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----MissingServletRequestPartException", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
             HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----NoHandlerFoundException", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleAsyncRequestTimeoutException(AsyncRequestTimeoutException ex,
             HttpHeaders headers, HttpStatus status, WebRequest webRequest) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----AsyncRequestTimeoutException", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
             HttpStatus status, WebRequest request) {
-        // TODO Auto-generated method stub
         return new ResponseEntity<>("----Exception", HttpStatus.BAD_REQUEST);
     }
 
