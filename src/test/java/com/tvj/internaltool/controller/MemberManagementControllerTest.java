@@ -146,27 +146,27 @@ public class MemberManagementControllerTest {
         assertEquals(memberListResDto.getMemberResDtoList().size(), 2);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_invalidHttpRequestMethodPOST() throws Exception {
         mockMvc.perform(post("/member-management/search")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/member-management/search")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/member-management/search")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/member-management/search")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_nameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
@@ -180,7 +180,7 @@ public class MemberManagementControllerTest {
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
@@ -194,7 +194,7 @@ public class MemberManagementControllerTest {
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_titleIdSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
@@ -208,7 +208,7 @@ public class MemberManagementControllerTest {
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_offsetSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
@@ -220,7 +220,7 @@ public class MemberManagementControllerTest {
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void searchMember_limitSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberSearchReqDto memberSearchReqDto = new MemberSearchReqDto();
@@ -263,27 +263,27 @@ public class MemberManagementControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.ADD_NEW_MEMBER_SUCCESS);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_invalidHttpRequestMethodGET() throws Exception {
         mockMvc.perform(get("/member-management/add-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/member-management/add-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/member-management/add-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/member-management/add-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_usernameIsBlank() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -300,7 +300,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -317,7 +317,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_firstNameIsBlank() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -334,7 +334,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_lastNameIsBlank() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -351,7 +351,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_titleIdIsBlank() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -368,7 +368,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_titleIdSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -385,7 +385,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_emailIsBlank() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -402,7 +402,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_emailIsInvalid() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -419,7 +419,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_passwordIsBlank() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -436,7 +436,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void addMember_passwordSizeOutOfBounds() throws Exception {
         // Value from client
         MemberAddReqDto memberAddReqDto = new MemberAddReqDto();
@@ -510,28 +510,28 @@ public class MemberManagementControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_MEMBER_SUCCESS);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_invalidHttpRequestMethodGET() throws Exception {
         mockMvc.perform(get("/member-management/update-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_invalidHttpRequestMethodPOST() throws Exception {
         mockMvc.perform(post("/member-management/update-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/member-management/update-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/member-management/update-member")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_usernameIsBlank() throws Exception {
         // Value from client
         MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
@@ -547,7 +547,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
@@ -563,7 +563,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_firstNameIsBlank() throws Exception {
         // Value from client
         MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
@@ -579,7 +579,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_lastNameIsBlank() throws Exception {
         // Value from client
         MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
@@ -595,7 +595,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_titleIdIsBlank() throws Exception {
         // Value from client
         MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
@@ -611,7 +611,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_titleIdSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
@@ -627,7 +627,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_emailIdIsBlank() throws Exception {
         // Value from client
         MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
@@ -643,7 +643,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMember_emailIdIsInvalid() throws Exception {
         // Value from client
         MemberUpdateReqDto memberUpdateReqDto = new MemberUpdateReqDto();
@@ -704,27 +704,27 @@ public class MemberManagementControllerTest {
         verify(memberManagementService, times(1)).viewMember(username);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void viewMember_invalidHttpRequestMethodPOST() throws Exception {
         mockMvc.perform(post("/member-management/view-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void viewMember_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/member-management/view-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void viewMember_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/member-management/view-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void viewMember_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/member-management/view-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void viewMember_usernameIsBlank() throws Exception {
         // Value from client
         String username = "";
@@ -733,7 +733,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void viewMember_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         String username = "a12345678901234567890";
@@ -789,31 +789,31 @@ public class MemberManagementControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMemberActivateStatus_invalidHttpRequestMethodGET() throws Exception {
         mockMvc.perform(get("/member-management/update-member-activate-status"))
                 .andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMemberActivateStatus_invalidHttpRequestMethodPOST() throws Exception {
         mockMvc.perform(post("/member-management/update-member-activate-status"))
                 .andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void vupdateMemberActivateStatus_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/member-management/update-member-activate-status"))
                 .andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMemberActivateStatus_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/member-management/update-member-activate-status"))
                 .andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMemberActivateStatus_usernameIsBlank() throws Exception {
         // Value from client
         MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto = new MemberActivateStatusUpdateReqDto();
@@ -826,7 +826,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void updateMemberActivateStatus_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto = new MemberActivateStatusUpdateReqDto();
@@ -890,27 +890,27 @@ public class MemberManagementControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.DELETE_MEMBER_SUCCESS);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void deleteMember_invalidHttpRequestMethodGET() throws Exception {
         mockMvc.perform(get("/member-management/delete-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void deleteMember_invalidHttpRequestMethodPOST() throws Exception {
         mockMvc.perform(post("/member-management/delete-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void deleteMember_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/member-management/delete-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void deleteMember_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/member-management/delete-member")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void deleteMember_usernameIsBlank() throws Exception {
         // Value from client
         MemberDeleteReqDto memberDeleteReqDto = new MemberDeleteReqDto();
@@ -922,7 +922,7 @@ public class MemberManagementControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void deleteMember_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         MemberDeleteReqDto memberDeleteReqDto = new MemberDeleteReqDto();

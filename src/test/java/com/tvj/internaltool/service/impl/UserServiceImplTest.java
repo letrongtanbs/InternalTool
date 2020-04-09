@@ -102,7 +102,7 @@ public class UserServiceImplTest {
 
     // ---------- processLogin START ---------
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void processLogin_success() {
         // Value from client
         String username = "admin1";
@@ -134,7 +134,7 @@ public class UserServiceImplTest {
         }
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void processLogin_resetLoginFailedCountAfterLoginSuccess() {
         // Value from client
         String username = "admin1";
@@ -167,7 +167,7 @@ public class UserServiceImplTest {
         }
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void processLogin_userDoesNotExist() {
         // Value from client
         String username = "admin1";
@@ -192,7 +192,7 @@ public class UserServiceImplTest {
         }
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void processLogin_userIsLocked() throws MessagingException {
         // Value from client
         String username = "admin1";
@@ -216,7 +216,7 @@ public class UserServiceImplTest {
         }
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void processLogin_userIsLocked_thenSendMail() throws MessagingException {
         // Value from client
         String username = "admin1";
@@ -242,7 +242,7 @@ public class UserServiceImplTest {
         }
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test 
     public void processLogin_passwordIsNotMatched() {
         // Value from client
         String username = "admin1";

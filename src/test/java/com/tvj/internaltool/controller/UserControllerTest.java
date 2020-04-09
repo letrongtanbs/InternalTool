@@ -65,7 +65,7 @@ public class UserControllerTest {
 
     // ---------- /user/login START ----------
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_success() throws Exception {
         // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
@@ -92,27 +92,27 @@ public class UserControllerTest {
         assertEquals(userLoginResDto.isFirstTimeLogin(), adminResDto.getAdminUserResDto1().isFirstTimeLogin());
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_invalidHttpRequestMethodGET() throws Exception {
         mockMvc.perform(get("/user/login")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/user/login")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/user/login")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/user/login")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_usernameIsBlank() throws Exception {
         // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
@@ -124,7 +124,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
@@ -136,7 +136,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_passwordIsBlank() throws Exception {
         // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
@@ -148,7 +148,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_passwordSizeOutOfBounds() throws Exception {
         // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
@@ -160,7 +160,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_userIsUnauthorized() throws Exception {
         // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
@@ -183,7 +183,7 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.UNAUTHORIZED);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void generateAuthenticationToken_userIsLocked() throws Exception {
         // Value from client
         UserLoginReqDto userLoginReqDto = new UserLoginReqDto();
@@ -232,31 +232,31 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.SEND_MAIL_SUCCESS);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverSendRequest_invalidHttpRequestMethodGET() throws Exception {
         mockMvc.perform(get("/user/password-recover-send-request")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverSendRequest_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/user/password-recover-send-request")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverSendRequest_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/user/password-recover-send-request")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverSendRequest_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/user/password-recover-send-request")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverSendRequest_usernameIsBlank() throws Exception {
         // Value from client
         PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto = new PasswordRecoverSendRequestReqDto();
@@ -268,7 +268,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverSendRequest_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         PasswordRecoverSendRequestReqDto passwordRecoverSendRequestReqDto = new PasswordRecoverSendRequestReqDto();
@@ -324,25 +324,25 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.TOKEN_IS_VALID);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverConfirmToken_invalidHttpRequestMethodPOST() throws Exception {
         mockMvc.perform(post("/user/password-recover-confirm-token")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverConfirmToken_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/user/password-recover-confirm-token")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverConfirmToken_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/user/password-recover-confirm-token")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverConfirmToken_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/user/password-recover-confirm-token")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
@@ -402,25 +402,25 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.UPDATE_PASSWORD_SUCCESS);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverUpdatePassword_invalidHttpRequestMethodGET() throws Exception {
         mockMvc.perform(get("/user/password-recover-update-password")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverUpdatePassword_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/user/password-recover-update-password")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverUpdatePassword_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/user/password-recover-update-password")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void passwordRecoverUpdatePassword_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/user/password-recover-update-password")).andExpect(status().isMethodNotAllowed())
                 .andReturn();
@@ -519,6 +519,26 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.GET_USER_SETTING_FAILED);
     }
 
+    @Test
+    public void getUserSetting_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/user/user-setting-get-info")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getUserSetting_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/user-setting-get-info")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getUserSetting_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/user-setting-get-info")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getUserSetting_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/user-setting-get-info")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
     // ---------- /user/user-setting-get-info END ----------
 
     // ---------- /user/user-setting-update-info START ----------
@@ -545,6 +565,163 @@ public class UserControllerTest {
                 .andReturn();
 
         verify(userService, times(1)).updateUserSetting(any(UserSettingUpdateReqDto.class));
+    }
+
+    @Test
+    public void updateUserSetting_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/user/user-setting-update-info")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/user/user-setting-update-info")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/user-setting-update-info")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/user-setting-update-info")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_teamIdSizeOutOfBounds() throws Exception {
+        // Value from client
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("a1234567890123456789012345678901234567890");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("1234567890");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("1");
+        userSettingUpdateReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
+
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_addressSizeExceedsMaximumLimit() throws Exception {
+        // Value from client
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress(
+                "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901");
+        userSettingUpdateReqDto.setPhone("1234567890");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("1");
+        userSettingUpdateReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
+
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_phoneSizeOutOfBounds() throws Exception {
+        // Value from client
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("1234567");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("1");
+        userSettingUpdateReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
+
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_countryIdSizeOutOfBounds() throws Exception {
+        // Value from client
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("12345678");
+        userSettingUpdateReqDto.setCountryId("12345678901234567890123456789012345678901");
+        userSettingUpdateReqDto.setLanguageId("1");
+        userSettingUpdateReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
+
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_languageIdIsBlank() throws Exception {
+        // Value from client
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("12345678");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("");
+        userSettingUpdateReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
+
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_languageIdSizeOutOfBounds() throws Exception {
+        // Value from client
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("12345678");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("12345678901234567890123456789012345678901");
+        userSettingUpdateReqDto.setStatusId(UserStatus.AVAILABLE.getStatus());
+
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_statusIdIsBlank() throws Exception {
+        // Value from client
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("12345678");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("1");
+        userSettingUpdateReqDto.setStatusId("");
+
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updateUserSetting_statusIsInvalid() throws Exception {
+        // Value from client
+        UserSettingUpdateReqDto userSettingUpdateReqDto = new UserSettingUpdateReqDto();
+        userSettingUpdateReqDto.setTeamId("1");
+        userSettingUpdateReqDto.setAddress("1 Some Where");
+        userSettingUpdateReqDto.setPhone("12345678");
+        userSettingUpdateReqDto.setCountryId("1");
+        userSettingUpdateReqDto.setLanguageId("1");
+        userSettingUpdateReqDto.setStatusId("10");
+
+        mockMvc.perform(put("/user/user-setting-update-info")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdateReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     @Test
@@ -602,6 +779,80 @@ public class UserControllerTest {
     }
 
     @Test
+    public void updatePassword_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/user/user-setting-update-password")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void updatePassword_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/user/user-setting-update-password")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test
+    public void updatePassword_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/user-setting-update-password")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void updatePassword_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/user-setting-update-password")).andExpect(status().isMethodNotAllowed())
+                .andReturn();
+    }
+
+    @Test
+    public void updatePassword_oldPasswordIsBlank() throws Exception {
+        // Value from client
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("");
+        userSettingUpdatePasswordReqDto.setNewPassword("12345678");
+
+        mockMvc.perform(patch("/user/user-setting-update-password")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdatePasswordReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updatePassword_oldPasswordSizeOutOfBounds() throws Exception {
+        // Value from client
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("1234567");
+        userSettingUpdatePasswordReqDto.setNewPassword("12345678");
+
+        mockMvc.perform(patch("/user/user-setting-update-password")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdatePasswordReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updatePassword_newPasswordIsBlank() throws Exception {
+        // Value from client
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("12345678");
+        userSettingUpdatePasswordReqDto.setNewPassword("");
+
+        mockMvc.perform(patch("/user/user-setting-update-password")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdatePasswordReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void updatePassword_newPasswordSizeOutOfBounds() throws Exception {
+        // Value from client
+        UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
+        userSettingUpdatePasswordReqDto.setOldPassword("12345678");
+        userSettingUpdatePasswordReqDto.setNewPassword("1234567");
+
+        mockMvc.perform(patch("/user/user-setting-update-password")
+                .content(new ObjectMapper().writeValueAsString(userSettingUpdatePasswordReqDto))
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
     public void updatePassword_cannotUpdatePassword() throws Exception {
         // Value from client
         UserSettingUpdatePasswordReqDto userSettingUpdatePasswordReqDto = new UserSettingUpdatePasswordReqDto();
@@ -642,6 +893,26 @@ public class UserControllerTest {
 
         verify(userService, times(1)).uploadAvatar(any(MultipartFile.class));
     }
+    
+    @Test
+    public void uploadAvatar_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/user/upload-avatar")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void uploadAvatar_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/upload-avatar")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void uploadAvatar_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/upload-avatar")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void uploadAvatar_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user/upload-avatar")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
 
     @Test
     public void uploadAvatar_cannotUploadAvatar() throws Exception {
@@ -680,6 +951,26 @@ public class UserControllerTest {
         assertEquals(messageResDto.getCode(), ResponseCode.REMOVE_AVATAR_SUCCESS);
         assertEquals(messageResDto.getMessage(), ResponseMessage.REMOVE_AVATAR_SUCCESS);
     }
+    
+    @Test
+    public void removeAvatar_invalidHttpRequestMethodGET() throws Exception {
+        mockMvc.perform(get("/user/remove-avatar")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void removeAvatar_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/user/remove-avatar")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void removeAvatar_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user/remove-avatar")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void removeAvatar_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user/remove-avatar")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
 
     @Test
     public void removeAvatar_cannotRemoveAvatar() throws Exception {
@@ -714,22 +1005,22 @@ public class UserControllerTest {
         assertEquals(messageResDto.getMessage(), ResponseMessage.SAVE_LAST_LOGOUT_SUCCESS);
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void saveLastLogout_invalidHttpRequestMethodPOST() throws Exception {
         mockMvc.perform(post("/user/save-last-logout")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void saveLastLogout_invalidHttpRequestMethodPUT() throws Exception {
         mockMvc.perform(put("/user/save-last-logout")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void saveLastLogout_invalidHttpRequestMethodPATCH() throws Exception {
         mockMvc.perform(patch("/user/save-last-logout")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test // Do not use org.junit.jupiter.api
+    @Test
     public void saveLastLogout_invalidHttpRequestMethodDELETE() throws Exception {
         mockMvc.perform(delete("/user/save-last-logout")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
