@@ -5,7 +5,11 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -94,6 +98,26 @@ public class LanguageControllerTest {
 
         verify(languageService, times(1)).getAllLanguage();
         assertEquals(languageListResDto.getLanguageResDtoList().size(), 2);
+    }
+    
+    @Test
+    public void getAllLanguage_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/language/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void getAllLanguage_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/language/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void getAllLanguage_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/language/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void getAllLanguage_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/language/list")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
     // ---------- /language/list END ----------

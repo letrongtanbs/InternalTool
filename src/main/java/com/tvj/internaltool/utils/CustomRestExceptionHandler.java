@@ -50,15 +50,13 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     // Handle invalid request param
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstaintViolatoinException(final ConstraintViolationException ex) {
-        StringBuilder message = new StringBuilder();
+        List<String> details = new ArrayList<>();
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-
         for (ConstraintViolation<?> violation : violations) {
-            message.append(violation.getMessage());
+            details.add(violation.getMessage());
         }
-
         ApiErrorResUtil error = new ApiErrorResUtil(String.valueOf(HttpStatus.BAD_REQUEST.value()),
-                "Request param error", message.toString());
+                "Request param error", details);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

@@ -5,7 +5,11 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -94,7 +98,27 @@ public class TitleControllerTest {
         verify(titleService, times(1)).getAllTitle();
         assertEquals(titleListResDto.getTitleResDtoList().size(), 2);
     }
+    
+    @Test
+    public void getAllTitle_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/title/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
 
+    @Test
+    public void getAllTitle_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/title/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void getAllTitle_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/title/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void getAllTitle_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/title/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
     // ---------- /title/list END ----------
 
 }

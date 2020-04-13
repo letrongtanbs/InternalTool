@@ -728,6 +728,10 @@ public class MemberManagementControllerTest {
     public void viewMember_usernameIsBlank() throws Exception {
         // Value from client
         String username = "";
+        
+        MemberResDtoDataDummy memberResDtoDataDummy = new MemberResDtoDataDummy();
+
+        when(memberManagementService.viewMember(username)).thenReturn(memberResDtoDataDummy.getMember1());
 
         mockMvc.perform(get("/member-management/view-member").param("username", username))
                 .andExpect(status().isBadRequest()).andReturn();
@@ -737,6 +741,10 @@ public class MemberManagementControllerTest {
     public void viewMember_usernameSizeExceedsMaximumLimit() throws Exception {
         // Value from client
         String username = "a12345678901234567890";
+        
+        MemberResDtoDataDummy memberResDtoDataDummy = new MemberResDtoDataDummy();
+
+        when(memberManagementService.viewMember(username)).thenReturn(memberResDtoDataDummy.getMember1());
 
         mockMvc.perform(get("/member-management/view-member").param("username", username))
                 .andExpect(status().isBadRequest()).andReturn();

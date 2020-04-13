@@ -5,7 +5,11 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -93,6 +97,26 @@ public class CountryControllerTest {
 
         verify(countryService, times(1)).getAllCountry();
         assertEquals(countryListResDto.getCountryResDtoList().size(), 2);
+    }
+
+    @Test
+    public void getAllCountry_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/country/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getAllCountry_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/country/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getAllCountry_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/country/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getAllCountry_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/country/list")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
     // ---------- /country/list END ----------

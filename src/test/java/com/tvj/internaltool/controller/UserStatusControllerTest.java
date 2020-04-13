@@ -5,7 +5,11 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -94,6 +98,26 @@ public class UserStatusControllerTest {
 
         verify(userStatusService, times(1)).getAllUserStatus();
         assertEquals(userStatusListResDto.getUserStatusResDtoList().size(), 2);
+    }
+    
+    @Test
+    public void getAllUserStatus_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/user-status/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void getAllUserStatus_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/user-status/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void getAllUserStatus_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/user-status/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+    
+    @Test
+    public void getAllUserStatus_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/user-status/list")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
     // ---------- /user-status/list END ----------

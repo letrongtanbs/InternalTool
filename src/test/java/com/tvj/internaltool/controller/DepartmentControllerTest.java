@@ -5,7 +5,11 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -94,7 +98,26 @@ public class DepartmentControllerTest {
 
         verify(departmentService, times(1)).getAllDepartment();
         assertEquals(departmentListResDto.getDepartmentResDtoList().size(), 2);
+    }
 
+    @Test
+    public void getAllDepartment_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/department/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getAllDepartment_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/department/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getAllDepartment_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/department/list")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getAllDepartment_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/department/list")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
     // ---------- /department/list END ----------

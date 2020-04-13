@@ -5,7 +5,11 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
@@ -105,6 +109,44 @@ public class TeamControllerTest {
 
         verify(teamService, times(1)).getTeamByDepartment(departmentId);
         assertEquals(teamListResDto.getTeamResDtoList().size(), 2);
+    }
+
+    @Test
+    public void getTeamByDepartment_invalidHttpRequestMethodPOST() throws Exception {
+        mockMvc.perform(post("/team/list-by-department")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getTeamByDepartment_invalidHttpRequestMethodPUT() throws Exception {
+        mockMvc.perform(put("/team/list-by-department")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getTeamByDepartment_invalidHttpRequestMethodPATCH() throws Exception {
+        mockMvc.perform(patch("/team/list-by-department")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getTeamByDepartment_invalidHttpRequestMethodDELETE() throws Exception {
+        mockMvc.perform(delete("/team/list-by-department")).andExpect(status().isMethodNotAllowed()).andReturn();
+    }
+
+    @Test
+    public void getTeamByDepartment_departmentIdIsBlank() throws Exception {
+        // Value from client
+        String departmentId = "";
+
+        mockMvc.perform(get("/team/list-by-department").param("departmentId", departmentId))
+                .andExpect(status().isBadRequest()).andReturn();
+    }
+
+    @Test
+    public void getTeamByDepartment_departmentIdSizeOutOfBounds() throws Exception {
+        // Value from client
+        String departmentId = "12345678901234567890123456789012345678901";
+
+        mockMvc.perform(get("/team/list-by-department").param("departmentId", departmentId))
+                .andExpect(status().isBadRequest()).andReturn();
     }
 
     // ---------- /team/list-by-department END ----------
