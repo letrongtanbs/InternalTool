@@ -349,28 +349,6 @@ public class UserControllerTest {
     }
 
     @Test
-    public void passwordRecoverConfirmToken_tokenIsBlank() throws Exception {
-        // Value from client
-        String token = "";
-
-        when(userService.processConfirmForgotPasswordToken(token)).thenReturn(true);
-        
-        mockMvc.perform(get("/user/password-recover-confirm-token").param("token", token))
-                .andExpect(status().isBadRequest()).andReturn();
-    }
-    
-    @Test
-    public void passwordRecoverConfirmToken_tokenSizeExceedsMaximumLimit() throws Exception {
-        // Value from client
-        String token = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901";
-
-        when(userService.processConfirmForgotPasswordToken(token)).thenReturn(true);
-        
-        mockMvc.perform(get("/user/password-recover-confirm-token").param("token", token))
-                .andExpect(status().isBadRequest()).andReturn();
-    }
-
-    @Test
     public void passwordRecoverConfirmToken_verifyTokenFailed() throws Exception {
         // Value from client
         String token = "token";

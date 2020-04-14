@@ -11,7 +11,7 @@ import lombok.Setter;
 public class MemberDeleteReqDto {
     
     @NotBlank(message = "username must not be blank!!")
-    @Size(max = 20, message = "maximum size of username id is 20!!")
+    @Size(max = 20, message = "maximum size of username is 20!!")
     private String username;
     
 }

@@ -131,24 +131,6 @@ public class TeamControllerTest {
         mockMvc.perform(delete("/team/list-by-department")).andExpect(status().isMethodNotAllowed()).andReturn();
     }
 
-    @Test
-    public void getTeamByDepartment_departmentIdIsBlank() throws Exception {
-        // Value from client
-        String departmentId = "";
-
-        mockMvc.perform(get("/team/list-by-department").param("departmentId", departmentId))
-                .andExpect(status().isBadRequest()).andReturn();
-    }
-
-    @Test
-    public void getTeamByDepartment_departmentIdSizeOutOfBounds() throws Exception {
-        // Value from client
-        String departmentId = "12345678901234567890123456789012345678901";
-
-        mockMvc.perform(get("/team/list-by-department").param("departmentId", departmentId))
-                .andExpect(status().isBadRequest()).andReturn();
-    }
-
     // ---------- /team/list-by-department END ----------
 
 }

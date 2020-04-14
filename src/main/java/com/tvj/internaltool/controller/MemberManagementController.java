@@ -50,66 +50,48 @@ public class MemberManagementController {
     public ResponseEntity<?> addMember(@Valid @RequestBody MemberAddReqDto memberAddReqDto) {
         boolean isMemberAdded = memberManagementService.addMember(memberAddReqDto);
         if (isMemberAdded) {
-            return new ResponseEntity<>(
-                    new MessageResDto(ResponseCode.ADD_NEW_MEMBER_SUCCESS, ResponseMessage.ADD_NEW_MEMBER_SUCCESS),
-                    HttpStatus.OK);
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.ADD_NEW_MEMBER_SUCCESS, ResponseMessage.ADD_NEW_MEMBER_SUCCESS), HttpStatus.OK);
         }
-        return new ResponseEntity<>(
-                new MessageResDto(ResponseCode.ADD_NEW_MEMBER_FAILED, ResponseMessage.ADD_NEW_MEMBER_FAILED),
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.ADD_NEW_MEMBER_FAILED, ResponseMessage.ADD_NEW_MEMBER_FAILED), HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/update-member")
     public ResponseEntity<?> updateMember(@Valid @RequestBody MemberUpdateReqDto memberUpdateReqDto) {
         boolean isMemberUpdated = memberManagementService.updateMember(memberUpdateReqDto);
         if (isMemberUpdated) {
-            return new ResponseEntity<>(
-                    new MessageResDto(ResponseCode.UPDATE_MEMBER_SUCCESS, ResponseMessage.UPDATE_MEMBER_SUCCESS),
-                    HttpStatus.OK);
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_SUCCESS, ResponseMessage.UPDATE_MEMBER_SUCCESS), HttpStatus.OK);
         }
-        return new ResponseEntity<>(
-                new MessageResDto(ResponseCode.UPDATE_MEMBER_FAILED, ResponseMessage.UPDATE_MEMBER_FAILED),
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_FAILED, ResponseMessage.UPDATE_MEMBER_FAILED), HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(value = "/view-member")
     public ResponseEntity<?> viewMember(
-            @NotBlank(message = "username must not be blank!!") 
-            @Size(max = 20, message = "maximum size of username id is 20!!") 
-            @RequestParam("username") String username) {
+            @NotBlank(message = "username must not be blank!!") @Size(max = 20, message = "maximum size of username is 20!!") @RequestParam("username") String username) {
         MemberResDto memberResDto = memberManagementService.viewMember(username);
         if (memberResDto != null) {
             return new ResponseEntity<>(memberResDto, HttpStatus.OK);
         }
-        return new ResponseEntity<>(
-                new MessageResDto(ResponseCode.VIEW_MEMBER_FAILED, ResponseMessage.VIEW_MEMBER_FAILED),
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.VIEW_MEMBER_FAILED, ResponseMessage.VIEW_MEMBER_FAILED), HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping(value = "/update-member-activate-status")
-    public ResponseEntity<?> updateMemberActivateStatus(
-            @Valid @RequestBody MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto) {
-        boolean isMemberActivateStatusUpdated = memberManagementService
-                .updateMemberActivateStatus(memberActivateStatusUpdateReqDto);
+    public ResponseEntity<?> updateMemberActivateStatus(@Valid @RequestBody MemberActivateStatusUpdateReqDto memberActivateStatusUpdateReqDto) {
+        boolean isMemberActivateStatusUpdated = memberManagementService.updateMemberActivateStatus(memberActivateStatusUpdateReqDto);
         if (isMemberActivateStatusUpdated) {
-            return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS,
-                    ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS), HttpStatus.OK);
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS, ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_SUCCESS),
+                    HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_FAILED,
-                ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_FAILED), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.UPDATE_MEMBER_ACTIVATED_STATUS_FAILED, ResponseMessage.UPDATE_MEMBER_ACTIVATED_STATUS_FAILED),
+                HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(value = "/delete-member")
     public ResponseEntity<?> deleteMember(@Valid @RequestBody MemberDeleteReqDto memberDeleteReqDto) {
         boolean isMemberDeleted = memberManagementService.deleteMember(memberDeleteReqDto);
         if (isMemberDeleted) {
-            return new ResponseEntity<>(
-                    new MessageResDto(ResponseCode.DELETE_MEMBER_SUCCESS, ResponseMessage.DELETE_MEMBER_SUCCESS),
-                    HttpStatus.OK);
+            return new ResponseEntity<>(new MessageResDto(ResponseCode.DELETE_MEMBER_SUCCESS, ResponseMessage.DELETE_MEMBER_SUCCESS), HttpStatus.OK);
         }
-        return new ResponseEntity<>(
-                new MessageResDto(ResponseCode.DELETE_MEMBER_FAILED, ResponseMessage.DELETE_MEMBER_FAILED),
-                HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new MessageResDto(ResponseCode.DELETE_MEMBER_FAILED, ResponseMessage.DELETE_MEMBER_FAILED), HttpStatus.BAD_REQUEST);
     }
 
 }
