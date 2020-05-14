@@ -1,6 +1,6 @@
 spring:
   datasource: ## Spring DATASOURCE
-    url: jdbc:mysql://localhost:3306/tvj_internal_db?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://ngocdc-instance-rds-1.ckehdo6dqlxd.us-east-1.rds.amazonaws.com:3306/tvj_internal_db?useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: 123456!a
   jpa: ## Hibernate Properties
@@ -10,7 +10,7 @@ spring:
     hibernate:
       ddl-auto: validate # Hibernate ddl auto (create, create-drop, validate, update)
   flyway: ## flyway
-    url: jdbc:mysql://localhost:3306/tvj_internal_db?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://ngocdc-instance-rds-1.ckehdo6dqlxd.us-east-1.rds.amazonaws.com:3306/tvj_internal_db?useSSL=false&allowPublicKeyRetrieval=true
     user: root # should not use root
     password: 123456!a
   mail:
